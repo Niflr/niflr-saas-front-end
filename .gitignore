@@ -34,7 +34,7 @@ yarn-error.log*
 node_modules/
 dist/
 package-lock.json
-src/_mock
+
 # Compiled Java class files
 *.class
 
