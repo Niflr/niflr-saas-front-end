@@ -1,4 +1,6 @@
 import { useEffect, useState, memo } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import {
   box,
   Grid,
@@ -45,16 +47,18 @@ import {
 } from '../actions';
 
 const TicketPage = (props) => {
+  // console.log(ticketId, 'ticket_id');
   const classes = useStyles();
   const [events, setEvents] = useState([]);
   const [dummyEvents, setDummyEvents] = useState([]);
   const [cart, setCart] = useState([]);
   const [videos, setVideos] = useState([]);
   const [products, setProducts] = useState(null);
+
   // const [isSaved,setIsSaved]= useState([]);
   useEffect(() => {
     // console.log("calling ticket use effect", props.ticket.ticket.video)
-    window.history.pushState(null, null, `/tickets/${props.ticket.ticket.id}`);
+    window.history.pushState(null, null, `tickets/${props.ticket.ticket.id}`);
     props.fetchVideoList(props.ticket.ticket.video);
     props.fetchEventList(props.ticket.ticket.weight_change_events);
     props.fetchCartList(props.ticket.ticket.id);
@@ -163,6 +167,23 @@ const TicketPage = (props) => {
       });
     }
   }, [props.product]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // ... your other code
+
+    // Redirect to /dashboard/tickets when going back to this page
+    const handlePopState = () => {
+      navigate('/dashboard/tickets');
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
+
   // console.log("inside video page")
   return (
     <Container maxWidth={false} className={classes.pageContainer}>

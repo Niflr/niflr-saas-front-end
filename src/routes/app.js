@@ -1,4 +1,4 @@
-import { Navigate, useRoutes ,Routes,Route} from 'react-router-dom';
+import { Navigate, useRoutes, Routes, Route } from 'react-router-dom';
 // layouts
 import DashboardLayout from '../layouts/dashboard/DashboardLayout';
 // import SimpleLayout from '../layouts/simple';
@@ -9,18 +9,14 @@ import LoginPage from '../pages/LoginPage';
 // import Page404 from '../pages/Page404';
 // import ProductsPage from '../pages/ProductsPage';
 // import DashboardAppPage from '../pages/DashboardAppPage';
-import { ProtectedRoute } from "../components/protectedRouter";
+import { ProtectedRoute } from '../components/protectedRouter';
 
 import TicketListLayout from '../layouts/dashboard/TicketListLayout';
 import UserListLayout from '../layouts/dashboard/UserListLayout';
 // ----------------------------------------------------------------------
 
-
-
-
 export default function Router() {
-
-  return(
+  return (
     <Routes>
       <Route path="/" element={<LoginPage />} />
       <Route
@@ -43,13 +39,13 @@ export default function Router() {
         path="/dashboard/ticket"
         element={
           <ProtectedRoute>
-            <TicketListLayout/>
+            <TicketListLayout />
           </ProtectedRoute>
         }
       />
       <Route path="/login" element={<LoginPage />} />
     </Routes>
-  )
+  );
   // const routes = useRoutes([
   //   {
   //     path: '/dashboard',
