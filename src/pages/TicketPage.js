@@ -166,7 +166,7 @@ const TicketPage = (props) => {
   }, [props.product]);
   // console.log("inside video page")
   return (
-    <Container maxWidth={false} className={classes.pageContainer} style={{ maxHeight: '100%' }}>
+    <Container maxWidth={false} className={classes.pageContainer}>
       <Grid container spacing={0}>
         <Grid item xs={12} sm={6} md={8} className={classes.leftContainer}>
           <Paper className={classes.videoContainer}>
@@ -179,7 +179,12 @@ const TicketPage = (props) => {
           </Paper>
 
           <div className={classes.cartScroller}>
-            <Typography variant="h6" gutterBottom className={classes.header}>
+            <Typography
+              variant="h6"
+              gutterBottom
+              className={classes.header}
+              style={{ alignSelf: 'flex-start', marginTop: '10px', fontSize: '1.5rem', width: '20%' }}
+            >
               Cart
             </Typography>
             <Paper className={classes.cartContainer}>
@@ -213,10 +218,10 @@ const TicketPage = (props) => {
         </Grid>
 
         <Grid item xs={12} sm={6} md={4} className={classes.rightContainer}>
+          <Typography variant="h6" gutterBottom className={classes.header}>
+            Events
+          </Typography>
           <div className={classes.eventScroller}>
-            <Typography variant="h6" gutterBottom className={classes.header}>
-              Events
-            </Typography>
             <Paper className={classes.eventContainer}>
               {events ? (
                 <div>
@@ -239,10 +244,10 @@ const TicketPage = (props) => {
             </div>
           </div>
 
+          <Typography variant="h6" gutterBottom className={classes.header}>
+            Dummy Events
+          </Typography>
           <div className={classes.eventScroller}>
-            <Typography variant="h6" gutterBottom>
-              Dummy Events
-            </Typography>
             <Paper className={classes.eventContainer}>
               <div>{dummyEvents ? <DummyEventContainer /> : null}</div>
             </Paper>
@@ -262,20 +267,28 @@ const TicketPage = (props) => {
           </div>
 
           <Paper className={classes.buttonContainer}>
-            <div>
-              {/* <Button variant='contained' color='primary' onClick={handleSaveButtonClick}>
+            {/* <Button variant='contained' color='primary' onClick={handleSaveButtonClick}>
                             Save Cart
                         </Button>  */}
-              <Button variant="contained" color="primary" onClick={handleConfirmButtonClick}>
-                Confirm Ticket
-              </Button>
-              {/* <Button variant='contained' color='primary' onClick={handleClearButtonClick}>
-                            Clear Cart
-                        </Button>  */}
-              {/* <Button variant='contained' color='primary' onClick={handleDummyEvents}>
+            <Button
+              variant="contained"
+              color="success"
+              style={{ color: 'white', height: '3rem' }}
+              onClick={handleConfirmButtonClick}
+            >
+              Confirm Ticket
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              style={{ color: 'white', height: '3rem' }}
+              onClick={handleClearButtonClick}
+            >
+              Delete Cart
+            </Button>
+            {/* <Button variant='contained' color='primary' onClick={handleDummyEvents}>
                             ADD dummy event
                         </Button>  */}
-            </div>
           </Paper>
         </Grid>
       </Grid>
