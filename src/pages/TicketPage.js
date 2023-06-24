@@ -52,7 +52,6 @@ const TicketPage = (props) => {
   const [videos, setVideos] = useState([]);
   const [products, setProducts] = useState(null);
   // const [isSaved,setIsSaved]= useState([]);
-
   useEffect(() => {
     // console.log("calling ticket use effect", props.ticket.ticket.video)
     window.history.pushState(null, null, `/tickets/${props.ticket.ticket.id}`);
@@ -175,7 +174,19 @@ const TicketPage = (props) => {
                 // videos={videos}
                 handleAddEvent={handleDummyEvents}
               />
-            ) : null}
+            ) : (
+              <span
+                style={{
+                  display: 'flex',
+                  height: '100%',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'white',
+                }}
+              >
+                No Video Available
+              </span>
+            )}
           </Paper>
 
           <div className={classes.cartScroller}>
