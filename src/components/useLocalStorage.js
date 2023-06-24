@@ -12,7 +12,7 @@ export const useLocalStorage = (keyName, defaultValue) => {
         console.log("got user from local storeage",keyName,value)
         return JSON.parse(value);
       } 
-      console.log("user from local storeage",value)
+      console.log("user from local storeage",keyName, value)
         window.localStorage.setItem(keyName, JSON.stringify(defaultValue));
         return defaultValue;
 
@@ -25,6 +25,7 @@ export const useLocalStorage = (keyName, defaultValue) => {
   
   const setValue = (newValue) => {
     try {
+      console.log("setting store value", newValue)
       window.localStorage.setItem(keyName, JSON.stringify(newValue));
     } catch (err) {console.log(err)}
     setStoredValue(newValue);

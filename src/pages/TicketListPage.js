@@ -35,6 +35,7 @@ import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 import TICKETS from '../_mock/tickets';
 // actions
 import { fetchTicketList,selectTicket,updateCartTicket } from '../actions';
+import { useLocalStorage } from '../components/useLocalStorage';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -87,6 +88,9 @@ function applySortFilter(array, comparator, query) {
 }
 
  function TicketListPage(props) {
+
+  const user= JSON.parse(window.localStorage.getItem("user"));
+  console.log("testing users",user)
   const [open, setOpen] = useState(null);
   const navigate = useNavigate();
   const [page, setPage] = useState(0);

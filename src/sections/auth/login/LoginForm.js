@@ -29,7 +29,7 @@ export default function LoginForm() {
   }
   const handleClick =async () => {
     // localStorage.clear()/
-    const authService = new AuthService("sign_in");
+    // const authService = new AuthService("sign_in");
 
     const userData = { ...formValues};
     // user(userData);

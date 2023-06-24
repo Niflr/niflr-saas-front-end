@@ -1,12 +1,15 @@
 import { createContext, useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import AuthService from "../services/AuthService";
 import { useLocalStorage } from "./useLocalStorage";
+
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useLocalStorage("user", null);
   const navigate = useNavigate();
+  const authetication = new AuthService("sign_in");
 
   const updateLocalStorage =(data)=>{
     console.log("setting user data in storage",data)
@@ -15,8 +18,14 @@ export const AuthProvider = ({ children }) => {
   // call this function when you want to authenticate the user
   const login = async (data) => {
     console.log("checking login in auth context", data)
-    updateLocalStorage(data)
-    navigate("/dashboard");
+    await authetication.login(data)
+    .then(res=>{
+      console.log("auth res",res.data)
+      updateLocalStorage(res.data)
+      navigate("/dashboard");
+    })
+    
+   
   };
 
   // call this function to sign out logged in user
