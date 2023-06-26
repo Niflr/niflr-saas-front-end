@@ -57,11 +57,10 @@ const TicketPage = (props) => {
 
   // const [isSaved,setIsSaved]= useState([]);
   useEffect(() => {
-    // console.log("calling ticket use effect", props.ticket.ticket.video)
     window.history.pushState(null, null, `tickets/${props.ticket.ticket.id}`);
     props.fetchVideoList(props.ticket.ticket.video);
-    props.fetchEventList(props.ticket.ticket.weight_change_events);
-    props.fetchCartList(props.ticket.ticket.id);
+    // props.fetchEventList(props.ticket.ticket.weight_change_events);
+    // props.fetchCartList(props.ticket.ticket.id);
   }, [props.ticket]);
 
   useEffect(() => {
@@ -190,7 +189,7 @@ const TicketPage = (props) => {
       <Grid container spacing={0}>
         <Grid item xs={12} sm={6} md={8} className={classes.leftContainer}>
           <Paper className={classes.videoContainer}>
-            {props.video.status === 'fetched' ? (
+            {props.video.count>0 ? (
               <VideoSlider
                 // videos={videos}
                 handleAddEvent={handleDummyEvents}
@@ -220,7 +219,9 @@ const TicketPage = (props) => {
               Cart
             </Typography>
             <Paper className={classes.cartContainer}>
-              <div className={classes.cartDivs}>{cart ? <CartContainer /> : null}</div>
+              <div className={classes.cartDivs}>{cart ? <CartContainer /> : <Typography>
+            No cart Available
+        </Typography>}</div>
             </Paper>
             <div className={classes.cartButtons}>
               <IconButton
@@ -281,7 +282,9 @@ const TicketPage = (props) => {
           </Typography>
           <div className={classes.eventScroller}>
             <Paper className={classes.eventContainer}>
-              <div>{dummyEvents ? <DummyEventContainer /> : null}</div>
+              <div>{dummyEvents ? <DummyEventContainer /> : <Typography>
+            No dummy events Available
+        </Typography>}</div>
             </Paper>
             <div className={classes.eventButtons}>
               <IconButton

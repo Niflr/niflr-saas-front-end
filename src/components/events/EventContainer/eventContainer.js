@@ -1,4 +1,4 @@
-import { useEffect, useState,memo } from 'react';
+import { useEffect, useState,memo, } from 'react';
 import {
 box,
 Grid,
@@ -8,9 +8,8 @@ Container,
 CardMedia,
 CardContent,
 Card,
-Button
-
-} from '@mui/material'
+Button,
+} from '@mui/material';
 import {connect} from "react-redux";
 import EventElement from '../EventCard/eventCard';
 // import {useStyles} from "./styles";
@@ -41,7 +40,9 @@ const EventContainer = (props)=>{
     }, [props.event]);
 
     return (
-        events?renderEvents(events): null
+        events?renderEvents(events): <Typography>
+            No event Available
+        </Typography>
     )
 
 }

@@ -16,7 +16,8 @@ import {
 const initialState = {
     ticketId: '',
     cartItems:null,
-    status:''
+    status:'',
+    count:0
   };
   
   const cartReducer = (state = initialState, action) => {
@@ -36,7 +37,7 @@ const initialState = {
           // console.log("checking cart payloads", JSON.stringify(action.payload) )
         // const { SKU, Quantity, TicketId, Status } = action.payload;
         const updatedCartItems = [...state.cartItems, action.payload];
-        return { ...state, cartItems: updatedCartItems };}
+        return { ...state, cartItems: updatedCartItems, count:updatedCartItems.length};}
       case REMOVE__FROM_CART:
         {
           const index = state.cartItems.findIndex((item) => item.id === action.payload.id);
@@ -47,7 +48,7 @@ const initialState = {
       }
       case  CLEAR__CART:
         // console.log("inside clear cart")
-        return { ...state, cartItems: [], status: "processing"};
+        return { ...state, cartItems: [], status: "processing", count:0};
   
       case CART_SAVED:
         {

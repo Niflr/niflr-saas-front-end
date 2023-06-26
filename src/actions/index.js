@@ -385,7 +385,7 @@ export const updateTicketStatus = (ticketId, data) =>
   export const createUserOrder = (userId,data) =>
 // change url to:  url: `user_details/${userId}/order`, 
   postData({
-   url: `user_details/3853b42c-24da-46e3-99fc-d7682e244b6d/orders`, 
+   url: `user_details/${userId}/orders`, 
    data,
    action: CREATE_USER_ORDER,
    domain: "ADMIN"

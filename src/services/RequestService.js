@@ -38,15 +38,15 @@ export default class RequestService {
         break;
         case 'CLOUD':
           console.log("inside cloud domain")
-          axios.defaults.baseURL = 'https://label-api.niflrpassdev.com/';
+          axios.defaults.baseURL = 'https://label-api.niflrpassdev.com/api';
           break;
       case 'ADMIN':
         console.log("inside admin domain")
-        axios.defaults.baseURL = 'https://niflrpassdev.com/api/';
+        axios.defaults.baseURL = 'https://cs-niflrpassdev.com/api/';
         axios.defaults.headers = {
          'accept': 'application/json',
           'content-type': 'application/json',
-          'x-access-token': process.env.xAccessToken,
+          'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImZhNDhhN2IyLWIwYjAtNGM3Yi1iMzNiLTRkNGM0MWQzYTc1YSIsIm5hbWUiOiJrdXNoYWwgZ29zd2FtaSIsImlhdCI6MTY4Nzc2NjQ0MywiZXhwIjoxNjg3ODUyODQzfQ.cP_Tqz5z0xea6zQnvs0GwOJyru6LyZ2uWkU2XNsj_90',
         };
         break;
       case 'DEVELOPMENT':

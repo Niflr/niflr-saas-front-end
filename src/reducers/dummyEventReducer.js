@@ -30,6 +30,7 @@ import {
     isLoading: false,
     error: false,
     status: '',
+    count:0
   };
   
   export default (state = DATA, action) => {
@@ -40,7 +41,7 @@ import {
         return { ...state, isLoading: action.isLoading, dummyEvent: action.payload };
       case FETCH__DUMMY_EVENTS_LIST_SUCCESS:
         // console.log("fetch  dummy event list success",action.payload)
-        return { ...state, isLoading: action.isLoading, dummyEvents:action.payload };
+        return { ...state, isLoading: action.isLoading, dummyEvents:action.payload, };
       // case PUT__DUMMY_EVENT_DETAILS_SUCCESS:
       //   break
       case IS_DUMMY_EVENT_CHECKED:
