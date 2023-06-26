@@ -277,7 +277,7 @@ export const updateTicketStatus = (ticketId, data) =>
     url: `tickets/${ticketId}`,
     data,
     action: PUT_TICKET_STATUS,
-    domain: "LOCAL"
+    domain: "CLOUD"
   });
 
   export const updateEventStatus = (data) =>
@@ -285,14 +285,14 @@ export const updateTicketStatus = (ticketId, data) =>
     url: `events/UpdateStatus`,
     data ,
     action: PUT_EVENT_STATUS,
-    domain: "LOCAL"
+    domain: "CLOUD"
   });
   export const updateCartItemStatus = (ticketId,data) =>
   putData({
     url: `cartItems/UpdateStatus/${ticketId}`,
     data ,
     action: CART_CONFIRMED,
-    domain: "LOCAL"
+    domain: "CLOUD"
   });
 
   export const createCart = (ticketId, data) =>
@@ -300,7 +300,7 @@ export const updateTicketStatus = (ticketId, data) =>
     url: `cartItems/${ticketId}`,
     data,
     action: POST__CART_DETAILS,
-    domain: "LOCAL"
+    domain: "CLOUD"
   });
 
   export const createDummyEvents = (ticketId,data) =>
@@ -308,7 +308,7 @@ export const updateTicketStatus = (ticketId, data) =>
    url: `dummyEvents/${ticketId}`, 
    data,
    action: POST__DUMMY_EVENTS,
-   domain: "LOCAL"
+   domain: "CLOUD"
   })
 
   export const deleteCartItems = (ticketId) =>
@@ -316,7 +316,7 @@ export const updateTicketStatus = (ticketId, data) =>
     url: `cartItems/delete/${ticketId}`,
     data:{"TicketId":ticketId},
     action: DELETE__CART_DETAILS,
-    domain: "LOCAL"
+    domain: "CLOUD"
   });
  //  feth ticket list
   export const fetchTicketList =params=>
@@ -324,7 +324,7 @@ export const updateTicketStatus = (ticketId, data) =>
     url:"tickets",
     params,
     action: FETCH__TICKETS_LIST,
-    domain: 'LOCAL'
+    domain: 'CLOUD'
   })
 
   export const fetchCartList =params=>
@@ -332,7 +332,7 @@ export const updateTicketStatus = (ticketId, data) =>
     url:"cartItems/",
     params,
     action: FETCH__CART_DETAILS,
-    domain: 'LOCAL'
+    domain: 'CLOUD'
   })
 
  //  fetch event list
@@ -340,7 +340,7 @@ export const updateTicketStatus = (ticketId, data) =>
  fetchList({
    url:"events/",
    action: FETCH__EVENTS_LIST,
-   domain: 'LOCAL',
+   domain: 'CLOUD',
    data: params
  })
 
@@ -350,7 +350,7 @@ export const updateTicketStatus = (ticketId, data) =>
     url:"videos/",
     data: params,
     action: FETCH__VIDEOS_LIST,
-    domain: 'LOCAL'
+    domain: 'CLOUD'
   })
 
  // create local cart
@@ -507,7 +507,7 @@ export const setModalState = payload => ({
     url:"users/list",
     params,
     action: FETCH__USERS_LIST,
-    domain: 'LOCAL'
+    domain: 'CLOUD'
   })
 
   export const fetchStoreProductsList =params=>
@@ -515,7 +515,7 @@ export const setModalState = payload => ({
     url:"snapshots/location/start",
     data: params,
     action: FETCH__PRODUCTS_LIST,
-    domain: 'LOCAL'
+    domain: 'CLOUD'
   })
 
 //  fetch request:

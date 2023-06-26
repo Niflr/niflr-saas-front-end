@@ -36,6 +36,10 @@ export default class RequestService {
         console.log("inside local domain")
         axios.defaults.baseURL = 'http://localhost:1234/api/';
         break;
+        case 'CLOUD':
+          console.log("inside cloud domain")
+          axios.defaults.baseURL = 'https://label-api.niflrpassdev.com/';
+          break;
       case 'ADMIN':
         console.log("inside admin domain")
         axios.defaults.baseURL = 'https://niflrpassdev.com/api/';
