@@ -67,6 +67,10 @@ import {
             {
                 const updatedEvents = state.events.events.map((event) => {
                     if (event.id === action.payload) {
+                      if (event.status === "checked")
+                      {
+                        return { ...event, status: "unchecked" };
+                      }
                       return { ...event, status: "checked" };
                     }
                     return event;

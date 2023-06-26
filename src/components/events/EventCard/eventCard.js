@@ -16,7 +16,9 @@ const ticketId =props.event.events.ticketId
 const [isChecked, setIsChecked] = useState(false);
 const [isSaved, setIsSaved] = useState(false);
 const [accordionProps,setAccordionProps] =useState({ disabled: false });
-
+// const [isSaved, setIsSaved] = useState(false);
+// const [isSaved, setIsSaved] = useState(false);
+// const [isSaved, setIsSaved] = useState(false);
 
 const handleCheckboxChange = () => {
   props.eventChecked(id);
@@ -24,16 +26,16 @@ const handleCheckboxChange = () => {
 };
 
 
-useEffect(() => {
-  console.log("calling event use effect", isChecked)
-  if(isChecked){
-    console.log("checking event use effect in chekd",isChecked)
-  }
-  else {
-  console.log("delete from cart function called")
-  props.removeFromCart({id})
-}
-}, [isChecked]);
+// useEffect(() => {
+//   console.log("calling event use effect", isChecked)
+//   if(isChecked){
+//     console.log("checking event use effect in chekd",isChecked)
+//   }
+//   else {
+//   console.log("delete from cart function called")
+//   props.removeFromCart({id})
+// }
+// }, [isChecked]);
 
 useEffect((  ) => {
   if(isSaved){
@@ -42,7 +44,7 @@ useEffect((  ) => {
   }
   else {
   console.log("delete from cart function called")
-  props.removeFromCart({id})
+  // props.removeFromCart({id})
 }
 },[isSaved])
 
@@ -60,8 +62,8 @@ useEffect (()=>{
       break
     case "processing":
       console.log("renderevent status processing")
-        setAccordionProps({ disabled: false })
-        props.removeFromCart({id}) 
+      setAccordionProps({ disabled: false })
+        // props.removeFromCart({id}) 
         // setIsChecked(!isChecked); // remove if you want the check to still be there after cart cleared
       break
       default:

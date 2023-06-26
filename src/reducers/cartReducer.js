@@ -40,6 +40,7 @@ const initialState = {
         return { ...state, cartItems: updatedCartItems, count:updatedCartItems.length};}
       case REMOVE__FROM_CART:
         {
+          
           const index = state.cartItems.findIndex((item) => item.id === action.payload.id);
         const newCartItems = [...state.cartItems];
         newCartItems.splice(index, 1);

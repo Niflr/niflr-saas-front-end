@@ -59,7 +59,7 @@ const TicketPage = (props) => {
   useEffect(() => {
     window.history.pushState(null, null, `tickets/${props.ticket.ticket.id}`);
     props.fetchVideoList(props.ticket.ticket.video);
-    // props.fetchEventList(props.ticket.ticket.weight_change_events);
+    props.fetchEventList(props.ticket.ticket.weight_change_events);
     // props.fetchCartList(props.ticket.ticket.id);
   }, [props.ticket]);
 

@@ -50,7 +50,7 @@ useEffect(() => {
   else {
     // setAccordionProps({ disabled: false })
   console.log("delete from cart function called")
-  props.removeFromCart({id})
+  // props.removeFromCart({id})
 }
 }, [isChecked]);
 // console.log("inside events",props)
@@ -69,7 +69,7 @@ useEffect (()=>{
     case "processing":
       console.log("renderevent status processing")
         setAccordionProps({ disabled: false})
-        props.removeFromCart({id}) 
+        // props.removeFromCart({id}) 
         // setIsChecked(!isChecked); // remove if you want the check to still be there after cart cleared
       break
       default:
