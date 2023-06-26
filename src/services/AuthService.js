@@ -5,7 +5,7 @@ export default class AuthService {
   constructor(domain) {
     const uri = `${process.env.ADMIN_HOST}/api`;
     console.log("login uri",uri, domain )
-    this.domain = `http://localhost:1234/api/${domain}`;
+    this.domain = `https://label-api.niflrpassdev.com/api/${domain}`;
     console.log("logi domain", this.domain)
   }
 

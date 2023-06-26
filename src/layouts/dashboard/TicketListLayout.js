@@ -40,28 +40,27 @@ export default function TicketListLayout() {
   const [open, setOpen] = useState(false);
 
   return (
-      
-<StyledRoot>
-  <Header onOpenNav={() => setOpen(true)} />
-  <Drawer 
-          anchor="left"    
-          onClose={() => setOpen(false)}
-          open = {open}
-          PaperProps={{
-            sx: {
-              width: DRAWER_WIDTH,
-              bgcolor: 'background.default',
-              // borderRightStyle: 'dashed',
-            },
-          }}
-  >
-    <Nav onCloseNav={() => setOpen(false)} />
-  </Drawer>
+    <StyledRoot>
+      <Header onOpenNav={() => setOpen(true)} />
+      <Drawer
+        anchor="left"
+        onClose={() => setOpen(false)}
+        open={open}
+        PaperProps={{
+          sx: {
+            width: DRAWER_WIDTH,
+            bgcolor: 'background.default',
+            // borderRightStyle: 'dashed',
+          },
+        }}
+      >
+        <Nav onCloseNav={() => setOpen(false)} />
+      </Drawer>
 
-  <Main open={open}>
-    <TicketPage />
-    <Outlet />
-  </Main>
-</StyledRoot>
+      <Main open={open}>
+        <TicketPage />
+        <Outlet />
+      </Main>
+    </StyledRoot>
   );
 }

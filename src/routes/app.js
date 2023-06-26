@@ -43,13 +43,13 @@ export default function Router() {
         path="/dashboard/ticket"
         element={
           <ProtectedRoute>
-            <TicketListLayout/>
+            <TicketListLayout />
           </ProtectedRoute>
         }
       />
       <Route path="/login" element={<LoginPage />} />
     </Routes>
-  )
+  );
   // const routes = useRoutes([
   //   {
   //     path: '/dashboard',

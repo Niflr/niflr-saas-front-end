@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {  
+import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
@@ -8,7 +8,6 @@ import {
   CardContent,
   IconButton,
   Typography,
-
 } from '@mui/material';
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
@@ -51,9 +50,8 @@ const useStyles = makeStyles(() => ({
 }));
 
 const CartElement = ({ data }) => {
-  console.log(data)
   const classes = useStyles();
-  const [quantity, setQuantity] =useState(0);
+  const [quantity, setQuantity] = useState(0);
   //  useState(parseInt(data.Quantity, 10));
 
   const handleAddQuantity = () => {
@@ -63,19 +61,18 @@ const CartElement = ({ data }) => {
   const handleSubtractQuantity = () => {
     setQuantity((prevQuantity) => Math.max(prevQuantity - 1, 0));
   };
-
   return (
     <Accordion className={classes.root}>
-      <AccordionSummary 
+      <AccordionSummary
       // expandIcon={<ExpandMore />}
       >
         <Box display="flex" flexDirection="row" alignItems="center">
           {/* <CardMedia className={classes.media} image={data.imageURL} /> */}
           <Box ml={2}>
-            <Typography variant="h6">{data.id}</Typography>
-            <Typography variant="body1">{data.scaleId}</Typography>
-            <Typography variant="h6">{data.status}</Typography>
-            <Typography variant="body1">{data.weightChange}</Typography>
+            <Typography variant="h6">Code: {data.id}</Typography>
+            <Typography variant="body1">Quantity: {data.scaleId}</Typography>
+            <Typography variant="h6">Status: {data.status}</Typography>
+            <Typography variant="body1">Weight Change: {data.weightChange}</Typography>
           </Box>
         </Box>
       </AccordionSummary>

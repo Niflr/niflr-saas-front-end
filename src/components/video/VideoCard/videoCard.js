@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {CardContent,Card,CardMedia,Typography,Button,IconButton,Slider} from '@mui/material';
-import {connect} from 'react-redux';
-import { addIcon,Pause,PlayArrow} from '@mui/icons-material'
+import { CardContent, Card, CardMedia, Typography, Button, IconButton, Slider } from '@mui/material';
+import { connect } from 'react-redux';
+import { addIcon, Pause, PlayArrow } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
-  
   rootContainer: {
     width: '100%',
     height: '85%',
@@ -45,12 +44,11 @@ const useStyles = makeStyles({
 
 function VideoElement(props) {
   const classes = useStyles();
-  console.log("video Element props", props.video)
-  const videoPath=props.video.video_path_cloud;
+  console.log('props', props);
+  const videoPath = props.video.video_path_cloud;
   const videoRef = useRef(null);
-  const videoStartTime =props.video.start_time;
-  const videoEndTime =props.video.end_time;
-
+  const videoStartTime = props.video.start_time;
+  const videoEndTime = props.video.end_time;
 
   const [events, setEvents] = useState([]);
   const [pausedTime, setPausedTime] = useState(null);
@@ -112,11 +110,11 @@ function VideoElement(props) {
   //   // label: `${time.toFixed(2)}s`,
   // }));
   const handleVideoPause = () => {
-    props.setEvent( true )
+    props.setEvent(true);
     setIsPlaying(false);
   };
   const handleVideoPlay = () => {
-    props.setEvent( false )
+    props.setEvent(false);
     setIsPlaying(true);
   };
   const handleSliderChange = (event, value) => {
