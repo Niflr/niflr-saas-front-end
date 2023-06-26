@@ -144,6 +144,7 @@ const TicketPage = (props) => {
   // }
 
   const handleEventSaveButtonClick =()=>{
+    const events = getEventIdsByStatus('checked', props.event.events.events);
     console.log("handling adding event to cart")
     props.eventAddToCart()
     props.updateEventStatus({ status: 'ADDED_TO_CART', event_ids: events });

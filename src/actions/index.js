@@ -286,7 +286,7 @@ export const updateTicketStatus = (ticketId, data) =>
     url: `events/UpdateStatus`,
     data ,
     action: PUT_EVENT_STATUS,
-    domain: "LOCAL"
+    domain: "CLOUD"
   });
   export const updateCartItemStatus = (ticketId,data) =>
   putData({

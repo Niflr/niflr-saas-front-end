@@ -74,7 +74,7 @@ useEffect (()=>{
           setAccordionProps({ disabled: true })
           props.addToCart({id, scaleId, status, machineId, weightChange, ticketId})
             // props.removeFromCart({id}) 
-            // setIsChecked(!isChecked); // remove if you want the check to still be there after cart cleared
+             setIsChecked(true); // remove if you want the check to still be there after cart cleared
       break
       default:
         break
