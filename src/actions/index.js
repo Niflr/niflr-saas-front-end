@@ -109,6 +109,7 @@ import {
     CONFIRM_USER_ORDER,
     CONFIRM_USER_ORDER_SUCCESS,
     CONFIRM_USER_ORDER_FAILURE,
+    EVENTS_ADDED_TO_CART
 
 } from '../types/index'
 
@@ -285,7 +286,7 @@ export const updateTicketStatus = (ticketId, data) =>
     url: `events/UpdateStatus`,
     data ,
     action: PUT_EVENT_STATUS,
-    domain: "CLOUD"
+    domain: "LOCAL"
   });
   export const updateCartItemStatus = (ticketId,data) =>
   putData({
@@ -370,6 +371,13 @@ export const updateTicketStatus = (ticketId, data) =>
         payload: item
     }
   };
+  export const eventAddToCart =()=>{
+    console.log("add event to cart")
+    return {
+        type: EVENTS_ADDED_TO_CART,
+    }
+  };
+  
 
  // reset cart
   export const cartCleared =()=>{

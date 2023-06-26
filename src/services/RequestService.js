@@ -93,7 +93,7 @@ export default class RequestService {
 
   put = async ({ url, data, params, domain }) => {
     this.getBaseUrlAndToken(domain);
-    console.log("put request data", data)
+    console.log("put request data",domain, data)
     try {
       const res = await axios({ method: 'PUT', url: `${url}${params || ''}`, data });
       console.log("put response", res)

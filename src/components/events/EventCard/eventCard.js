@@ -12,7 +12,7 @@ const scaleId=props.renderEvent.scale_id;
 const machineId=props.renderEvent.machine_id;
 const status=props.renderEvent.status;
 const weightChange=props.renderEvent.weight_change;
-const ticketId =props.event.events.ticketId
+const ticketId =props.event.events.ticketId;
 const [isChecked, setIsChecked] = useState(false);
 const [isSaved, setIsSaved] = useState(false);
 const [accordionProps,setAccordionProps] =useState({ disabled: false });
@@ -50,21 +50,31 @@ useEffect((  ) => {
 
 useEffect (()=>{
   switch(props.renderEvent.status){
-    case "confirmed":
+    case "checked":
+
+      console.log("renderevent status checked",isChecked)
+      setAccordionProps({ disabled: false })
+      
+      // setIsChecked(!isChecked);
+      break
+    case "CONFIRMED":
       console.log("renderevent status saved")
       setAccordionProps({ disabled: true })
-      setIsChecked(true);
+      // setIsChecked(true);
       break
-    case "saved":
-      console.log("renderevent status saved")
-      setAccordionProps({ disabled: true })
-      setIsSaved(true);
-      break
+   
     case "processing":
       console.log("renderevent status processing")
       setAccordionProps({ disabled: false })
         // props.removeFromCart({id}) 
         // setIsChecked(!isChecked); // remove if you want the check to still be there after cart cleared
+      break
+      case "ADDED_TO_CART":
+          console.log("renderevent status ADDED_TO_CART")
+          setAccordionProps({ disabled: true })
+          props.addToCart({id, scaleId, status, machineId, weightChange, ticketId})
+            // props.removeFromCart({id}) 
+            // setIsChecked(!isChecked); // remove if you want the check to still be there after cart cleared
       break
       default:
         break

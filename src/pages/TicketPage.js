@@ -44,6 +44,8 @@ import {
   cartconfirmed,
   dummyEventsSaved,
   fetchStoreProductsList,
+  eventAddToCart,
+  addToCart
 } from '../actions';
 
 const TicketPage = (props) => {
@@ -141,13 +143,19 @@ const TicketPage = (props) => {
 
   // }
 
+  const handleEventSaveButtonClick =()=>{
+    console.log("handling adding event to cart")
+    props.eventAddToCart()
+    props.updateEventStatus({ status: 'ADDED_TO_CART', event_ids: events });
+    // props.addToCart()
+  }
   const handleClearButtonClick = () => {
-    props.deleteCartItems(props.ticket.ticket.id);
-    const events = getEventIdsByStatus('saved', props.event.events.events);
+    // props.deleteCartItems(props.ticket.ticket.id);
+    const events = getEventIdsByStatus('ADDED_TO_CART', props.event.events.events);
     props.updateEventStatus({ status: 'processing', event_ids: events });
     props.cartCleared();
     props.resetEvents();
-    props.resetDummyEvents();
+    // props.resetDummyEvents();
 
     console.log('handled Clear button');
   };
@@ -224,7 +232,7 @@ const TicketPage = (props) => {
         </Typography>}</div>
             </Paper>
             <div className={classes.cartButtons}>
-              <IconButton
+              {/* <IconButton
                 style={{
                   // position: 'absolute',
                   borderRadius: '50%',
@@ -234,7 +242,7 @@ const TicketPage = (props) => {
                 onClick={handleDummyEvents}
               >
                 <Add />
-              </IconButton>
+              </IconButton> */}
               <IconButton
                 style={{
                   // position: 'absolute',
@@ -270,7 +278,7 @@ const TicketPage = (props) => {
                   backgroundColor: '#ffffff',
                   boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
                 }}
-                onClick={handleSaveButtonClick}
+                onClick={handleEventSaveButtonClick}
               >
                 <Add />
               </IconButton>
@@ -369,4 +377,6 @@ export default connect(mapStateToProps, {
   cartconfirmed,
   dummyEventsSaved,
   fetchStoreProductsList,
+  eventAddToCart,
+  addToCart
 })(TicketPage);

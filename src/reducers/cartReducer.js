@@ -15,7 +15,7 @@ import {
 
 const initialState = {
     ticketId: '',
-    cartItems:null,
+    cartItems:[],
     status:'',
     count:0
   };
@@ -36,11 +36,12 @@ const initialState = {
         {
           // console.log("checking cart payloads", JSON.stringify(action.payload) )
         // const { SKU, Quantity, TicketId, Status } = action.payload;
+        
         const updatedCartItems = [...state.cartItems, action.payload];
         return { ...state, cartItems: updatedCartItems, count:updatedCartItems.length};}
       case REMOVE__FROM_CART:
         {
-          
+
           const index = state.cartItems.findIndex((item) => item.id === action.payload.id);
         const newCartItems = [...state.cartItems];
         newCartItems.splice(index, 1);

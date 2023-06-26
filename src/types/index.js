@@ -123,6 +123,7 @@ export {
     CONFIRM_USER_ORDER,
     CONFIRM_USER_ORDER_SUCCESS,
     CONFIRM_USER_ORDER_FAILURE,
+    EVENTS_ADDED_TO_CART
 }  from './action-types';
 
 export const SIGN_IN = 'SIGN_IN';

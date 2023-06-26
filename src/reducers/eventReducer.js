@@ -16,7 +16,8 @@ import {
     IS_EVENTS_CHECKED,
     EVENTS_SAVED,
     RESET_EVENTS,
-    EVENTS_CONFIRMED
+    EVENTS_CONFIRMED,
+    EVENTS_ADDED_TO_CART
   } from '../types/index';
   
   const DATA = {
@@ -50,6 +51,20 @@ import {
                       events: { ...state.events, events: updatedEvents },
                     };
                   }
+                  case EVENTS_ADDED_TO_CART:
+                    {
+                      const updatedEvents = state.events.events.map((event) => {
+                      if (event.status === 'checked') {
+                        return { ...event, status: 'ADDED_TO_CART' };
+                      }
+                      return event;
+                    });
+                    return {
+                        ...state,
+                        events: { ...state.events, events: updatedEvents },
+                      };
+                    }
+
                   case EVENTS_CONFIRMED:
                   {
                     const updatedEvents = state.events.events.map((event) => {
@@ -80,16 +95,19 @@ import {
                     events: { ...state.events, events: updatedEvents },
                 };
               }
-            case RESET_EVENTS:
-              {
-                const updatedEvents = state.events.events.map((event) => {
-                      return { ...event, status: "processing" };
-                });
-                return {
+              case RESET_EVENTS:
+                {
+                  const updatedEvents = state.events.events.map((event) => {
+                    if (event.status === "ADDED_TO_CART") {
+                      return { ...event, status: "checked" };
+                    }
+                    return event;
+                  });
+                  return {
                     ...state,
                     events: { ...state.events, events: updatedEvents },
-                };
-              }
+                  };
+                }
           default:
               return state;
               
