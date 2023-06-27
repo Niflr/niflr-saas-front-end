@@ -108,7 +108,7 @@ const AddConfirmTicketModal = (props) => {
     props.dummyEventsSaved()
     if (sortedDummyEvents.length>0){
       console.log("sorting dummy events")
-      props.updateDummyEventStatus({ status: 'CONIFRMED', event_ids: dummyEvents });
+      props.updateDummyEventStatus({ status: 'CONFIRMED', event_ids: dummyEvents });
       // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
     }
 
