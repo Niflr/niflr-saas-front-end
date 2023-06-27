@@ -51,10 +51,18 @@ const AddDummyEventModal = (props) => {
     setWeightChangeEvent('');
     props.closeModal();
   };
+  const generateId = () => {
+    // Generate a random ID using a library or algorithm of your choice
+    // For example, using a simple timestamp-based ID generator
+    const timestamp = Date.now();
+    const randomNum = Math.floor(Math.random() * 10000);
+    return `${timestamp}-${randomNum}`;
+  };
 
   const handleSave = () => {
     props.resetProduct();
-    props.addDummyEvent({ticketId,variantId,machineId,userId,status:"checked",quantity,variantName});
+    const id = generateId();
+    props.addDummyEvent({id,ticketId,variantId,machineId,userId,status:"checked",quantity,variantName});
     // props.addToCart({ticketId,variantId,machineId,userId,status:"checked",quantity,variantName})
 
     props.closeModal();

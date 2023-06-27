@@ -48,6 +48,10 @@ import {
         {
           const updatedEvents = state.dummyEvents.dummyEvents.map((event) => {
               if (event.id === action.payload) {
+                if (event.status === "checked")
+                {
+                  return { ...event, status: "unchecked" };
+                }
                 return { ...event, status: "checked" };
               }
               return event;
@@ -63,10 +67,15 @@ import {
           
         // const { SKU, Quantity, TicketId, Status } = action.payload;
         const updatedDummyEvents = [...state.dummyEvents.dummyEvents, action.payload];
+        const newCount = updatedDummyEvents.length;
         // console.log("checking dummy event  payloads", updatedDummyEvents )
         return { ...state, 
           dummyEvents:{...state.dummyEvents,
-                        dummyEvents: updatedDummyEvents} };}
+                        dummyEvents: updatedDummyEvents},
+                        count: newCount
+                      
+                      
+                      };}
       case REMOVE__DUMMY_EVENT:
         {
           const index = state.dummyEvents.dummyEvents.findIndex((item) => item.id === action.payload.id);
@@ -74,7 +83,11 @@ import {
         newDummyEvents.splice(index, 1);
         return { ...state, 
             dummyEvents: {...state.dummyEvents,
-              dummyEvents: newDummyEvents} };
+              dummyEvents: newDummyEvents},
+              
+            
+            
+            };
       }
       case  CLEAR__DUMMY_EVENTS:
         return { ...state, 
@@ -103,8 +116,8 @@ import {
         case DUMMY_EVENTS_CONFIRMED:
                   {
                     const updatedEvents = state.dummyEvents.dummyEvents.map((event) => {
-                    if (event.status === 'saved') {
-                      return { ...event, status: 'confirmed' };
+                    if (event.status === 'checked') {
+                      return { ...event, status: 'ADDED_TO_CART' };
                     }
                     return event;
                   });
@@ -114,15 +127,19 @@ import {
                     };
                   }
         case RESET_DUMMY_EVENTS:
-              {
-                const updatedEvents = state.dummyEvents.dummyEvents.map((event) => {
-                      return { ...event, status: "processing" };
-                });
-                return {
-                    ...state,
-                    dummyEvents: { ...state.dummyEvents, dummyEvents: updatedEvents },
-                };
-              }
+
+        {
+          const updatedEvents = state.dummyEvents.dummyEvents.map((event) => {
+            if (event.status === "ADDED_TO_CART") {
+              return { ...event, status: "checked" };
+            }
+            return event;
+          });
+          return {
+            ...state,
+            dummyEvents: { ...state.dummyEvents, dummyEvents: updatedEvents },
+          };
+        }
       default:
         return state;
     }

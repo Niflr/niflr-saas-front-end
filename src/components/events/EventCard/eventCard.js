@@ -16,9 +16,7 @@ const ticketId =props.event.events.ticketId;
 const [isChecked, setIsChecked] = useState(false);
 const [isSaved, setIsSaved] = useState(false);
 const [accordionProps,setAccordionProps] =useState({ disabled: false });
-// const [isSaved, setIsSaved] = useState(false);
-// const [isSaved, setIsSaved] = useState(false);
-// const [isSaved, setIsSaved] = useState(false);
+
 
 const handleCheckboxChange = () => {
   props.eventChecked(id);

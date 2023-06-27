@@ -523,7 +523,7 @@ export const setModalState = payload => ({
     url:"snapshots/location/start",
     data: params,
     action: FETCH__PRODUCTS_LIST,
-    domain: 'CLOUD'
+    domain: 'LOCAL'
   })
 
 //  fetch request:

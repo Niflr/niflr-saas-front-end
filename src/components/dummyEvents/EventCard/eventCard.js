@@ -9,6 +9,10 @@ const EventElement = (props) => {
   console.log("checking dummy event element props", props.renderEvent)
 //   const { id, scale_id, machine_id, status } = event;
 const id=props.renderEvent.id;
+console.log(
+  "render event props",
+  id
+)
 const scaleId=props.renderEvent.scaleId;
 const machineId=props.renderEvent.machineId;
 const status=props.renderEvent.status;
@@ -18,19 +22,13 @@ const quantity =props.renderEvent.quantity
 const variantName =props.renderEvent.variantName
 const variantId =props.renderEvent.variantId
 const userId = props.renderEvent.userId;
-const [isChecked, setIsChecked] = useState(true);
-// const [isSaved, setIsSaved]= useState(false);
+const [isChecked, setIsChecked] = useState(false);
+
 const [accordionProps,setAccordionProps] =useState({ disabled: false });
 const [expanded, setExpanded] = useState(false);
 const handleCheckboxChange = () => {
-  // console.log("checking event", !isChecked)
-  // if (!!isChecked){
-  //   console.log("checking event", !!isChecked)
-    props.dummyEventChecked(id);
-  //   setIsChecked(!isChecked);
-  // }
+    props.dummyEventChecked(id)
   setIsChecked(!isChecked);
-  
 };
 
 const handleAccordionChange = () => {
@@ -39,38 +37,39 @@ const handleAccordionChange = () => {
   setExpanded(!expanded)
 };
 
-useEffect(() => {
-  console.log("calling event use effect", isChecked)
-  if(isChecked){
-    console.log("checking event use effect in chekd",isChecked)
-    // setAccordionProps({ disabled: true })
+// useEffect(() => {
+//   console.log("calling event use effect", isChecked)
+//   if(isChecked){
+//     console.log("checking event use effect in chekd",isChecked)
+//     // setAccordionProps({ disabled: true })
 
-    props.addToCart({ticketId,variantId,machineId,userId,status:"checked",quantity,variantName})
-  }
-  else {
-    // setAccordionProps({ disabled: false })
-  console.log("delete from cart function called")
-  // props.removeFromCart({id})
-}
-}, [isChecked]);
+//     // props.addToCart({ticketId,variantId,machineId,userId,status:"checked",quantity,variantName})
+//   }
+//   else {
+//     // setAccordionProps({ disabled: false })
+//   console.log("delete from cart function called")
+//   // props.removeFromCart({id})
+// }
+// }, [isChecked]);
 // console.log("inside events",props)
 // const accordionProps = isChecked ? { disabled: true } : {};
 useEffect (()=>{
   switch(props.renderEvent.status){
-    case "confirmed":
-      console.log("renderevent status confirmed")
-      setAccordionProps({ disabled: true})
-      setIsChecked(true);
+    case "checked":
+      console.log("renderevent status checked")
+      setAccordionProps({ disabled: false})
+      // setIsChecked(true);
       break
     case "saved":
       console.log("renderevent status saved")
       setAccordionProps({ disabled: true })
       break
-    case "processing":
+    case "ADDED_TO_CART":
       console.log("renderevent status processing")
-        setAccordionProps({ disabled: false})
+      setAccordionProps({ disabled: true })
+      props.addToCart({id, scaleId, status, ticketId})
         // props.removeFromCart({id}) 
-        // setIsChecked(!isChecked); // remove if you want the check to still be there after cart cleared
+        setIsChecked(true); // remove if you want the check to still be there after cart cleared
       break
       default:
         break

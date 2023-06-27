@@ -71,7 +71,7 @@ const TicketPage = (props) => {
   }, [props.event]);
 
   useEffect(() => {
-    // console.log("props.dummy events updated:", props.dummyEvent);
+    console.log("dummy events updated:", props.dummyEvent);
     setDummyEvents(props.dummyEvent.dummyEvents);
   }, [props.dummyEvent]);
 
@@ -156,7 +156,7 @@ const TicketPage = (props) => {
     props.updateEventStatus({ status: 'processing', event_ids: events });
     props.cartCleared();
     props.resetEvents();
-    // props.resetDummyEvents();
+    props.resetDummyEvents();
 
     console.log('handled Clear button');
   };
@@ -291,7 +291,7 @@ const TicketPage = (props) => {
           </Typography>
           <div className={classes.eventScroller}>
             <Paper className={classes.eventContainer}>
-              <div>{dummyEvents ? <DummyEventContainer /> : <Typography>
+              <div>{props.dummyEvent.count>0 ? <DummyEventContainer /> : <Typography>
             No dummy events Available
         </Typography>}</div>
             </Paper>

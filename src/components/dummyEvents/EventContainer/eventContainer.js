@@ -77,9 +77,7 @@ const DummyEventContainer = (props)=>{
     }, [props.dummyEvent]);
 
     return (
-        dummyEvents.count>0?renderEvents(dummyEvents): <Typography>
-          No Dummy Events
-        </Typography>
+        renderEvents(dummyEvents)
     )
 
 }

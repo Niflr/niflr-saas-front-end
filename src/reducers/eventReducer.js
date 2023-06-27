@@ -27,6 +27,7 @@ import {
     isLoading: false,
     error: false,
     status: '',
+    count:0
   };
   
   export default (state = DATA, action) => {
