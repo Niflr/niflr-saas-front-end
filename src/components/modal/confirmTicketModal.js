@@ -14,6 +14,9 @@ import {
   cartCleared,
   createUserOrder,
   confirmUserOrder,
+  dummyEventsSaved,
+  eventsSaved,
+  createCart
 } from '../../actions/index';
 
 const useStyles = makeStyles(() => ({
@@ -73,39 +76,64 @@ const AddConfirmTicketModal = (props) => {
   };
 
   const handleConfirmButtonClick = () => {
-    // add all dummy events to db
     console.log('checking dummyevents', props.dummyEvent);
-    props.createDummyEvents(props.ticket.ticket.id, {
-      ticket_id: props.ticket.ticket.id,
-      dummyEvents: props.dummyEvent.dummyEvents.dummyEvents,
-    });
-    const order = ordercreator();
-    console.log('checking order', order);
-    // create an order for the cart
-    props.createUserOrder(props.ticket.ticket.user_id, {
-      items: order,
-      addressId: props.ticket.ticket.store_Id,
-    });
+    const events = getEventIdsByStatus('ADDED_TO_CART', props.event.events.events);
+    const dummyEvents = getEventIdsByStatus('ADDED_TO_CART', props.dummyEvent.dummyEvents.dummyEvents);
+    const cart = getEventIdsByStatus('ADDED_TO_CART', props.cart.cartItems);
+    const sortedEvents = props.event.events.events
+    .filter((event) =>{
+          if (Array.isArray(events)) {
+      return events.includes(event.id) && event.status === 'ADDED_TO_CART';
+    }
+    return false;
+      })
+    .map((event) => ({ ...event, status: 'CONFIRMED' }));
+    console.log("sorted dummy events",sortedEvents )
+    props.eventsSaved()
+    // if (sortedEvents.length>0){
+    //   props.updateEventStatus({ status: 'CONFIRMED', event_ids: sortedEvents });
+   
+    //   // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
+    // }
+    const sortedDummyEvents = props.dummyEvent.dummyEvents.dummyEvents
+    .filter((event) =>{
+          if (Array.isArray(dummyEvents)) {
+      return dummyEvents.includes(event.id) && event.status === 'ADDED_TO_CART';
+    }
+    return false;
+      })
+    .map((event) => ({ ...event, status: 'CONFIRMED' }));
+    console.log("sorted dummy events",sortedDummyEvents )
+    props.dummyEventsSaved()
+    // if (sortedDummyEvents.length>0){
+    //   props.updateDummyEventStatus({ status: 'CONIFRMED', event_ids: sortedDummyEvents });
+    //   // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
+    // }
 
-    // confirm the order
-    // props.confirmUserOrder()
-    // updating tikcet status
+    const sortedCart = props.cart.cartItems
+    .filter((event) =>{
+          if (Array.isArray(cart)) {
+      return cart.includes(event.id) && event.status === 'ADDED_TO_CART';
+    }
+    return false;
+      })
+    .map((event) => ({ ...event, status: 'CONFIRMED' }));
+    console.log("sorted cart",sortedCart )
+    props.cartconfirmed();
 
-    props.updateTicketStatus(props.ticket.ticket.id, { status: 'confirmed', ticket_id: props.ticket.ticket.id });
 
-    // update event status in db
-
-    const events = getEventIdsByStatus('saved', props.event.events.events);
-    props.updateEventStatus({ status: 'confirmed', event_ids: events });
-
+    if (sortedCart.length>0){
+      props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
+    }
+    
     // props.updateDummyEventStatus({"status":"confirmed", "event_ids":dummyEvents})
     // console.log("updating cart item status")
     // update cart item status in db
-    props.updateCartItemStatus(props.ticket.ticket.id, { status: 'confirmed', TicketId: props.ticket.ticket.id });
+    // props.updateCartItemStatus(props.ticket.ticket.id, { status: 'confirmed', TicketId: props.ticket.ticket.id });
     // update event status in state
-    props.confirmEvents();
+    // props.confirmEvents();
     // update cart item status in state
-    props.cartconfirmed();
+
     // props.cartCleared()
     // add dummy events to db status "confirmed"
     // add cart items to db if not already added chec kby ticekt id and variant id
@@ -222,4 +250,7 @@ export default connect(mapStateToProps, {
   createDummyEvents,
   createUserOrder,
   confirmUserOrder,
+  dummyEventsSaved,
+  eventsSaved,
+  createCart
 })(AddConfirmTicketModal);

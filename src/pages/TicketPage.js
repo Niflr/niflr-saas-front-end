@@ -46,7 +46,9 @@ import {
   fetchStoreProductsList,
   eventAddToCart,
   addToCart,
-  dummyEventAddToCart,updateDummyEventStatus
+  dummyEventAddToCart,updateDummyEventStatus,
+  createDummyEvents,
+  fetchDummyEventList
 } from '../actions';
 
 const TicketPage = (props) => {
@@ -63,6 +65,7 @@ const TicketPage = (props) => {
     window.history.pushState(null, null, `tickets/${props.ticket.ticket.id}`);
     props.fetchVideoList(props.ticket.ticket.video);
     props.fetchEventList(props.ticket.ticket.weight_change_events);
+    props.fetchDummyEventList([props.ticket.ticket.id])
     // props.fetchCartList(props.ticket.ticket.id);
   }, [props.ticket]);
 
@@ -99,15 +102,15 @@ const TicketPage = (props) => {
   const handleSaveButtonClick = () => {
     // props.eventSaved()
     // props.ticketSaved()
-    const events = getEventIdsByStatus('checked', props.event.events.events);
-    props.cartSaved();
-    const cart = props.cart.cartItems;
-    props.updateEventStatus({ status: 'saved', event_ids: events });
+    // const events = getEventIdsByStatus('checked', props.event.events.events);
+    // props.cartSaved();
+    // const cart = props.cart.cartItems;
+    // props.updateEventStatus({ status: 'saved', event_ids: events });
     props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: cart });
     // props.updateDummyEventStatus({"status":"saved", "event_ids":events})
     // props.updateCartItemStatus()
-    props.dummyEventsSaved();
-    props.eventsSaved();
+    // props.dummyEventsSaved();
+    // props.eventsSaved();
     // console.log("handledd save button")
   };
 
@@ -151,12 +154,34 @@ const TicketPage = (props) => {
     props.updateEventStatus({ status: 'ADDED_TO_CART', event_ids: events });
     // props.addToCart()
   }
+
+  const creatDummyEvents =()=>{
+    
+  }
   const handleDummyEventSaveButtonClick =()=>{
     const events = getEventIdsByStatus('checked',props.dummyEvent.dummyEvents.dummyEvents);
-    console.log("handling adding dummy event to cart")
+    console.log("handling adding dummy event to cart",events)
+    const sortedEvents = props.dummyEvent.dummyEvents.dummyEvents
+  .filter((event) =>{
+        if (Array.isArray(events)) {
+    return events.includes(event.id) && event.status === 'checked';
+  }
+  return false;
+    })
+  .map((event) => ({ ...event, status: 'ADDED_TO_CART' }));
+  console.log("sorted events",sortedEvents )
     props.dummyEventAddToCart()
     // add dummy event to backend table
     // update dummy event status to ADDED_TO_CART
+    if (sortedEvents.length>0){
+        props.createDummyEvents(props.ticket.ticket.id, {
+            ticket_id: props.ticket.ticket.id,
+            dummyEvents: sortedEvents,
+          });
+    }
+   
+      
+
     // props.updateEventStatus({ status: 'ADDED_TO_CART', event_ids: events });
     // props.addToCart()
   }
@@ -169,7 +194,8 @@ const TicketPage = (props) => {
     props.updateEventStatus({ status: 'processing', event_ids: events });
     props.updateDummyEventStatus({ status: 'processing', event_ids: dummyEvents });
     // props.deleteCartItems(props.ticket.ticket.id);
-    // clearing cart in global state    
+    // clearing cart in global state  
+   
     props.cartCleared();
     // clearing events and dummy events in global state
     props.resetEvents();
@@ -409,5 +435,7 @@ export default connect(mapStateToProps, {
   eventAddToCart,
   addToCart,
   dummyEventAddToCart,
-  updateDummyEventStatus
+  updateDummyEventStatus,
+  createDummyEvents,
+  fetchDummyEventList
 })(TicketPage);

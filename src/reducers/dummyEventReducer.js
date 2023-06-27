@@ -38,11 +38,11 @@ import {
     // console.log("reducer testing",action)
     switch (action.type) {
       case FETCH__DUMMY_EVENT_DETAILS_SUCCESS:
-        // console.log("fetch dummy event success")
-        return { ...state, isLoading: action.isLoading, dummyEvent: action.payload };
+        console.log("fetch dummy event success",action.payload)
+        return { ...state, isLoading: action.isLoading, dummyEvents: action.payload };
       case FETCH__DUMMY_EVENTS_LIST_SUCCESS:
         // console.log("fetch  dummy event list success",action.payload)
-        return { ...state, isLoading: action.isLoading, dummyEvents:action.payload, };
+        return { ...state, isLoading: action.isLoading, dummyEvents:action.payload, count: action.payload.dummyEvents.length };
       // case PUT__DUMMY_EVENT_DETAILS_SUCCESS:
       //   break
       case IS_DUMMY_EVENT_CHECKED:
@@ -102,9 +102,9 @@ import {
           const updatedEvents = state.dummyEvents.dummyEvents.map((event) => {
 
             // console.log("checking save status", event)
-            if (event.status === 'checked') 
+            if (event.status === 'ADDED_TO_CART') 
             {
-            return { ...event, status: 'saved' };
+            return { ...event, status: 'CONFIRMED' };
             }
           return event;
         });

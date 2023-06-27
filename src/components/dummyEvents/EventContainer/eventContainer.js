@@ -72,18 +72,19 @@ const DummyEventContainer = (props)=>{
     //     // props.fetchEventList()
     // }, []);
     useEffect(() => {
-        console.log("props. dummy event events updated:", JSON.stringify(props.dummyEvent.dummyEvents.dummyEvents));
+        // console.log("props. dummy event events updated:", JSON.stringify(props.dummyEvent.dummyEvents.dummyEvents));
         setDummyEvents(props.dummyEvent.dummyEvents.dummyEvents);
+        console.log("props. dummy event events updated:", dummyEvents);
     }, [props.dummyEvent]);
 
     return (
-        renderEvents(dummyEvents)
+      renderEvents(dummyEvents)
     )
 
 }
 
 const mapStateToProps =({dummyEvent})=>({
-    dummyEvent
+  dummyEvent
 })
 
 export default connect(mapStateToProps)(DummyEventContainer)

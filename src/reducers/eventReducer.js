@@ -42,8 +42,8 @@ import {
             case EVENTS_SAVED:
                   {
                     const updatedEvents = state.events.events.map((event) => {
-                    if (event.status === 'checked') {
-                      return { ...event, status: 'saved' };
+                    if (event.status === 'ADDED_TO_CART') {
+                      return { ...event, status: 'CONFIRMED' };
                     }
                     return event;
                   });

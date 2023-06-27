@@ -111,7 +111,9 @@ import {
     CONFIRM_USER_ORDER_FAILURE,
     EVENTS_ADDED_TO_CART,
     DUMMY_EVENTS_ADDED_TO_CART,
-    PUT_DUMMY_EVENT_STATUS
+    PUT_DUMMY_EVENT_STATUS,
+    FETCH__DUMMY_EVENTS_LIST,
+    CART_STATUS_CONFIRMED
 } from '../types/index'
 
 import RequestService from '../services/RequestService';
@@ -309,7 +311,7 @@ export const updateTicketStatus = (ticketId, data) =>
     url: `cartItems/${ticketId}`,
     data,
     action: POST__CART_DETAILS,
-    domain: "CLOUD"
+    domain: "LOCAL"
   });
 
   export const createDummyEvents = (ticketId,data) =>
@@ -317,7 +319,7 @@ export const updateTicketStatus = (ticketId, data) =>
    url: `dummyEvents/${ticketId}`, 
    data,
    action: POST__DUMMY_EVENTS,
-   domain: "CLOUD"
+   domain: "LOCAL"
   })
 
   export const deleteCartItems = (ticketId) =>
@@ -334,6 +336,14 @@ export const updateTicketStatus = (ticketId, data) =>
     params,
     action: FETCH__TICKETS_LIST,
     domain: 'CLOUD'
+  })
+
+  export const fetchDummyEventList =params=>
+  fetchList({
+    url:"dummyEvents/",
+    data: params,
+    action: FETCH__DUMMY_EVENTS_LIST,
+    domain: 'LOCAL'
   })
 
   export const fetchCartList =params=>
@@ -517,9 +527,8 @@ export const setModalState = payload => ({
   export const cartconfirmed =()=>{
 
     return {
-      type: CART_CONFIRMED,
+      type: CART_STATUS_CONFIRMED,
       payload: "confirmed"
-
     }
   }
 

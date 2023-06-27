@@ -10,6 +10,7 @@ import {
     POST__CART_DETAILS_FAILURE,
     FETCH__CART_DETAILS_SUCCESS,
     CART_CONFIRMED,
+    CART_STATUS_CONFIRMED
     
 } from '../types/index'
 
@@ -57,10 +58,11 @@ const initialState = {
         const updatedItems = state.cartItems.map((item) => ({ ...item, status: 'saved' }));
         return { ...state, cartItems: updatedItems };
       }
-      case CART_CONFIRMED:
+       
+      case CART_STATUS_CONFIRMED:
         console.log("inside cart confirmed")
         {
-          const updatedItems = state.cartItems.map((item) => ({ ...item, status: 'confirmed' }));
+          const updatedItems = state.cartItems.map((item) => ({ ...item, status: 'CONFIRMED' }));
         return { ...state, cartItems: updatedItems };
     }
       default:
