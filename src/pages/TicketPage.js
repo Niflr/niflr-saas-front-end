@@ -45,7 +45,8 @@ import {
   dummyEventsSaved,
   fetchStoreProductsList,
   eventAddToCart,
-  addToCart
+  addToCart,
+  dummyEventAddToCart,updateDummyEventStatus
 } from '../actions';
 
 const TicketPage = (props) => {
@@ -145,20 +146,34 @@ const TicketPage = (props) => {
 
   const handleEventSaveButtonClick =()=>{
     const events = getEventIdsByStatus('checked', props.event.events.events);
-    console.log("handling adding event to cart")
+    console.log("handling adding event to cart",events)
     props.eventAddToCart()
     props.updateEventStatus({ status: 'ADDED_TO_CART', event_ids: events });
     // props.addToCart()
   }
+  const handleDummyEventSaveButtonClick =()=>{
+    const events = getEventIdsByStatus('checked',props.dummyEvent.dummyEvents.dummyEvents);
+    console.log("handling adding dummy event to cart")
+    props.dummyEventAddToCart()
+    // add dummy event to backend table
+    // update dummy event status to ADDED_TO_CART
+    // props.updateEventStatus({ status: 'ADDED_TO_CART', event_ids: events });
+    // props.addToCart()
+  }
   const handleClearButtonClick = () => {
-    // props.deleteCartItems(props.ticket.ticket.id);
+    
     const events = getEventIdsByStatus('ADDED_TO_CART', props.event.events.events);
+    const dummyEvents = getEventIdsByStatus('ADDED_TO_CART', props.dummyEvent.dummyEvents.dummyEvents);
+    
+    // re setting events in backend db
     props.updateEventStatus({ status: 'processing', event_ids: events });
+    props.updateDummyEventStatus({ status: 'processing', event_ids: dummyEvents });
+    // props.deleteCartItems(props.ticket.ticket.id);
+    // clearing cart in global state    
     props.cartCleared();
+    // clearing events and dummy events in global state
     props.resetEvents();
     props.resetDummyEvents();
-
-    console.log('handled Clear button');
   };
 
   const handleDummyEvents = async () => {
@@ -294,11 +309,12 @@ const TicketPage = (props) => {
               <div>{props.dummyEvent.count>0 ? <DummyEventContainer /> : <Typography>
             No dummy events Available
         </Typography>}</div>
-            </Paper>
+            </Paper >
             <div className={classes.eventButtons}>
               <IconButton
                 style={{
-                  position: 'absolute',
+                // alignSelf:"flex-start",
+                //   position: 'absolute',
                   borderRadius: '50%',
                   backgroundColor: '#ffffff',
                   boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
@@ -307,6 +323,18 @@ const TicketPage = (props) => {
               >
                 <Add />
               </IconButton>
+              <IconButton
+                style={{
+                  // position: 'absolute',
+                  borderRadius: '50%',
+                  backgroundColor: '#ffffff',
+                  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                }}
+                onClick={handleDummyEventSaveButtonClick}
+              >
+                <AbcRounded />
+              </IconButton>
+
             </div>
           </div>
 
@@ -379,5 +407,7 @@ export default connect(mapStateToProps, {
   dummyEventsSaved,
   fetchStoreProductsList,
   eventAddToCart,
-  addToCart
+  addToCart,
+  dummyEventAddToCart,
+  updateDummyEventStatus
 })(TicketPage);

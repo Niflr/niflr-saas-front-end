@@ -109,8 +109,9 @@ import {
     CONFIRM_USER_ORDER,
     CONFIRM_USER_ORDER_SUCCESS,
     CONFIRM_USER_ORDER_FAILURE,
-    EVENTS_ADDED_TO_CART
-
+    EVENTS_ADDED_TO_CART,
+    DUMMY_EVENTS_ADDED_TO_CART,
+    PUT_DUMMY_EVENT_STATUS
 } from '../types/index'
 
 import RequestService from '../services/RequestService';
@@ -288,6 +289,13 @@ export const updateTicketStatus = (ticketId, data) =>
     action: PUT_EVENT_STATUS,
     domain: "CLOUD"
   });
+  export const updateDummyEventStatus = (data) =>
+  putData({
+    url: `dummyEvents/UpdateStatus`,
+    data ,
+    action: PUT_DUMMY_EVENT_STATUS,
+    domain: "CLOUD"
+  });
   export const updateCartItemStatus = (ticketId,data) =>
   putData({
     url: `cartItems/UpdateStatus/${ticketId}`,
@@ -375,6 +383,13 @@ export const updateTicketStatus = (ticketId, data) =>
     console.log("add event to cart")
     return {
         type: EVENTS_ADDED_TO_CART,
+    }
+  };
+  
+  export const dummyEventAddToCart =()=>{
+    console.log("add dummy event to cart")
+    return {
+        type: DUMMY_EVENTS_ADDED_TO_CART,
     }
   };
   

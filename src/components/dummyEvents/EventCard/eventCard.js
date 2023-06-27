@@ -13,14 +13,12 @@ console.log(
   "render event props",
   id
 )
-const scaleId=props.renderEvent.scaleId;
-const machineId=props.renderEvent.machineId;
+
 const status=props.renderEvent.status;
-// const weightChange=props.renderEvent.weightChange;
-const ticketId =props.renderEvent.ticketId
-const quantity =props.renderEvent.quantity
-const variantName =props.renderEvent.variantName
-const variantId =props.renderEvent.variantId
+const ticketId =props.renderEvent.ticketId;
+const quantity =props.renderEvent.quantity;
+const variantName =props.renderEvent.variantName;
+const variantId =props.renderEvent.variantId;
 const userId = props.renderEvent.userId;
 const [isChecked, setIsChecked] = useState(false);
 
@@ -67,7 +65,7 @@ useEffect (()=>{
     case "ADDED_TO_CART":
       console.log("renderevent status processing")
       setAccordionProps({ disabled: true })
-      props.addToCart({id, scaleId, status, ticketId})
+      props.addToCart({id, status, ticketId})
         // props.removeFromCart({id}) 
         setIsChecked(true); // remove if you want the check to still be there after cart cleared
       break

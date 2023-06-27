@@ -62,7 +62,7 @@ const AddDummyEventModal = (props) => {
   const handleSave = () => {
     props.resetProduct();
     const id = generateId();
-    props.addDummyEvent({id,ticketId,variantId,machineId,userId,status:"checked",quantity,variantName});
+    props.addDummyEvent({id,ticketId,variantId,machineId,userId,status:"processing",quantity,variantName});
     // props.addToCart({ticketId,variantId,machineId,userId,status:"checked",quantity,variantName})
 
     props.closeModal();

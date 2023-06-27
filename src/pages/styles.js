@@ -136,7 +136,7 @@ export const useStyles = makeStyles(() => ({
     width: '100%',
     // maxWidth: 550,
     display: 'flex',
-    alignItems: 'center',
+    alignItems: "stretch",
     gap: '10px',
     padding: '10px',
   },

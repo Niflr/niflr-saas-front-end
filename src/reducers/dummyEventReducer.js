@@ -19,7 +19,8 @@ import {
     SAVE__DUMMY_EVENTS,
     RESET_DUMMY_EVENTS,
     IS_DUMMY_EVENT_CHECKED,
-    DUMMY_EVENTS_CONFIRMED
+    DUMMY_EVENTS_CONFIRMED,
+    DUMMY_EVENTS_ADDED_TO_CART
   } from '../types/index';
   
   const DATA = {
@@ -113,7 +114,7 @@ import {
             dummyEvents: { ...state.dummyEvents, dummyEvents: updatedEvents },
           };
         }
-        case DUMMY_EVENTS_CONFIRMED:
+        case DUMMY_EVENTS_ADDED_TO_CART:
                   {
                     const updatedEvents = state.dummyEvents.dummyEvents.map((event) => {
                     if (event.status === 'checked') {
