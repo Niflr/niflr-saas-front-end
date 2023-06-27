@@ -58,15 +58,25 @@ useEffect (()=>{
       setAccordionProps({ disabled: false})
       // setIsChecked(true);
       break
-    case "saved":
+    case "CONFIRMED":
       console.log("renderevent status saved")
       setAccordionProps({ disabled: true })
+      setIsChecked(true);
       break
     case "ADDED_TO_CART":
       console.log("renderevent status processing")
       setAccordionProps({ disabled: true })
-      props.addToCart({id, status, ticketId})
+      // props.addToCart({id, status, ticketId})
         // props.removeFromCart({id}) 
+        if (props.cart.cartItems.some(item => item.id === id)) {
+          // If the id exists in cart.cartItems, call props.removeFromCart()
+          console.log("already in cart")
+          // props.removeFromCart({ id });
+        } else {
+          // If the id does not exist in cart.cartItems, call props.addToCart()
+          props.addToCart({ id, status, ticketId });
+        }
+        
         setIsChecked(true); // remove if you want the check to still be there after cart cleared
       break
       default:

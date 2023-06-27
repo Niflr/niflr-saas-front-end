@@ -16,7 +16,8 @@ import {
   confirmUserOrder,
   dummyEventsSaved,
   eventsSaved,
-  createCart
+  createCart,
+  updateDummyEventStatus
 } from '../../actions/index';
 
 const useStyles = makeStyles(() => ({
@@ -90,11 +91,11 @@ const AddConfirmTicketModal = (props) => {
     .map((event) => ({ ...event, status: 'CONFIRMED' }));
     console.log("sorted dummy events",sortedEvents )
     props.eventsSaved()
-    // if (sortedEvents.length>0){
-    //   props.updateEventStatus({ status: 'CONFIRMED', event_ids: sortedEvents });
+    if (sortedEvents.length>0){
+      props.updateEventStatus({ status: 'CONFIRMED', event_ids: events });
    
-    //   // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
-    // }
+      // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
+    }
     const sortedDummyEvents = props.dummyEvent.dummyEvents.dummyEvents
     .filter((event) =>{
           if (Array.isArray(dummyEvents)) {
@@ -105,10 +106,11 @@ const AddConfirmTicketModal = (props) => {
     .map((event) => ({ ...event, status: 'CONFIRMED' }));
     console.log("sorted dummy events",sortedDummyEvents )
     props.dummyEventsSaved()
-    // if (sortedDummyEvents.length>0){
-    //   props.updateDummyEventStatus({ status: 'CONIFRMED', event_ids: sortedDummyEvents });
-    //   // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
-    // }
+    if (sortedDummyEvents.length>0){
+      console.log("sorting dummy events")
+      props.updateDummyEventStatus({ status: 'CONIFRMED', event_ids: dummyEvents });
+      // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
+    }
 
     const sortedCart = props.cart.cartItems
     .filter((event) =>{
@@ -252,5 +254,6 @@ export default connect(mapStateToProps, {
   confirmUserOrder,
   dummyEventsSaved,
   eventsSaved,
-  createCart
+  createCart,
+  updateDummyEventStatus
 })(AddConfirmTicketModal);

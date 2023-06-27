@@ -50,9 +50,13 @@ const initialState = {
       
       }
       case  CLEAR__CART:
+        {
+          const filteredItems = state.cartItems.filter(item => item.status !== "ADDED_TO_CART");
+          return { ...state, cartItems: filteredItems, status: "processing", count:filteredItems.length};
+    
+        }
         // console.log("inside clear cart")
-        return { ...state, cartItems: [], status: "processing", count:0};
-  
+      
       case CART_SAVED:
         {
         const updatedItems = state.cartItems.map((item) => ({ ...item, status: 'saved' }));

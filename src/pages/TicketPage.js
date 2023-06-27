@@ -66,7 +66,7 @@ const TicketPage = (props) => {
     props.fetchVideoList(props.ticket.ticket.video);
     props.fetchEventList(props.ticket.ticket.weight_change_events);
     props.fetchDummyEventList([props.ticket.ticket.id])
-    // props.fetchCartList(props.ticket.ticket.id);
+    props.fetchCartList(props.ticket.ticket.id);
   }, [props.ticket]);
 
   useEffect(() => {

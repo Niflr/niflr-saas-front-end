@@ -35,16 +35,16 @@ const handleCheckboxChange = () => {
 // }
 // }, [isChecked]);
 
-useEffect((  ) => {
-  if(isSaved){
-    console.log("checking event use effect in saved",isSaved)
-    props.addToCart({id, scaleId, status, machineId, weightChange, ticketId})
-  }
-  else {
-  console.log("delete from cart function called")
-  // props.removeFromCart({id})
-}
-},[isSaved])
+// useEffect((  ) => {
+//   if(isSaved){
+//     console.log("checking event use effect in saved",isSaved)
+//     props.addToCart({id, scaleId, status, machineId, weightChange, ticketId})
+//   }
+//   else {
+//   console.log("delete from cart function called")
+//   // props.removeFromCart({id})
+// }
+// },[isSaved])
 
 useEffect (()=>{
   switch(props.renderEvent.status){
@@ -58,7 +58,7 @@ useEffect (()=>{
     case "CONFIRMED":
       console.log("renderevent status saved")
       setAccordionProps({ disabled: true })
-      // setIsChecked(true);
+      setIsChecked(true);
       break
    
     case "processing":
@@ -70,8 +70,17 @@ useEffect (()=>{
       case "ADDED_TO_CART":
           console.log("renderevent status ADDED_TO_CART")
           setAccordionProps({ disabled: true })
-          props.addToCart({id, scaleId, status, machineId, weightChange, ticketId})
-            // props.removeFromCart({id}) 
+          console.log("event id:",id)
+          if (props.cart.cartItems.some(item => item.id === id)) {
+            // If the id exists in cart.cartItems, call props.removeFromCart()
+            console.log("event already in cart",id)
+            // props.removeFromCart({ id });
+          } else {
+            // If the id does not exist in cart.cartItems, call props.addToCart()
+            props.addToCart({id, scaleId, status, machineId, weightChange, ticketId})
+          }
+          
+          // props.removeFromCart({id}) 
              setIsChecked(true); // remove if you want the check to still be there after cart cleared
       break
       default:
