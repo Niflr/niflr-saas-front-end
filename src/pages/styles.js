@@ -53,7 +53,7 @@ export const useStyles = makeStyles(() => ({
     backgroundColor: 'black',
     marginRight: '20px',
     borderRadius: '8px',
-    padding: '10px',
+    padding: '4px',
     marginBottom: '20px',
   },
 
@@ -92,13 +92,15 @@ export const useStyles = makeStyles(() => ({
     flex: '0 0 40%',
     display: 'flex',
     flexDirection: 'column',
-    height: '650px',
+    height: '100%',
     // width: '100%',
     paddingRight: '0px',
 
     backgroundColor: 'white',
     overflow: 'auto',
     margin: '10px',
+    marginLeft: '25px',
+
     padding: '10px',
   },
 
@@ -107,7 +109,6 @@ export const useStyles = makeStyles(() => ({
     height: '40%',
     backgroundColor: 'white',
     borderRadius: '8px',
-    marginBottom: '20px',
   },
 
   eventContainer: {
@@ -127,7 +128,7 @@ export const useStyles = makeStyles(() => ({
   },
 
   eventButtons: {
-    position: 'absolute',
+    position: 'relative',
     bottom: 0,
     zIndex: 1,
     backgroundColor: 'rgba(30, 79, 106, 0.5)',
@@ -136,9 +137,11 @@ export const useStyles = makeStyles(() => ({
     width: '100%',
     // maxWidth: 550,
     display: 'flex',
-    alignItems: "stretch",
+    alignItems: 'center',
     gap: '10px',
     padding: '10px',
+    marginTop: '5px',
+    marginBottom: '10px',
   },
 
   buttonContainer: {
@@ -149,7 +152,6 @@ export const useStyles = makeStyles(() => ({
     marginRight: 'auto',
     maxWidth: 550,
     maxHeight: '30vh',
-    overflow: 'auto',
   },
   header: {
     marginBottom: '10px',

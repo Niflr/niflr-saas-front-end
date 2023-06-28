@@ -61,18 +61,18 @@ const CartElement = ({ data }) => {
   const handleSubtractQuantity = () => {
     setQuantity((prevQuantity) => Math.max(prevQuantity - 1, 0));
   };
+
+  console.log('ITEM DATA', data);
   return (
     <Accordion className={classes.root}>
       <AccordionSummary
       // expandIcon={<ExpandMore />}
       >
         <Box display="flex" flexDirection="row" alignItems="center">
-          {/* <CardMedia className={classes.media} image={data.imageURL} /> */}
           <Box ml={2}>
             <Typography variant="h6">Code: {data.id}</Typography>
-            <Typography variant="body1">Quantity: {data.scaleId}</Typography>
+            <Typography variant="body1">Quantity: {data.quantity}</Typography>
             <Typography variant="h6">Status: {data.status}</Typography>
-            <Typography variant="body1">Weight Change: {data.weightChange}</Typography>
           </Box>
         </Box>
       </AccordionSummary>

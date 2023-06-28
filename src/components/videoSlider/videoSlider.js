@@ -44,9 +44,13 @@ const useStyles = makeStyles({ // handling styles for the component
   },
   leftArrow: {
     left: 0,
+    marginBottom:'5px'
+
   },
   rightArrow: {
     right: 0,
+    marginBottom:'5px'
+
   },
 });
 
@@ -108,7 +112,7 @@ function VideoSlider(props) {
                 >
                   {'<'}
                 </Button>
-                <Typography variant="body2">
+                <Typography variant="body2" style={{marginTop: '7px'}}>
                   {formatVideoPosition()}
               </Typography>
         {/* place a counter in here */}
@@ -125,9 +129,13 @@ function VideoSlider(props) {
               addDummy ? <IconButton
               style={{
                   position: 'relative',
+                  width: '20%',
+
                   borderRadius: '50%',
                   backgroundColor: '#ffffff',
                   boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                  marginBottom:'5px',
+                  marginLeft: '5px',
               }}
               onClick={props.handleAddEvent}
               >

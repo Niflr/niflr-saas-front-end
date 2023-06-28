@@ -13,8 +13,10 @@ import {
   Button,
   IconButton,
 } from '@mui/material';
-import { Add, AbcRounded } from '@mui/icons-material';
+import { Add, AbcRounded, Clear } from '@mui/icons-material';
 import { connect } from 'react-redux';
+import AddToCartModal from '../components/modal/addToCartModal';
+
 import EventContainer from '../components/events/EventContainer/eventContainer';
 import CartContainer from '../components/cart/CartContainer/cartContainer';
 import DummyEventContainer from '../components/dummyEvents/EventContainer/eventContainer';
@@ -37,6 +39,7 @@ import {
   updateTicketStatus,
   updateEventStatus,
   createCart,
+  addToCart,
   resetDummyEvents,
   updateCartItemStatus,
   deleteCartItems,
@@ -45,10 +48,10 @@ import {
   dummyEventsSaved,
   fetchStoreProductsList,
   eventAddToCart,
-  addToCart,
-  dummyEventAddToCart,updateDummyEventStatus,
+  dummyEventAddToCart,
+  updateDummyEventStatus,
   createDummyEvents,
-  fetchDummyEventList
+  fetchDummyEventList,
 } from '../actions';
 
 const TicketPage = (props) => {
@@ -60,12 +63,16 @@ const TicketPage = (props) => {
   const [videos, setVideos] = useState([]);
   const [products, setProducts] = useState(null);
 
+  const [selectedEvents, setSelectedEvents] = useState([]);
+
+  const [areAllItemsConfirmed, setAreAllItemsConfirmed] = useState(false);
+
   // const [isSaved,setIsSaved]= useState([]);
   useEffect(() => {
     window.history.pushState(null, null, `tickets/${props.ticket.ticket.id}`);
     props.fetchVideoList(props.ticket.ticket.video);
     props.fetchEventList(props.ticket.ticket.weight_change_events);
-    props.fetchDummyEventList([props.ticket.ticket.id])
+    props.fetchDummyEventList([props.ticket.ticket.id]);
     props.fetchCartList(props.ticket.ticket.id);
   }, [props.ticket]);
 
@@ -75,13 +82,15 @@ const TicketPage = (props) => {
   }, [props.event]);
 
   useEffect(() => {
-    console.log("dummy events updated:", props.dummyEvent);
+    console.log('dummy events updated:', props.dummyEvent);
     setDummyEvents(props.dummyEvent.dummyEvents);
   }, [props.dummyEvent]);
 
   useEffect(() => {
     // console.log("props.cart updated:", props.cart);
     setCart(props.cart.cartItems);
+    const allConfirmed = props.cart.cartItems.every((item) => item.status === 'CONFIRMED');
+    setAreAllItemsConfirmed(allConfirmed);
   }, [props.cart]);
 
   useEffect(() => {
@@ -100,6 +109,11 @@ const TicketPage = (props) => {
   // }
 
   const handleSaveButtonClick = () => {
+    props.setModalState({
+      visible: true,
+      modalName: 'addToCart',
+      // modalContent: props.ticket.ticket.id
+    });
     // props.eventSaved()
     // props.ticketSaved()
     // const events = getEventIdsByStatus('checked', props.event.events.events);
@@ -147,55 +161,53 @@ const TicketPage = (props) => {
 
   // }
 
-  const handleEventSaveButtonClick =()=>{
+  const handleEventSaveButtonClick = () => {
     const events = getEventIdsByStatus('checked', props.event.events.events);
-    console.log("handling adding event to cart",events)
-    props.eventAddToCart()
-    props.updateEventStatus({ status: 'ADDED_TO_CART', event_ids: events });
-    // props.addToCart()
-  }
+    console.log('CHECKED EVENTS: ', events);
+    if (events.length > 0) {
+      setSelectedEvents(events);
 
-  const creatDummyEvents =()=>{
-    
-  }
-  const handleDummyEventSaveButtonClick =()=>{
-    const events = getEventIdsByStatus('checked',props.dummyEvent.dummyEvents.dummyEvents);
-    console.log("handling adding dummy event to cart",events)
-    const sortedEvents = props.dummyEvent.dummyEvents.dummyEvents
-  .filter((event) =>{
-        if (Array.isArray(events)) {
-    return events.includes(event.id) && event.status === 'checked';
-  }
-  return false;
-    })
-  .map((event) => ({ ...event, status: 'ADDED_TO_CART' }));
-  console.log("sorted events",sortedEvents )
-    props.dummyEventAddToCart()
-    // add dummy event to backend table
-    // update dummy event status to ADDED_TO_CART
-    if (sortedEvents.length>0){
-        props.createDummyEvents(props.ticket.ticket.id, {
-            ticket_id: props.ticket.ticket.id,
-            dummyEvents: sortedEvents,
-          });
+      props.setModalState({
+        visible: true,
+        modalName: 'addToCart',
+        modalContent: events,
+      });
+
+      // props.eventAddToCart();
+      props.updateEventStatus({ status: 'ADDED_TO_CART', event_ids: events });
+      // props.addToCart()
+    } else {
+      alert('Please select some events first!');
+      // Display an error message or take any appropriate action
     }
-   
-      
-
-    // props.updateEventStatus({ status: 'ADDED_TO_CART', event_ids: events });
     // props.addToCart()
-  }
+  };
+
+  const handleDummyEventSaveButtonClick = () => {
+    const events = getEventIdsByStatus('checked', props.dummyEvent.dummyEvents.dummyEvents);
+    console.log('handling adding dummy event to cart', events);
+    const sortedEvents = props.dummyEvent.dummyEvents.dummyEvents
+      .filter((event) => {
+        if (Array.isArray(events)) {
+          return events.includes(event.id) && event.status === 'checked';
+        }
+        return false;
+      })
+      .map((event) => ({ ...event, status: 'ADDED_TO_CART' }));
+    console.log('sorted events', sortedEvents);
+    props.dummyEventAddToCart();
+  };
+
   const handleClearButtonClick = () => {
-    
     const events = getEventIdsByStatus('ADDED_TO_CART', props.event.events.events);
     const dummyEvents = getEventIdsByStatus('ADDED_TO_CART', props.dummyEvent.dummyEvents.dummyEvents);
-    
+
     // re setting events in backend db
     props.updateEventStatus({ status: 'processing', event_ids: events });
     props.updateDummyEventStatus({ status: 'processing', event_ids: dummyEvents });
     // props.deleteCartItems(props.ticket.ticket.id);
-    // clearing cart in global state  
-   
+    // clearing cart in global state
+
     props.cartCleared();
     // clearing events and dummy events in global state
     props.resetEvents();
@@ -232,14 +244,15 @@ const TicketPage = (props) => {
       window.removeEventListener('popstate', handlePopState);
     };
   }, []);
-
+  console.log('SELECTED EVENTS: ', selectedEvents);
+  console.log('props.eventAddToCart', props.eventAddToCart);
   // console.log("inside video page")
   return (
     <Container maxWidth={false} className={classes.pageContainer}>
       <Grid container spacing={0}>
         <Grid item xs={12} sm={6} md={8} className={classes.leftContainer}>
           <Paper className={classes.videoContainer}>
-            {props.video.count>0 ? (
+            {props.video.count > 0 ? (
               <VideoSlider
                 // videos={videos}
                 handleAddEvent={handleDummyEvents}
@@ -269,9 +282,24 @@ const TicketPage = (props) => {
               Cart
             </Typography>
             <Paper className={classes.cartContainer}>
-              <div className={classes.cartDivs}>{cart ? <CartContainer /> : <Typography>
-            No cart Available
-        </Typography>}</div>
+              <div className={classes.cartDivs}>
+                {cart ? (
+                  <CartContainer />
+                ) : (
+                  <span
+                    style={{
+                      display: 'flex',
+                      height: '100%',
+                      width: '100%',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'black',
+                    }}
+                  >
+                    No items added to Cart yet
+                  </span>
+                )}
+              </div>
             </Paper>
             <div className={classes.cartButtons}>
               {/* <IconButton
@@ -292,9 +320,15 @@ const TicketPage = (props) => {
                   backgroundColor: '#ffffff',
                   boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
                 }}
-                onClick={handleClearButtonClick}
+                onClick={() => {
+                  if (areAllItemsConfirmed) {
+                    return alert('Cannot remove confirmed items from cart!');
+                  }
+                  console.log('HELLO');
+                  return handleClearButtonClick;
+                }}
               >
-                <AbcRounded />
+                <Clear />
               </IconButton>
             </div>
           </div>
@@ -312,62 +346,99 @@ const TicketPage = (props) => {
                 </div>
               ) : null}
             </Paper>
-            <div className={classes.eventButtons}>
-              <IconButton
-                style={{
-                  position: 'absolute',
-                  borderRadius: '50%',
-                  backgroundColor: '#ffffff',
-                  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                }}
-                onClick={handleEventSaveButtonClick}
-              >
-                <Add />
-              </IconButton>
+          </div>
+          <div className={classes.eventButtons} style={{ backgroundColor: 'white' }}>
+            <div
+              style={{
+                position: 'absolute',
+                borderRadius: '50%',
+                backgroundColor: '#ffffff',
+                boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+              }}
+            >
+              <Button variant="contained" color="primary" onClick={handleEventSaveButtonClick}>
+                Review & Add To Cart
+              </Button>
             </div>
           </div>
-
-          <Typography variant="h6" gutterBottom className={classes.header}>
-            Dummy Events
-          </Typography>
-          <div className={classes.eventScroller}>
-            <Paper className={classes.eventContainer}>
-              <div>{props.dummyEvent.count>0 ? <DummyEventContainer /> : <Typography>
-            No dummy events Available
-        </Typography>}</div>
-            </Paper >
-            <div className={classes.eventButtons}>
-              <IconButton
-                style={{
-                // alignSelf:"flex-start",
-                //   position: 'absolute',
-                  borderRadius: '50%',
-                  backgroundColor: '#ffffff',
-                  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                }}
-                onClick={handleDummyEvents}
-              >
-                <Add />
-              </IconButton>
-              <IconButton
-                style={{
-                  // position: 'absolute',
-                  borderRadius: '50%',
-                  backgroundColor: '#ffffff',
-                  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                }}
-                onClick={handleDummyEventSaveButtonClick}
-              >
-                <AbcRounded />
-              </IconButton>
-
+          <div style={{ marginTop: '10px', height: '100%', maxHeight: '35vh' }}>
+            <Typography variant="h6" gutterBottom className={classes.header}>
+              Dummy Events
+            </Typography>
+            <div className={classes.eventScroller}>
+              <Paper className={classes.eventContainer}>
+                <div>
+                  {props.dummyEvent.count > 0 ? (
+                    <DummyEventContainer />
+                  ) : (
+                    <Typography>No dummy events Available</Typography>
+                  )}
+                </div>
+              </Paper>
+              <div className={classes.eventButtons} style={{ backgroundColor: 'white' }}>
+                {/* <div
+                  style={{
+                    position: 'absolute',
+                    borderRadius: '50%',
+                    backgroundColor: '#ffffff',
+                    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                  }}
+                >
+                  <Button variant="contained" color="primary" onClick={handleEventSaveButtonClick}>
+                    Add
+                  </Button>
+                </div> */}
+                {/* <IconButton
+                  style={{
+                    // alignSelf:"flex-start",
+                    //   position: 'absolute',
+                    borderRadius: '50%',
+                    backgroundColor: '#ffffff',
+                    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                  }}
+                  onClick={handleDummyEvents}
+                >
+                  <Add />
+                </IconButton> */}
+                {/* <IconButton
+                  style={{
+                    // position: 'absolute',
+                    borderRadius: '50%',
+                    backgroundColor: '#ffffff',
+                    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                  }}
+                  onClick={handleDummyEventSaveButtonClick}
+                >
+                  <AbcRounded />
+                </IconButton> */}
+                <div
+                  style={{
+                    position: 'relative',
+                    borderRadius: '50%',
+                    backgroundColor: '#ffffff',
+                    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                  }}
+                >
+                  <Button variant="contained" color="primary" onClick={handleDummyEvents}>
+                    Add Dummy Event
+                  </Button>
+                </div>
+                <div
+                  style={{
+                    position: 'relative',
+                    borderRadius: '50%',
+                    backgroundColor: '#ffffff',
+                    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                  }}
+                >
+                  <Button variant="contained" color="primary" onClick={handleDummyEventSaveButtonClick}>
+                    Add To Cart
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
-
           <Paper className={classes.buttonContainer}>
-            {/* <Button variant='contained' color='primary' onClick={handleSaveButtonClick}>
-                            Save Cart
-                        </Button>  */}
             <Button
               variant="contained"
               color="success"
@@ -384,18 +455,19 @@ const TicketPage = (props) => {
             >
               Delete Cart
             </Button>
-            {/* <Button variant='contained' color='primary' onClick={handleDummyEvents}>
-                            ADD dummy event
-                        </Button>  */}
           </Paper>
         </Grid>
       </Grid>
 
-      {props.modal.visible ? (
+      {props.modal.visible && props.modal.modalName === 'addToCart' ? (
+        <ModalWrapper modalContent={selectedEvents} addToCartAction={props.eventAddToCart} />
+      ) : props.modal.visible ? (
         <div>
           <ModalWrapper />
         </div>
-      ) : null}
+      ) : (
+        console.log('null condition')
+      )}
     </Container>
   );
 };
@@ -437,5 +509,5 @@ export default connect(mapStateToProps, {
   dummyEventAddToCart,
   updateDummyEventStatus,
   createDummyEvents,
-  fetchDummyEventList
+  fetchDummyEventList,
 })(TicketPage);

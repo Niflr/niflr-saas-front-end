@@ -17,7 +17,7 @@ import {
   dummyEventsSaved,
   eventsSaved,
   createCart,
-  updateDummyEventStatus
+  updateDummyEventStatus,
 } from '../../actions/index';
 
 const useStyles = makeStyles(() => ({
@@ -56,8 +56,8 @@ const AddConfirmTicketModal = (props) => {
   const [ticketId, setTicketID] = useState(props.ticketId);
   const [cartItems, setCartItems] = useState(props.cart.cartItems);
   const handleClose = () => {
-    setStatus('');
-    setWeightChangeEvent('');
+    // setStatus('');
+    // setWeightChangeEvent('');
     props.closeModal();
   };
 
@@ -82,52 +82,51 @@ const AddConfirmTicketModal = (props) => {
     const dummyEvents = getEventIdsByStatus('ADDED_TO_CART', props.dummyEvent.dummyEvents.dummyEvents);
     const cart = getEventIdsByStatus('ADDED_TO_CART', props.cart.cartItems);
     const sortedEvents = props.event.events.events
-    .filter((event) =>{
-          if (Array.isArray(events)) {
-      return events.includes(event.id) && event.status === 'ADDED_TO_CART';
-    }
-    return false;
+      .filter((event) => {
+        if (Array.isArray(events)) {
+          return events.includes(event.id) && event.status === 'ADDED_TO_CART';
+        }
+        return false;
       })
-    .map((event) => ({ ...event, status: 'CONFIRMED' }));
-    console.log("sorted dummy events",sortedEvents )
-    props.eventsSaved()
-    if (sortedEvents.length>0){
+      .map((event) => ({ ...event, status: 'CONFIRMED' }));
+    console.log('sorted dummy events', sortedEvents);
+    props.eventsSaved();
+    if (sortedEvents.length > 0) {
       props.updateEventStatus({ status: 'CONFIRMED', event_ids: events });
-   
+
       // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
     }
     const sortedDummyEvents = props.dummyEvent.dummyEvents.dummyEvents
-    .filter((event) =>{
-          if (Array.isArray(dummyEvents)) {
-      return dummyEvents.includes(event.id) && event.status === 'ADDED_TO_CART';
-    }
-    return false;
+      .filter((event) => {
+        if (Array.isArray(dummyEvents)) {
+          return dummyEvents.includes(event.id) && event.status === 'ADDED_TO_CART';
+        }
+        return false;
       })
-    .map((event) => ({ ...event, status: 'CONFIRMED' }));
-    console.log("sorted dummy events",sortedDummyEvents )
-    props.dummyEventsSaved()
-    if (sortedDummyEvents.length>0){
-      console.log("sorting dummy events")
+      .map((event) => ({ ...event, status: 'CONFIRMED' }));
+    console.log('sorted dummy events', sortedDummyEvents);
+    props.dummyEventsSaved();
+    if (sortedDummyEvents.length > 0) {
+      console.log('sorting dummy events');
       props.updateDummyEventStatus({ status: 'CONFIRMED', event_ids: dummyEvents });
       // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
     }
 
     const sortedCart = props.cart.cartItems
-    .filter((event) =>{
-          if (Array.isArray(cart)) {
-      return cart.includes(event.id) && event.status === 'ADDED_TO_CART';
-    }
-    return false;
+      .filter((event) => {
+        if (Array.isArray(cart)) {
+          return cart.includes(event.id) && event.status === 'ADDED_TO_CART';
+        }
+        return false;
       })
-    .map((event) => ({ ...event, status: 'CONFIRMED' }));
-    console.log("sorted cart",sortedCart )
+      .map((event) => ({ ...event, status: 'CONFIRMED' }));
+    console.log('sorted cart', sortedCart);
     props.cartconfirmed();
 
-
-    if (sortedCart.length>0){
+    if (sortedCart.length > 0) {
       props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
     }
-    
+
     // props.updateDummyEventStatus({"status":"confirmed", "event_ids":dummyEvents})
     // console.log("updating cart item status")
     // update cart item status in db
@@ -151,75 +150,33 @@ const AddConfirmTicketModal = (props) => {
           height: '50%',
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center' 
-        }}
-        >
-        <h2 
-        className={classes.header} 
-        // style={{ alignSelf: 'center' }}
-        >
-          Confirm Ticket
-        
-        </h2>
-        <IconButton
-                                        style={{
-                                            borderRadius: '50%',
-                                            backgroundColor: '#ffffff',
-                                            boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                                            
-                                        }}
-                                        // onClick={}
-                                        >
-                                <Close />
-                            </IconButton>
-        </div>
-      
-
-      <form  className={classes.form}>
-      {/* <TextField label="ID" value={id} disabled fullWidth />
+          justifyContent: 'space-evenly',
           alignItems: 'center',
-          padding: '10px',
         }}
       >
         <h2
           className={classes.header}
+
           // style={{ alignSelf: 'center' }}
         >
-          Confirm Ticket
+          Confirm Ticket?
         </h2>
-        <IconButton
+        {/* <IconButton
           style={{
             borderRadius: '50%',
             backgroundColor: '#ffffff',
             boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
           }}
-          onClick={handleClose}
+          // onClick={}
         >
           <Close />
-        </IconButton>
+        </IconButton> */}
       </div>
 
-      <form className={classes.form}>
-        {/* <TextField label="ID" value={id} disabled fullWidth />
-        <TextField label="Machine ID" value={machineId} disabled fullWidth />
-        <TextField label="Scale ID" value={scaleId} disabled fullWidth />
-        <TextField label="Ticket ID" value={ticketId} disabled fullWidth />
-      <TextField label="Status" value={status} disabled fullWidth/> */}
-        {/* <br /> */}
-        {/* <TextField
-        label="Weight Change Event"
-        value={weightChange}
-        onChange={(e) => setWeightChangeEvent(e.target.value)}
-      /> */}
-        {/* <br />
-      <br /> */}
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-evenly' }}>
         <div
           style={{
-            width: '100%',
             height: '50%',
-            alignItems: 'center',
-            justifyContent: 'center',
             padding: '10px',
           }}
         >
@@ -227,7 +184,18 @@ const AddConfirmTicketModal = (props) => {
             Confirm
           </Button>
         </div>
-      </form>
+        <div
+          style={{
+            height: '50%',
+            padding: '10px',
+          }}
+        >
+          <Button variant="contained" color="primary" onClick={handleClose}>
+            Cancel
+          </Button>
+        </div>
+      </div>
+
       {/* <Button onClick={handleClose}>X</Button> */}
     </div>
   );
@@ -255,5 +223,5 @@ export default connect(mapStateToProps, {
   dummyEventsSaved,
   eventsSaved,
   createCart,
-  updateDummyEventStatus
+  updateDummyEventStatus,
 })(AddConfirmTicketModal);
