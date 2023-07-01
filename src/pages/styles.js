@@ -27,7 +27,7 @@ export const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     height: '40%',
     width: '100%',
-    justifyContent: 'space-evenly',
+    justifyContent: 'flex-start',
     backgroundColor: 'white',
     borderRadius: '5px',
     gap: '3px',
@@ -51,11 +51,12 @@ export const useStyles = makeStyles(() => ({
   videoContainer: {
     width: '100%',
     height: '50%',
-    backgroundColor: 'black',
+
     marginRight: '20px',
     borderRadius: '8px',
     padding: '4px',
     marginBottom: '20px',
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.6)',
   },
 
   cartContainer: {
@@ -69,6 +70,7 @@ export const useStyles = makeStyles(() => ({
     paddingX: '10px',
     backgroundColor: 'white',
     borderRadius: '8px',
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.6)',
 
     // borderWidth: '10px',
     // borderColor: '#DCDCDC',
@@ -127,6 +129,7 @@ export const useStyles = makeStyles(() => ({
     // maxHeight: '40%',
     zIndex: '1',
     overflow: 'auto',
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.6)',
   },
 
   eventButtons: {

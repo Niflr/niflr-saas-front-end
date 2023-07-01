@@ -70,7 +70,14 @@ const TicketPage = (props) => {
 
   // const [isSaved,setIsSaved]= useState([]);
   useEffect(() => {
-    window.history.pushState(null, null, `tickets/${props.ticket.ticket.id}`);
+    const url = `tickets/${props.ticket.ticket.id}`;
+    window.history.pushState(null, null, url);
+    return () => {
+      window.history.pushState(null, null, '/dashboard/tickets'); // Reset URL when the component is unmounted
+    };
+  }, []); // Empty dependency array ensures that the effect runs only once
+
+  useEffect(() => {
     props.fetchVideoList(props.ticket.ticket.video);
     props.fetchEventList(props.ticket.ticket.weight_change_events);
     props.fetchDummyEventList([props.ticket.ticket.id]);
@@ -143,6 +150,13 @@ const TicketPage = (props) => {
     return checkedEventName;
   };
 
+  const getDummyEventNameByStatus = (status, events) => {
+    const checkedEvents = events.filter((event) => event.status === status);
+    const checkedEventName = checkedEvents.map((event) => event.variantName);
+    console.log('CHECKED DUMMY EVENT NAMES: ', checkedEventName);
+    return checkedEventName;
+  };
+
   const handleConfirmButtonClick = () => {
     // setIsLoading(true);
     props.setModalState({
@@ -195,8 +209,18 @@ const TicketPage = (props) => {
   };
 
   const handleDummyEventSaveButtonClick = () => {
-    const events = getEventIdsByStatus('checked', props.dummyEvent.dummyEvents.dummyEvents);
-    console.log('handling adding dummy event to cart', events);
+    const events = getDummyEventNameByStatus('checked', props.dummyEvent.dummyEvents.dummyEvents);
+    console.log('CHECKED DUMMY EVENTS: ', events);
+    if (events.length > 0) {
+      setSelectedEvents(events);
+      props.setModalState({
+        visible: true,
+        modalName: 'addToCart',
+        modalContent: events,
+      });
+    } else {
+      alert('Please select some dummy events first!');
+    }
     const sortedEvents = props.dummyEvent.dummyEvents.dummyEvents
       .filter((event) => {
         if (Array.isArray(events)) {
@@ -210,6 +234,10 @@ const TicketPage = (props) => {
   };
 
   const handleClearButtonClick = () => {
+    if (events.length === 0 || dummyEvents.length === 0) {
+      alert('No events to delete!');
+    }
+    setIsLoading(true);
     const events = getEventIdsByStatus('ADDED_TO_CART', props.event.events.events);
     const dummyEvents = getEventIdsByStatus('ADDED_TO_CART', props.dummyEvent.dummyEvents.dummyEvents);
 
@@ -223,6 +251,8 @@ const TicketPage = (props) => {
     // clearing events and dummy events in global state
     props.resetEvents();
     props.resetDummyEvents();
+    setIsLoading(false);
+    alert('Cart Items Deleted Successfully!');
   };
 
   const handleDummyEvents = async () => {
@@ -471,7 +501,7 @@ const TicketPage = (props) => {
               style={{ color: 'white', height: '3rem' }}
               onClick={handleClearButtonClick}
             >
-              Delete Cart
+              {isLoading ? 'Deleting..' : 'Delete Cart'}
             </Button>
           </Paper>
         </Grid>
