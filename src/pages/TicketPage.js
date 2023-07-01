@@ -204,7 +204,7 @@ const TicketPage = (props) => {
 
   const handleDummyEvents = async () => {
     console.log('store ID', props.ticket.ticket.store_Id);
-    await props.fetchStoreProductsList({ locationId: props.ticket.ticket.store_Id });
+    await props.fetchStoreProductsList({ machineId: props.ticket.ticket.machine_id });
   };
 
   useEffect(() => {

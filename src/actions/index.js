@@ -311,7 +311,7 @@ export const updateTicketStatus = (ticketId, data) =>
     url: `cartItems/${ticketId}`,
     data,
     action: POST__CART_DETAILS,
-    domain: "LOCAL"
+    domain: "CLOUD"
   });
 
   export const createDummyEvents = (ticketId,data) =>
@@ -319,7 +319,7 @@ export const updateTicketStatus = (ticketId, data) =>
    url: `dummyEvents/${ticketId}`, 
    data,
    action: POST__DUMMY_EVENTS,
-   domain: "LOCAL"
+   domain: "CLOUD"
   })
 
   export const deleteCartItems = (ticketId) =>
@@ -343,7 +343,7 @@ export const updateTicketStatus = (ticketId, data) =>
     url:"dummyEvents/",
     data: params,
     action: FETCH__DUMMY_EVENTS_LIST,
-    domain: 'LOCAL'
+    domain: 'CLOUD'
   })
 
   export const fetchCartList =params=>
@@ -547,7 +547,7 @@ export const setModalState = payload => ({
     url:"snapshots/location/start",
     data: params,
     action: FETCH__PRODUCTS_LIST,
-    domain: 'LOCAL'
+    domain: 'CLOUD'
   })
 
 //  fetch request:
