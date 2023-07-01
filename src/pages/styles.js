@@ -24,13 +24,12 @@ export const useStyles = makeStyles(() => ({
 
   cartScroller: {
     display: 'flex',
-    flexDirection: 'row',
-    height: '100%',
+    flexDirection: 'column',
+    height: '40%',
     width: '100%',
-    maxheight: '20vh',
-    backgroundColor: 'grey',
-    borderRadius: '0px',
-    marginBottom: '20px',
+    justifyContent: 'space-evenly',
+    backgroundColor: 'white',
+    borderRadius: '5px',
     gap: '3px',
     alignItems: 'center',
   },
@@ -40,6 +39,8 @@ export const useStyles = makeStyles(() => ({
     flexDirection: 'row',
     height: '100%',
     width: '100%',
+    gap: '30px',
+    borderRadius: '5px',
   },
 
   cartItem: {
@@ -49,7 +50,7 @@ export const useStyles = makeStyles(() => ({
 
   videoContainer: {
     width: '100%',
-    height: '60%',
+    height: '50%',
     backgroundColor: 'black',
     marginRight: '20px',
     borderRadius: '8px',
@@ -58,18 +59,19 @@ export const useStyles = makeStyles(() => ({
   },
 
   cartContainer: {
-    position: 'relative',
-    marginBottom: '20px',
     display: 'flex', // make the container a flex container
     flexDirection: 'row', // arrange items in a row instead of a column
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
-    width: '60%',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    height: '60%',
+    width: '100%',
     maxHeight: '40vh',
-    paddingLeft: '10px',
+    paddingX: '10px',
     backgroundColor: 'white',
     borderRadius: '8px',
+
+    // borderWidth: '10px',
+    // borderColor: '#DCDCDC',
     overflow: 'auto',
   },
 
@@ -83,7 +85,7 @@ export const useStyles = makeStyles(() => ({
     alignItems: 'center',
     // display: 'flex',
     justifyContent: 'center',
-    backgroundColor: 'grey',
+    backgroundColor: '#DCDCDC',
     borderRadius: '8px',
     gap: '10px',
   },

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Modal, TextField, IconButton } from '@mui/material';
+import { Button, Modal, TextField, IconButton, Checkbox } from '@mui/material';
 import { Close } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
 import { connect } from 'react-redux';
@@ -42,7 +42,10 @@ const AddToCartModal = (props) => {
   const classes = useStyles();
   const [status, setStatus] = useState('processing');
   const [weightChange, setWeightChangeEvent] = useState('');
-  const id = generateRandomId();
+  const [isChecked, setIsChecked] = useState(false);
+  console.log('ADD TO CART PROPS: ', props);
+  // const id = props.event.events.events.id;
+
   const machineId = generateRandomId();
   const scaleId = generateRandomId();
   const [ticketId, setTicketID] = useState(props.ticketId);
@@ -52,6 +55,10 @@ const AddToCartModal = (props) => {
     setStatus('');
     setWeightChangeEvent('');
     props.closeModal();
+  };
+  const handleCheckboxChange = () => {
+    // props.eventChecked(id);
+    setIsChecked(!isChecked);
   };
 
   const handleEventSelection = (eventId) => {
@@ -86,13 +93,13 @@ const AddToCartModal = (props) => {
     <div className={classes.paper}>
       <div
         style={{
-          width: '100%',
-          height: '30%',
+          width: '400px',
+          height: '40%',
           display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          paddingX: '20px',
+          justifyContent: 'flex-start',
+          alignItems: 'flex-start',
+          marginTop: '20px',
+          paddingLeft: '10px',
         }}
       >
         <h4 className={classes.header}>Are you sure you want to add these to cart?</h4>
@@ -100,7 +107,13 @@ const AddToCartModal = (props) => {
       {props.selectedEvents.map((selectedEvent) => {
         return (
           <div style={{ padding: '10px', fontSize: '1em' }}>
-            <ul>{selectedEvent}</ul>
+            <ul>
+              <li>
+                {' '}
+                <Checkbox checked={isChecked} onChange={handleCheckboxChange} />
+                {selectedEvent}{' '}
+              </li>
+            </ul>
           </div>
         );
       })}

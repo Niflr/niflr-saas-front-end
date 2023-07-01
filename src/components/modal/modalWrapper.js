@@ -7,21 +7,26 @@ import confirmCartModal from './confirmCartModal';
 import ViewStoreProducts from './viewStoreProducts';
 import { setModalState } from '../../actions/index';
 import AddToCartModal from './addToCartModal';
+import Loader from './confirmationModal';
 
 const ModalWrapper = (props) => {
   const closeModal = () => {
     props.setModalState({ visible: false });
   };
+  const loadModal = () => {
+    props.setModalState({ isLoading: true });
+  };
   const renderModal = () => {
     switch (props.modal.modalName) {
       case 'AddDummyEvent':
         console.log('modal props', props.modal);
-        return <AddDummyEventModal closeModal={closeModal} ticketId={props.modal.modalContent} />;
+        return <AddDummyEventModal closeModal={closeModal} loadModal={loadModal} ticketId={props.modal.modalContent} />;
       case 'confirmTicket':
         console.log('modal props', props.modal);
         return (
           <ConfirmTicketModal
             closeModal={closeModal}
+            loadModal={loadModal}
             // ticketId ={props.modal.modalContent}
           />
         );
@@ -40,6 +45,8 @@ const ModalWrapper = (props) => {
             eventAddToCart={props.addToCartAction}
           />
         );
+      case 'loading':
+        return <Loader isLoading={props.modal.isLoading} />;
 
       // case  'confirmCart':
       //   console.log("modal props", props.modal)
@@ -54,6 +61,7 @@ const ModalWrapper = (props) => {
         return null;
     }
   };
+  console.log('MODAL WRAPPER PROPS: ', props.modal);
   console.log('MODAL CONTENT OF PROPS: ', props.modal.modalContent);
   console.log('EVENT ADD TO CART ', props.addToCartAction);
   return (

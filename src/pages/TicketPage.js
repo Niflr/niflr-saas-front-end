@@ -64,6 +64,7 @@ const TicketPage = (props) => {
   const [products, setProducts] = useState(null);
 
   const [selectedEvents, setSelectedEvents] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [areAllItemsConfirmed, setAreAllItemsConfirmed] = useState(false);
 
@@ -135,10 +136,19 @@ const TicketPage = (props) => {
     return checkedEventIds;
   };
 
+  const getEventNameByStatus = (status, events) => {
+    const checkedEvents = events.filter((event) => event.status === status);
+    const checkedEventName = checkedEvents.map((event) => event.variant_name);
+    console.log('CHECKED EVENT NAMES: ', checkedEventName);
+    return checkedEventName;
+  };
+
   const handleConfirmButtonClick = () => {
+    // setIsLoading(true);
     props.setModalState({
       visible: true,
       modalName: 'confirmTicket',
+      isLoading: false,
       // modalContent: props.ticket.ticket.id
     });
 
@@ -155,6 +165,7 @@ const TicketPage = (props) => {
     // props.cartconfirmed()
 
     console.log('handled confirm button');
+    // setIsLoading(false);
   };
 
   // const handleSaveButtonClick =()=>{
@@ -162,7 +173,7 @@ const TicketPage = (props) => {
   // }
 
   const handleEventSaveButtonClick = () => {
-    const events = getEventIdsByStatus('checked', props.event.events.events);
+    const events = getEventNameByStatus('checked', props.event.events.events);
     console.log('CHECKED EVENTS: ', events);
     if (events.length > 0) {
       setSelectedEvents(events);
@@ -215,8 +226,10 @@ const TicketPage = (props) => {
   };
 
   const handleDummyEvents = async () => {
+    setIsLoading(true);
     console.log('store ID', props.ticket.ticket.store_Id);
-    await props.fetchStoreProductsList({ locationId: props.ticket.ticket.store_Id });
+    await props.fetchStoreProductsList({ machineId: props.ticket.ticket.machine_id });
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -244,19 +257,19 @@ const TicketPage = (props) => {
       window.removeEventListener('popstate', handlePopState);
     };
   }, []);
+  console.log('TICKET PAGE PROPS: ', props);
   console.log('SELECTED EVENTS: ', selectedEvents);
   console.log('props.eventAddToCart', props.eventAddToCart);
   // console.log("inside video page")
+  console.log('CART', cart);
+  console.log('VIDEOS: ', videos);
   return (
     <Container maxWidth={false} className={classes.pageContainer}>
       <Grid container spacing={0}>
         <Grid item xs={12} sm={6} md={8} className={classes.leftContainer}>
           <Paper className={classes.videoContainer}>
             {props.video.count > 0 ? (
-              <VideoSlider
-                // videos={videos}
-                handleAddEvent={handleDummyEvents}
-              />
+              <VideoSlider videos={videos} handleAddEvent={handleDummyEvents} />
             ) : (
               <span
                 style={{
@@ -272,18 +285,18 @@ const TicketPage = (props) => {
             )}
           </Paper>
 
+          <Typography
+            variant="h6"
+            gutterBottom
+            className={classes.header}
+            style={{ alignSelf: 'flex-start', marginTop: '10px', fontSize: '1.5rem', width: '20%' }}
+          >
+            User Cart
+          </Typography>
           <div className={classes.cartScroller}>
-            <Typography
-              variant="h6"
-              gutterBottom
-              className={classes.header}
-              style={{ alignSelf: 'flex-start', marginTop: '10px', fontSize: '1.5rem', width: '20%' }}
-            >
-              Cart
-            </Typography>
             <Paper className={classes.cartContainer}>
               <div className={classes.cartDivs}>
-                {cart ? (
+                {cart && cart.length > 0 ? (
                   <CartContainer />
                 ) : (
                   <span
@@ -301,18 +314,8 @@ const TicketPage = (props) => {
                 )}
               </div>
             </Paper>
-            <div className={classes.cartButtons}>
-              {/* <IconButton
-                style={{
-                  // position: 'absolute',
-                  borderRadius: '50%',
-                  backgroundColor: '#ffffff',
-                  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                }}
-                onClick={handleDummyEvents}
-              >
-                <Add />
-              </IconButton> */}
+            {/* <div className={classes.cartButtons}>
+       
               <IconButton
                 style={{
                   // position: 'absolute',
@@ -324,13 +327,13 @@ const TicketPage = (props) => {
                   if (areAllItemsConfirmed) {
                     return alert('Cannot remove confirmed items from cart!');
                   }
-                  console.log('HELLO');
+
                   return handleClearButtonClick;
                 }}
               >
                 <Clear />
               </IconButton>
-            </div>
+            </div> */}
           </div>
         </Grid>
 
@@ -344,7 +347,20 @@ const TicketPage = (props) => {
                 <div>
                   <EventContainer />
                 </div>
-              ) : null}
+              ) : (
+                <span
+                  style={{
+                    display: 'flex',
+                    height: '100%',
+                    width: '100%',
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
+                    color: 'black',
+                  }}
+                >
+                  No Events
+                </span>
+              )}
             </Paper>
           </div>
           <div className={classes.eventButtons} style={{ backgroundColor: 'white' }}>
@@ -371,7 +387,7 @@ const TicketPage = (props) => {
                   {props.dummyEvent.count > 0 ? (
                     <DummyEventContainer />
                   ) : (
-                    <Typography>No dummy events Available</Typography>
+                    <Typography>No Dummy Events Available</Typography>
                   )}
                 </div>
               </Paper>
@@ -411,6 +427,7 @@ const TicketPage = (props) => {
                 >
                   <AbcRounded />
                 </IconButton> */}
+
                 <div
                   style={{
                     position: 'relative',
@@ -420,9 +437,10 @@ const TicketPage = (props) => {
                   }}
                 >
                   <Button variant="contained" color="primary" onClick={handleDummyEvents}>
-                    Add Dummy Event
+                    {isLoading ? 'Hold on..' : 'Add Variant'}
                   </Button>
                 </div>
+
                 <div
                   style={{
                     position: 'relative',

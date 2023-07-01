@@ -84,7 +84,7 @@ const EventElement = (props) => {
     <Accordion {...accordionProps} expanded={expanded} onChange={handleAccordionChange}>
       <AccordionSummary expandIcon={<ExpandMoreOutlined />}>
         <Checkbox checked={isChecked} onChange={handleCheckboxChange} />
-        <Typography>{id}</Typography>
+        <Typography variant="h6">{variantName}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         <Typography>Quantity: {quantity}</Typography>

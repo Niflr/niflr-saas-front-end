@@ -18,6 +18,8 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    gap: '5px',
+    border: '3px solid black',
     // margin: theme.spacing(2),
     // padding: theme.spacing(2),
     width: '100%',
@@ -28,7 +30,7 @@ const useStyles = makeStyles(() => ({
   media: {
     borderRadius: '50%',
     width: 100,
-    height: 100,
+    height: 80,
     objectFit: 'cover',
     // [theme.breakpoints.up('sm')]: {
     //   width: 120,
@@ -71,7 +73,7 @@ const CartElement = ({ data }) => {
         <Box display="flex" flexDirection="row" alignItems="center">
           <Box ml={2}>
             <Typography variant="h6">Code: {data.id}</Typography>
-            <Typography variant="body1">Quantity: {data.quantity}</Typography>
+            {/* <Typography variant="body1">Quantity: {data.quantity}</Typography> */}
             <Typography variant="h6">Status: {data.status}</Typography>
           </Box>
         </Box>
