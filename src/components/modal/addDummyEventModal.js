@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Modal, TextField } from '@mui/material';
+import { v4 as uuidv4 } from 'uuid';
 import { connect } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import { addDummyEvent, resetProduct, addToCart } from '../../actions/index';
@@ -60,9 +61,9 @@ const AddDummyEventModal = (props) => {
   // };
   const handleSave = () => {
     props.resetProduct();
-    // const id = generateUUID();
+    const id = uuidv4();
     props.addDummyEvent({
-      // id,
+      id,
       ticketId,
       variantId,
       machineId,
