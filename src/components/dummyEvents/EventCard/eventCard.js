@@ -15,7 +15,7 @@ const EventElement = (props) => {
   const ticketId = props.renderEvent.ticketId;
   const quantity = props.renderEvent.quantity;
   const variantName = props.renderEvent.variantName;
-  const variantId = props.renderEvent.variant_id;
+  const variantId = props.renderEvent.variantId;
   const userId = props.renderEvent.userId;
   const [isChecked, setIsChecked] = useState(false);
 
@@ -87,9 +87,9 @@ const EventElement = (props) => {
         <Typography variant="h6">{variantName}</Typography>
       </AccordionSummary>
       <AccordionDetails>
+        <Typography>ID: {variantId}</Typography>
         <Typography>Quantity: {quantity}</Typography>
         <Typography>Status: {status}</Typography>
-        <Typography>time: {status}</Typography>
       </AccordionDetails>
     </Accordion>
   );

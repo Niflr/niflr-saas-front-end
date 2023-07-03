@@ -83,7 +83,7 @@ const TicketPage = (props) => {
     props.fetchDummyEventList([props.ticket.ticket.id]);
     props.fetchCartList(props.ticket.ticket.id);
   }, [props.ticket]);
-
+  console.log('FETCHING CART LIST: ', props.ticket.ticket.id);
   useEffect(() => {
     // console.log("props.ticketsupdated:", props.event);
     setEvents(props.event.events);
@@ -145,16 +145,22 @@ const TicketPage = (props) => {
 
   const getEventNameByStatus = (status, events) => {
     const checkedEvents = events.filter((event) => event.status === status);
-    const checkedEventName = checkedEvents.map((event) => event.variant_name);
-    console.log('CHECKED EVENT NAMES: ', checkedEventName);
-    return checkedEventName;
+    const checkedEventNameAndId = checkedEvents.map((event) => ({
+      id: event.id,
+      name: event.variant_name,
+    }));
+    console.log('CHECKED EVENT NAMES AND IDS: ', checkedEventNameAndId);
+    return checkedEventNameAndId;
   };
 
   const getDummyEventNameByStatus = (status, events) => {
     const checkedEvents = events.filter((event) => event.status === status);
-    const checkedEventName = checkedEvents.map((event) => event.variantName);
-    console.log('CHECKED DUMMY EVENT NAMES: ', checkedEventName);
-    return checkedEventName;
+    const checkedEventNameAndId = checkedEvents.map((event) => ({
+      id: event.id,
+      name: event.variantName,
+    }));
+    console.log('CHECKED DUMMY EVENTS: ', checkedEventNameAndId);
+    return checkedEventNameAndId;
   };
 
   const handleConfirmButtonClick = () => {
@@ -194,12 +200,12 @@ const TicketPage = (props) => {
 
       props.setModalState({
         visible: true,
-        modalName: 'addToCart',
+        modalName: 'eventAddToCart',
         modalContent: events,
       });
 
       // props.eventAddToCart();
-      props.updateEventStatus({ status: 'ADDED_TO_CART', event_ids: events });
+      props.updateEventStatus({ status: 'ADDED_TO_CART', event_ids: events.map((event) => event.id) });
       // props.addToCart()
     } else {
       alert('Please select some events first!');
@@ -209,18 +215,7 @@ const TicketPage = (props) => {
   };
 
   const handleDummyEventSaveButtonClick = () => {
-    const events = getDummyEventNameByStatus('checked', props.dummyEvent.dummyEvents.dummyEvents);
-    console.log('CHECKED DUMMY EVENTS: ', events);
-    if (events.length > 0) {
-      setSelectedEvents(events);
-      props.setModalState({
-        visible: true,
-        modalName: 'addToCart',
-        modalContent: events,
-      });
-    } else {
-      alert('Please select some dummy events first!');
-    }
+    const events = getEventIdsByStatus('checked', props.dummyEvent.dummyEvents.dummyEvents);
     const sortedEvents = props.dummyEvent.dummyEvents.dummyEvents
       .filter((event) => {
         if (Array.isArray(events)) {
@@ -229,16 +224,37 @@ const TicketPage = (props) => {
         return false;
       })
       .map((event) => ({ ...event, status: 'ADDED_TO_CART' }));
-    console.log('sorted events', sortedEvents);
-    props.dummyEventAddToCart();
+
+    // console.log('CHECKED DUMMY EVENTS: ', events);
+    if (sortedEvents.length > 0) {
+      // setSelectedEvents(events);
+      props.setModalState({
+        visible: true,
+        modalName: 'dummyEventAddToCart',
+        modalContent: sortedEvents,
+      });
+      // props.updateDummyEventStatus({ status: 'ADDED_TO_CART', event_ids: events.map((event) => event.id) });
+    } else {
+      alert('Please select some dummy events first!');
+    }
+    // const sortedEvents = props.dummyEvent.dummyEvents.dummyEvents
+    //   .filter((event) => {
+    //     if (Array.isArray(events)) {
+    //       return events.includes(event.id) && event.status === 'checked';
+    //     }
+    //     return false;
+    //   })
+    //   .map((event) => ({ ...event, status: 'ADDED_TO_CART' }));
+    // console.log('sorted events', sortedEvents);
+    // props.dummyEventAddToCart();
   };
 
   const handleClearButtonClick = () => {
+    setIsLoading(true);
+    const events = getEventIdsByStatus('ADDED_TO_CART', props.event.events.events);
     if (events.length === 0 || dummyEvents.length === 0) {
       alert('No events to delete!');
     }
-    setIsLoading(true);
-    const events = getEventIdsByStatus('ADDED_TO_CART', props.event.events.events);
     const dummyEvents = getEventIdsByStatus('ADDED_TO_CART', props.dummyEvent.dummyEvents.dummyEvents);
 
     // re setting events in backend db
@@ -274,8 +290,6 @@ const TicketPage = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // ... your other code
-
     // Redirect to /dashboard/tickets when going back to this page
     const handlePopState = () => {
       navigate('/dashboard/tickets');
@@ -507,7 +521,7 @@ const TicketPage = (props) => {
         </Grid>
       </Grid>
 
-      {props.modal.visible && props.modal.modalName === 'addToCart' ? (
+      {props.modal.visible && props.modal.modalName === 'eventAddToCart' ? (
         <ModalWrapper modalContent={selectedEvents} addToCartAction={props.eventAddToCart} />
       ) : props.modal.visible ? (
         <div>

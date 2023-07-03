@@ -8,6 +8,7 @@ import ViewStoreProducts from './viewStoreProducts';
 import { setModalState } from '../../actions/index';
 import AddToCartModal from './addToCartModal';
 import Loader from './confirmationModal';
+import DummyAddToCartModal from './dummyAddToCartModal';
 
 const ModalWrapper = (props) => {
   const closeModal = () => {
@@ -37,12 +38,20 @@ const ModalWrapper = (props) => {
         ) : (
           <ViewStoreProducts closeModal={closeModal} products={props.modal.modalContent} />
         );
-      case 'addToCart':
+      case 'eventAddToCart':
         return (
           <AddToCartModal
             closeModal={closeModal}
             selectedEvents={props.modal.modalContent}
             eventAddToCart={props.addToCartAction}
+          />
+        );
+      case 'dummyEventAddToCart':
+        return (
+          <DummyAddToCartModal
+            closeModal={closeModal}
+            selectedEvents={props.modal.modalContent}
+            // eventAddToCart={props.addToCartAction}
           />
         );
       case 'loading':

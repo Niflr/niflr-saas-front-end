@@ -75,7 +75,7 @@ const EventElement = (props) => {
         break;
       case 'ADDED_TO_CART':
         console.log('renderevent status ADDED_TO_CART');
-        setAccordionProps({ disabled: true });
+        setAccordionProps({ disabled: false });
         console.log('event id:', id);
         if (props.cart.cartItems.some((item) => item.id === id)) {
           // If the id exists in cart.cartItems, call props.removeFromCart()

@@ -16,6 +16,7 @@ import {
   cartCleared,
   createCart,
   createUserOrder,
+  dummyEventAddToCart,
   confirmUserOrder,
 } from '../../actions/index';
 
@@ -39,12 +40,12 @@ const generateRandomId = () => {
   return Math.floor(Math.random() * 10000000000);
 };
 
-const AddToCartModal = (props) => {
+const DummyAddToCartModal = (props) => {
   const classes = useStyles();
   const [status, setStatus] = useState('processing');
   const [weightChange, setWeightChangeEvent] = useState('');
   const [isChecked, setIsChecked] = useState(false);
-  console.log('ADD TO CART PROPS: ', props);
+  console.log('ADD DUMMY TO CART PROPS: ', props);
   // const id = props.event.events.events.id;
 
   const machineId = generateRandomId();
@@ -77,17 +78,25 @@ const AddToCartModal = (props) => {
     // setSelectedEvents(updatedSelectedEvents);
   };
 
-  const handleConfirmButtonClick = () => {
+  const handleDummyConfirmButtonClick = () => {
     // Add selected events to the cart
     // You can implement the logic to add the events to the cart
     // using the selectedEvents array
 
     // ... implement the logic to add events to the cart ...
 
+    console.log('reviewing modal conent props', props.selectedEvents);
     // Close the modal
-    props.eventAddToCart();
-    props.createCart(props.ticket.ticket.id);
-    handleClose();
+    props.dummyEventAddToCart();
+
+    if (props.selectedEvents.length > 0) {
+      console.log('makging db sync');
+      props.createDummyEvents(props.ticket.ticket.id, {
+        ticket_id: props.ticket.ticket.id,
+        dummyEvents: props.selectedEvents,
+      });
+      handleClose();
+    }
   };
 
   console.log('Selected Events:', props.selectedEvents);
@@ -126,7 +135,7 @@ const AddToCartModal = (props) => {
             padding: '10px',
           }}
         >
-          <Button variant="contained" color="primary" onClick={handleConfirmButtonClick}>
+          <Button variant="contained" color="primary" onClick={handleDummyConfirmButtonClick}>
             Confirm
           </Button>
         </div>
@@ -136,7 +145,7 @@ const AddToCartModal = (props) => {
             padding: '10px',
           }}
         >
-          <Button variant="contained" color="primary" onClick={handleConfirmButtonClick}>
+          <Button variant="contained" color="primary" onClick={handleClose}>
             Cancel
           </Button>
         </div>
@@ -178,7 +187,8 @@ export default connect(mapStateToProps, {
   cartconfirmed,
   cartCleared,
   createDummyEvents,
+  dummyEventAddToCart,
   createUserOrder,
   createCart,
   confirmUserOrder,
-})(AddToCartModal);
+})(DummyAddToCartModal);
