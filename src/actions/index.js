@@ -167,7 +167,7 @@ const postData =
         isLoading: false,
       });
     }
-    
+
   };
 
 const putData =
@@ -411,7 +411,7 @@ export const createUserOrder = ( data) =>
     url: `tickets/createOrder`,
     data,
     action: CREATE_USER_ORDER,
-    domain: 'LOCAL',
+    domain: 'CLOUD',
   });
 
 // confirm order
