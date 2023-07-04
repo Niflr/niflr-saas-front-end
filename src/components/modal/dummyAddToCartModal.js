@@ -17,7 +17,7 @@ import {
   createCart,
   createUserOrder,
   dummyEventAddToCart,
-  confirmUserOrder,
+  // confirmUserOrder,
 } from '../../actions/index';
 
 const useStyles = makeStyles(() => ({
@@ -190,5 +190,5 @@ export default connect(mapStateToProps, {
   dummyEventAddToCart,
   createUserOrder,
   createCart,
-  confirmUserOrder,
+  // confirmUserOrder,
 })(DummyAddToCartModal);

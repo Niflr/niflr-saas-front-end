@@ -128,7 +128,7 @@ const TicketPage = (props) => {
     // props.cartSaved();
     // const cart = props.cart.cartItems;
     // props.updateEventStatus({ status: 'saved', event_ids: events });
-    props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: cart });
+    // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: cart });
     // props.updateDummyEventStatus({"status":"saved", "event_ids":events})
     // props.updateCartItemStatus()
     // props.dummyEventsSaved();

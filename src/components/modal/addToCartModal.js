@@ -16,7 +16,7 @@ import {
   cartCleared,
   createCart,
   createUserOrder,
-  confirmUserOrder,
+  // confirmUserOrder,
 } from '../../actions/index';
 
 const useStyles = makeStyles(() => ({
@@ -85,8 +85,12 @@ const AddToCartModal = (props) => {
     // ... implement the logic to add events to the cart ...
 
     // Close the modal
+  
     props.eventAddToCart();
-    props.createCart(props.ticket.ticket.id);
+    // const sortedCart = props.cart.cartItems.filter(item => item.status === "ADDED_TO_CART");
+
+    // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
+    // props.createCart(props.ticket.ticket.id);
     handleClose();
   };
 
@@ -136,7 +140,7 @@ const AddToCartModal = (props) => {
             padding: '10px',
           }}
         >
-          <Button variant="contained" color="primary" onClick={handleConfirmButtonClick}>
+          <Button variant="contained" color="primary" onClick={handleClose}>
             Cancel
           </Button>
         </div>
@@ -180,5 +184,5 @@ export default connect(mapStateToProps, {
   createDummyEvents,
   createUserOrder,
   createCart,
-  confirmUserOrder,
+  // confirmUserOrder,
 })(AddToCartModal);

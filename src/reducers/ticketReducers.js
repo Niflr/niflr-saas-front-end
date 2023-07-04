@@ -15,6 +15,7 @@ import {
     CLEAR__TICKET_DETAILS,
     SELECT_TICKET_DETAILS,
     TICKET_CONFIRMED,
+    CREATE_USER_ORDER_SUCCESS
   
   } from '../types/index';
   
@@ -44,6 +45,15 @@ import {
         return { ...state, 
           ticket: { ...state.ticket, status: "confirmed" },
         }
+      case CREATE_USER_ORDER_SUCCESS:
+          return { ...state, 
+            ticket: { ...state.ticket,
+              order_id:action.payload.order.id,
+            order_status: "ORDER_CREATED",
+            // resolved_by
+          }
+          };
+
       default:
         return state;
     }

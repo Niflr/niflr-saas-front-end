@@ -9,14 +9,15 @@ const EventElement = (props) => {
   console.log('checking dummy event element props', props.renderEvent);
   //   const { id, scale_id, machine_id, status } = event;
   const id = props.renderEvent.id;
-  console.log('render dummy event props', props);
+  // console.log('render dummy event props', props);
 
   const status = props.renderEvent.status;
-  const ticketId = props.renderEvent.ticketId;
+  const ticketId = props.renderEvent.ticket_id;
   const quantity = props.renderEvent.quantity;
-  const variantName = props.renderEvent.variantName;
-  const variantId = props.renderEvent.variantId;
-  const userId = props.renderEvent.userId;
+  // const variantName = props.renderEvent.variantName;
+  const variantId = props.renderEvent.variant_id;
+  // console.log("variant id", variantId)
+  const userId = props.renderEvent.user_id;
   const [isChecked, setIsChecked] = useState(false);
 
   const [accordionProps, setAccordionProps] = useState({ disabled: false });
@@ -71,7 +72,7 @@ const EventElement = (props) => {
           // props.removeFromCart({ id });
         } else {
           // If the id does not exist in cart.cartItems, call props.addToCart()
-          props.addToCart({ id, status, ticketId });
+          props.addToCart({ id, status, ticketId,quantity,variantId });
         }
 
         setIsChecked(true); // remove if you want the check to still be there after cart cleared
@@ -84,7 +85,7 @@ const EventElement = (props) => {
     <Accordion {...accordionProps} expanded={expanded} onChange={handleAccordionChange}>
       <AccordionSummary expandIcon={<ExpandMoreOutlined />}>
         <Checkbox checked={isChecked} onChange={handleCheckboxChange} />
-        <Typography variant="h6">{variantName}</Typography>
+        {/* <Typography variant="h6">{variantId}</Typography> */}
       </AccordionSummary>
       <AccordionDetails>
         <Typography>ID: {variantId}</Typography>

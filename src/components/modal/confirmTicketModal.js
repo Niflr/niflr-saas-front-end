@@ -16,7 +16,7 @@ import {
   cartconfirmed,
   cartCleared,
   createUserOrder,
-  confirmUserOrder,
+  // confirmUserOrder,
   dummyEventsSaved,
   eventsSaved,
   createCart,
@@ -78,7 +78,7 @@ const AddConfirmTicketModal = (props) => {
   };
 
   const getEventIdsByStatus = (status, events) => {
-    // console.log("   inside getCheckedEventIds", status)
+    console.log("   inside getCheckedEventIds", events)
     const checkedEvents = events.filter((event) => event.status === status);
     const checkedEventIds = checkedEvents.map((event) => event.id);
     return checkedEventIds;
@@ -146,10 +146,11 @@ const AddConfirmTicketModal = (props) => {
     //   return true;
     // }, 5000);
     try {
-      console.log('checking dummyevents', props.dummyEvent);
+      // console.log('checking dummyevents', props.dummyEvent);
       const events = getEventIdsByStatus('ADDED_TO_CART', props.event.events.events);
       const dummyEvents = getEventIdsByStatus('ADDED_TO_CART', props.dummyEvent.dummyEvents.dummyEvents);
-      const cart = getEventIdsByStatus('ADDED_TO_CART', props.cart.cartItems);
+      const userCart = getEventIdsByStatus('ADDED_TO_CART', props.cart.cartItems);
+      console.log("userCart", userCart)
       const sortedEvents = props.event.events.events
         .filter((event) => {
           if (Array.isArray(events)) {
@@ -183,8 +184,9 @@ const AddConfirmTicketModal = (props) => {
 
       const sortedCart = props.cart.cartItems
         .filter((event) => {
-          if (Array.isArray(cart)) {
-            return cart.includes(event.id) && event.status === 'ADDED_TO_CART';
+          if (Array.isArray(userCart)) {
+            console.log("finding user cart",event)
+            return userCart.includes(event.id) && event.status === 'ADDED_TO_CART';
           }
           return false;
         })
@@ -193,7 +195,26 @@ const AddConfirmTicketModal = (props) => {
       props.cartconfirmed();
 
       if (sortedCart.length > 0) {
+
         props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
+            // const sortedCart = props.cart.cartItems.filter(item => item.status === "ADDED_TO_CART");
+        const sortedOrder = [];
+
+        sortedCart.forEach(item => {
+          console.log("checking sorted order",item )
+          sortedOrder.push({
+            variantId: item.variantId,
+            quantity: parseInt(item.quantity, 10)
+          });
+        });
+        console.log("sorted order inplemented",sortedOrder)
+        // calliing create oder request
+        props.createUserOrder({userId:props.ticket.ticket.user_id, ticketId:props.ticket.ticket.id, items:sortedOrder})
+
+    
+
+
+    // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
       }
       console.log('handled confirm button');
       // setTimeout(() => {
@@ -297,7 +318,7 @@ export default connect(mapStateToProps, {
   cartCleared,
   createDummyEvents,
   createUserOrder,
-  confirmUserOrder,
+  // confirmUserOrder,
   dummyEventsSaved,
   eventsSaved,
   createCart,

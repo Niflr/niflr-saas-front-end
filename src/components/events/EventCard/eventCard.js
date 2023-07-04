@@ -20,6 +20,8 @@ const EventElement = (props) => {
   const status = props.renderEvent.status;
   const weightChange = props.renderEvent.weight_change;
   const ticketId = props.event.events.ticketId;
+  const variantId = props.renderEvent.variant_id;
+  const quantity = props.renderEvent.quantity;
   const variantName = props.renderEvent.variant_name;
   const variantImage = props.renderEvent.variant_img;
   const [isChecked, setIsChecked] = useState(false);
@@ -83,7 +85,7 @@ const EventElement = (props) => {
           // props.removeFromCart({ id });
         } else {
           // If the id does not exist in cart.cartItems, call props.addToCart()
-          props.addToCart({ id, scaleId, status, machineId, weightChange, ticketId });
+          props.addToCart({ id, scaleId, status, machineId, weightChange, ticketId,variantId, quantity });
         }
 
         // props.removeFromCart({id})

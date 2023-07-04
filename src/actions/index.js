@@ -153,6 +153,7 @@ const postData =
     console.log('testing post call params', url, domain, data);
     const res = await requestService.post({ url, data, domain });
     console.log('testing post call', res);
+    
     if (res.success) {
       dispatch({
         type: `${action}_SUCCESS`,
@@ -166,6 +167,7 @@ const postData =
         isLoading: false,
       });
     }
+    
   };
 
 const putData =
@@ -403,24 +405,24 @@ export const cartCleared = () => {
 };
 
 // create order
-export const createUserOrder = (userId, data) =>
+export const createUserOrder = ( data) =>
   // change url to:  url: `user_details/${userId}/order`,
   postData({
-    url: `user_details/${userId}/orders`,
+    url: `tickets/createOrder`,
     data,
     action: CREATE_USER_ORDER,
-    domain: 'ADMIN',
+    domain: 'LOCAL',
   });
 
 // confirm order
-export const confirmUserOrder = (userId, OrderId, data) =>
-  // change url to:  url: url: `user_details/${userId}/order/${OrderId}`,,
-  putData({
-    url: `user_details/${userId}/orders/${OrderId}`,
-    data,
-    action: CONFIRM_USER_ORDER,
-    domain: 'ADMIN',
-  });
+// export const confirmUserOrder = (userId, OrderId, data) =>
+//   // change url to:  url: url: `user_details/${userId}/order/${OrderId}`,,
+//   putData({
+//     url: `user_details/${userId}/orders/${OrderId}`,
+//     data,
+//     action: CONFIRM_USER_ORDER,
+//     domain: 'ADMIN',
+//   });
 
 export const resetEvents = () => {
   console.log('cart cleared');
