@@ -14,10 +14,12 @@ const EventElement = (props) => {
   const status = props.renderEvent.status;
   const ticketId = props.renderEvent.ticket_id;
   const quantity = props.renderEvent.quantity;
-  // const variantName = props.renderEvent.variantName;
+  const variantName = props.renderEvent.variantName;
   const variantId = props.renderEvent.variant_id;
   // console.log("variant id", variantId)
   const userId = props.renderEvent.user_id;
+  const createdAt = new Date(props.renderEvent.createdAt).toLocaleString();
+  const variantImage = props.renderEvent.imageUrl;
   const [isChecked, setIsChecked] = useState(false);
 
   const [accordionProps, setAccordionProps] = useState({ disabled: false });
@@ -72,7 +74,7 @@ const EventElement = (props) => {
           // props.removeFromCart({ id });
         } else {
           // If the id does not exist in cart.cartItems, call props.addToCart()
-          props.addToCart({ id, status, ticketId,quantity,variantId });
+          props.addToCart({ id, status, ticketId, quantity, variantId, variantName, createdAt });
         }
 
         setIsChecked(true); // remove if you want the check to still be there after cart cleared
@@ -84,13 +86,19 @@ const EventElement = (props) => {
   return (
     <Accordion {...accordionProps} expanded={expanded} onChange={handleAccordionChange}>
       <AccordionSummary expandIcon={<ExpandMoreOutlined />}>
-        <Checkbox checked={isChecked} onChange={handleCheckboxChange} />
-        {/* <Typography variant="h6">{variantId}</Typography> */}
+        <div
+          style={{ display: 'flex', flexDirection: 'row', gap: '10px', justifyContent: 'center', alignItems: 'center' }}
+        >
+          <Checkbox checked={isChecked} onChange={handleCheckboxChange} />
+          {/* <img height="50px" width="50px" src={variantImage} alt="" /> */}
+          <Typography variant="h6">{id}</Typography>
+        </div>
       </AccordionSummary>
       <AccordionDetails>
-        <Typography>ID: {variantId}</Typography>
+        {/* <Typography>ID: {id}</Typography> */}
         <Typography>Quantity: {quantity}</Typography>
         <Typography>Status: {status}</Typography>
+        <Typography>Time: {createdAt}</Typography>
       </AccordionDetails>
     </Accordion>
   );

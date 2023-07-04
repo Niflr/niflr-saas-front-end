@@ -24,6 +24,7 @@ const EventElement = (props) => {
   const quantity = props.renderEvent.quantity;
   const variantName = props.renderEvent.variant_name;
   const variantImage = props.renderEvent.variant_img;
+  const createdAt = new Date(props.renderEvent.createdAt).toLocaleString();
   const [isChecked, setIsChecked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [accordionProps, setAccordionProps] = useState({ disabled: false });
@@ -85,7 +86,7 @@ const EventElement = (props) => {
           // props.removeFromCart({ id });
         } else {
           // If the id does not exist in cart.cartItems, call props.addToCart()
-          props.addToCart({ id, scaleId, status, machineId, weightChange, ticketId,variantId, quantity });
+          props.addToCart({ id, scaleId, status, machineId, weightChange, ticketId, variantId, quantity, createdAt });
         }
 
         // props.removeFromCart({id})
@@ -107,9 +108,12 @@ const EventElement = (props) => {
         </div>
       </AccordionSummary>
       <AccordionDetails>
+        <Typography>ID: {id}</Typography>
+
         <Typography>Scale ID: {scaleId}</Typography>
         <Typography>Machine ID: {machineId}</Typography>
-        <Typography>Status: {status}</Typography>
+        {status ? <Typography>Status: {status}</Typography> : null}
+        <Typography>Time: {createdAt}</Typography>
       </AccordionDetails>
     </Accordion>
   );

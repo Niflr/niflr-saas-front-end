@@ -122,7 +122,7 @@ const DummyAddToCartModal = (props) => {
               <li>
                 {' '}
                 {/* <Checkbox checked={isChecked} onChange={handleCheckboxChange} /> */}
-                {selectedEvent.name}{' '}
+                {selectedEvent.id}{' '}
               </li>
             </ul>
           </div>
