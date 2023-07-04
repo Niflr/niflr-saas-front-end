@@ -56,6 +56,9 @@ const CartElement = ({ data }) => {
   const [quantity, setQuantity] = useState(0);
   //  useState(parseInt(data.Quantity, 10));
 
+  const createdAt = new Date(data.createdAt).toLocaleString();
+  console.log('CREATED AT: ', createdAt);
+
   const handleAddQuantity = () => {
     setQuantity((prevQuantity) => prevQuantity + 1);
   };
@@ -68,13 +71,15 @@ const CartElement = ({ data }) => {
   return (
     <Accordion className={classes.root}>
       <AccordionSummary
-      // expandIcon={<ExpandMore />}
+        style={{ width: '400px' }}
+        // expandIcon={<ExpandMore />}
       >
         <Box display="flex" flexDirection="row" alignItems="center">
           <Box ml={2}>
             <Typography variant="h6">Code: {data.id}</Typography>
             {/* <Typography variant="body1">Quantity: {data.quantity}</Typography> */}
             <Typography variant="h6">Status: {data.status}</Typography>
+            <Typography variant="h6">Time: {createdAt}</Typography>
           </Box>
         </Box>
       </AccordionSummary>

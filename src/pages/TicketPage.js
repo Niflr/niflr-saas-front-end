@@ -69,11 +69,21 @@ const TicketPage = (props) => {
   const [areAllItemsConfirmed, setAreAllItemsConfirmed] = useState(false);
 
   // const [isSaved,setIsSaved]= useState([]);
+  // const updatedCartItems = props.cart.cartItems.map((item) => {
+  //   const event = props.event.events.events.find((event) => event.id === item.event_id);
+  //   return {
+  //     ...item,
+  //     variant_name: event ? event.variant_name : '',
+  //   };
+  // });
+
+  // // Now the updatedCartItems array contains the variant_name field
+  // console.log('UPDATED CART ITEMS: ', updatedCartItems);
   useEffect(() => {
     const url = `tickets/${props.ticket.ticket.id}`;
     window.history.pushState(null, null, url);
     return () => {
-      window.history.pushState(null, null, '/dashboard/tickets'); // Reset URL when the component is unmounted
+      window.history.pushState(null, null, '/dashboard/tickets');
     };
   }, []); // Empty dependency array ensures that the effect runs only once
 
@@ -88,7 +98,7 @@ const TicketPage = (props) => {
     // console.log("props.ticketsupdated:", props.event);
     setEvents(props.event.events);
   }, [props.event]);
-
+  console.log('EVENTS: ', events);
   useEffect(() => {
     console.log('dummy events updated:', props.dummyEvent);
     setDummyEvents(props.dummyEvent.dummyEvents);
@@ -252,7 +262,7 @@ const TicketPage = (props) => {
   const handleClearButtonClick = () => {
     setIsLoading(true);
     const events = getEventIdsByStatus('ADDED_TO_CART', props.event.events.events);
-    if (events.length === 0 || dummyEvents.length === 0) {
+    if (events.length === 0 && dummyEvents.length === 0) {
       alert('No events to delete!');
     }
     const dummyEvents = getEventIdsByStatus('ADDED_TO_CART', props.dummyEvent.dummyEvents.dummyEvents);
