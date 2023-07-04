@@ -65,15 +65,27 @@ const TicketPage = (props) => {
 
   const [selectedEvents, setSelectedEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeletingCart, setIsDeletingCart] = useState(false);
+  const [isAddingVariant, setIsAddingVariant] = useState(false);
 
   const [areAllItemsConfirmed, setAreAllItemsConfirmed] = useState(false);
-
+  const isOrderGenerated = props.ticket.ticket.order_id;
   // const [isSaved,setIsSaved]= useState([]);
+  // const updatedCartItems = props.cart.cartItems.map((item) => {
+  //   const event = props.event.events.events.find((event) => event.id === item.event_id);
+  //   return {
+  //     ...item,
+  //     variant_name: event ? event.variant_name : '',
+  //   };
+  // });
+
+  // // Now the updatedCartItems array contains the variant_name field
+  // console.log('UPDATED CART ITEMS: ', updatedCartItems);
   useEffect(() => {
     const url = `tickets/${props.ticket.ticket.id}`;
     window.history.pushState(null, null, url);
     return () => {
-      window.history.pushState(null, null, '/dashboard/tickets'); // Reset URL when the component is unmounted
+      window.history.pushState(null, null, '/dashboard/tickets');
     };
   }, []); // Empty dependency array ensures that the effect runs only once
 
@@ -88,7 +100,7 @@ const TicketPage = (props) => {
     // console.log("props.ticketsupdated:", props.event);
     setEvents(props.event.events);
   }, [props.event]);
-
+  console.log('EVENTS: ', events);
   useEffect(() => {
     console.log('dummy events updated:', props.dummyEvent);
     setDummyEvents(props.dummyEvent.dummyEvents);
@@ -164,28 +176,33 @@ const TicketPage = (props) => {
   };
 
   const handleConfirmButtonClick = () => {
-    // setIsLoading(true);
-    props.setModalState({
-      visible: true,
-      modalName: 'confirmTicket',
-      isLoading: false,
-      // modalContent: props.ticket.ticket.id
-    });
+    console.log('CART ITEMS: ', props.cart.cartItems);
+    if (props.cart.cartItems.length === 0) {
+      alert('Error: Empty Cart!');
+    } else {
+      // setIsLoading(true);
+      props.setModalState({
+        visible: true,
+        modalName: 'confirmTicket',
+        isLoading: false,
+        // modalContent: props.ticket.ticket.id
+      });
 
-    // const events=getEventIdsByStatus("saved",props.event.events.events)
-    // props.updateEventStatus({"status":"confirmed", "event_ids":events})
-    // // props.updateDummyEventStatus({"status":"confirmed", "event_ids":dummyEvents})
-    // console.log("updating cart item status")
-    // props.updateCartItemStatus(props.ticket.ticket.id,{"status":"confirmed","TicketId":props.ticket.ticket.id})
-    // props.updateTicketStatus( props.ticket.ticket.id,
-    //     {"status": "confirmed",
-    //     "ticket_id": props.ticket.ticket.id}
-    //      )
-    // props.confirmEvents()
-    // props.cartconfirmed()
+      // const events=getEventIdsByStatus("saved",props.event.events.events)
+      // props.updateEventStatus({"status":"confirmed", "event_ids":events})
+      // // props.updateDummyEventStatus({"status":"confirmed", "event_ids":dummyEvents})
+      // console.log("updating cart item status")
+      // props.updateCartItemStatus(props.ticket.ticket.id,{"status":"confirmed","TicketId":props.ticket.ticket.id})
+      // props.updateTicketStatus( props.ticket.ticket.id,
+      //     {"status": "confirmed",
+      //     "ticket_id": props.ticket.ticket.id}
+      //      )
+      // props.confirmEvents()
+      // props.cartconfirmed()
 
-    console.log('handled confirm button');
-    // setIsLoading(false);
+      console.log('handled confirm button');
+      // setIsLoading(false);
+    }
   };
 
   // const handleSaveButtonClick =()=>{
@@ -250,32 +267,32 @@ const TicketPage = (props) => {
   };
 
   const handleClearButtonClick = () => {
-    setIsLoading(true);
+    setIsDeletingCart(true);
     const events = getEventIdsByStatus('ADDED_TO_CART', props.event.events.events);
-    if (events.length === 0 || dummyEvents.length === 0) {
-      alert('No events to delete!');
-    }
     const dummyEvents = getEventIdsByStatus('ADDED_TO_CART', props.dummyEvent.dummyEvents.dummyEvents);
+    if (events.length === 0 && dummyEvents.length === 0) {
+      alert('No events to delete!');
+    } else {
+      // re setting events in backend db
+      props.updateEventStatus({ status: 'processing', event_ids: events });
+      props.updateDummyEventStatus({ status: 'processing', event_ids: dummyEvents });
+      // props.deleteCartItems(props.ticket.ticket.id);
+      // clearing cart in global state
 
-    // re setting events in backend db
-    props.updateEventStatus({ status: 'processing', event_ids: events });
-    props.updateDummyEventStatus({ status: 'processing', event_ids: dummyEvents });
-    // props.deleteCartItems(props.ticket.ticket.id);
-    // clearing cart in global state
-
-    props.cartCleared();
-    // clearing events and dummy events in global state
-    props.resetEvents();
-    props.resetDummyEvents();
-    setIsLoading(false);
-    alert('Cart Items Deleted Successfully!');
+      props.cartCleared();
+      // clearing events and dummy events in global state
+      props.resetEvents();
+      props.resetDummyEvents();
+      alert('Cart Items Deleted Successfully!');
+    }
+    setIsDeletingCart(false);
   };
 
   const handleDummyEvents = async () => {
-    setIsLoading(true);
+    setIsAddingVariant(true);
     console.log('store ID', props.ticket.ticket.store_Id);
     await props.fetchStoreProductsList({ machineId: props.ticket.ticket.machine_id });
-    setIsLoading(false);
+    setIsAddingVariant(false);
   };
 
   useEffect(() => {
@@ -321,7 +338,7 @@ const TicketPage = (props) => {
                   height: '100%',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: 'white',
+                  color: 'black',
                 }}
               >
                 No Video Available
@@ -475,13 +492,13 @@ const TicketPage = (props) => {
                 <div
                   style={{
                     position: 'relative',
-                    borderRadius: '50%',
+                    borderRadius: '4px',
                     backgroundColor: '#ffffff',
                     boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
                   }}
                 >
-                  <Button variant="contained" color="primary" onClick={handleDummyEvents}>
-                    {isLoading ? 'Hold on..' : 'Add Variant'}
+                  <Button variant="contained" color="primary" onClick={handleDummyEvents} disabled={isAddingVariant}>
+                    {isAddingVariant ? 'Hold on..' : 'Add Variant'}
                   </Button>
                 </div>
 
@@ -506,21 +523,23 @@ const TicketPage = (props) => {
               color="success"
               style={{ color: 'white', height: '3rem' }}
               onClick={handleConfirmButtonClick}
+              disabled={isOrderGenerated}
             >
-              Confirm Ticket
+              {isOrderGenerated ? 'Order Already Generated' : 'Confirm Ticket'}
             </Button>
             <Button
               variant="contained"
               color="error"
               style={{ color: 'white', height: '3rem' }}
               onClick={handleClearButtonClick}
+              disabled={isDeletingCart}
             >
-              {isLoading ? 'Deleting..' : 'Delete Cart'}
+              {isDeletingCart ? 'Deleting..' : 'Delete Cart'}
             </Button>
           </Paper>
         </Grid>
       </Grid>
-
+      {(isDeletingCart || isAddingVariant) && <div className={classes.overlay} />}
       {props.modal.visible && props.modal.modalName === 'eventAddToCart' ? (
         <ModalWrapper modalContent={selectedEvents} addToCartAction={props.eventAddToCart} />
       ) : props.modal.visible ? (
