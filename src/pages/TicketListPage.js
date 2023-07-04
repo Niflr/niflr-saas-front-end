@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 // @mui
 import {
@@ -23,7 +23,7 @@ import {
   TableContainer,
   TablePagination,
 } from '@mui/material';
-import { Navigate ,useNavigate} from "react-router-dom";
+import { Navigate, useNavigate } from 'react-router-dom';
 // components
 import Label from '../components/label';
 import Iconify from '../components/iconify';
@@ -34,7 +34,7 @@ import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // import USERLIST from '../_mock/user';
 import TICKETS from '../_mock/tickets';
 // actions
-import { fetchTicketList,selectTicket,updateCartTicket } from '../actions';
+import { fetchTicketList, selectTicket, updateCartTicket } from '../actions';
 import { useLocalStorage } from '../components/useLocalStorage';
 // ----------------------------------------------------------------------
 
@@ -65,32 +65,29 @@ function getComparator(order, orderBy) {
 }
 
 function applySortFilter(array, comparator, query) {
-  console.log("testing apply sort fileter",array)
-  if (array){
-    if (array.length){
+  console.log('testing apply sort fileter', array);
+  if (array) {
+    if (array.length) {
       const stabilizedThis = array.map((el, index) => [el, index]);
 
-    console.log("testing apply sort fileter",stabilizedThis )
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
-    });
-    if (query) {
-      return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+      console.log('testing apply sort fileter', stabilizedThis);
+      stabilizedThis.sort((a, b) => {
+        const order = comparator(a[0], b[0]);
+        if (order !== 0) return order;
+        return a[1] - b[1];
+      });
+      if (query) {
+        return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+      }
+      return stabilizedThis.map((el) => el[0]);
     }
-    return stabilizedThis.map((el) => el[0]);
-    }
-    
   }
-  return []
-  
+  return [];
 }
 
- function TicketListPage(props) {
-
-  const user= JSON.parse(window.localStorage.getItem("user"));
-  console.log("testing users",user)
+function TicketListPage(props) {
+  const user = JSON.parse(window.localStorage.getItem('user'));
+  console.log('testing users', user);
   const [open, setOpen] = useState(null);
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
@@ -102,39 +99,37 @@ function applySortFilter(array, comparator, query) {
   const [orderBy, setOrderBy] = useState('name');
 
   const [filterTicket, setFilterTicket] = useState('');
-  const [filteredTickets, setFilteredTickets] = useState(applySortFilter(props.ticket.tickets, getComparator(order, orderBy), filterTicket));
+  const [filteredTickets, setFilteredTickets] = useState(
+    applySortFilter(props.ticket.tickets, getComparator(order, orderBy), filterTicket)
+  );
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [selectedTicket, setSelectedTicket] = useState({});
 
   useEffect(() => {
-    console.log("calling use effect", props)
+    console.log('calling use effect', props);
 
-    props.fetchTicketList()
+    props.fetchTicketList();
     // if (!users) return <div>Loading...</div>;
     // console.log("calling use effect 2", props.users)
-
   }, []);
   useEffect(() => {
-    console.log("setting selected ticket state",selectedTicket)
+    console.log('setting selected ticket state', selectedTicket);
     props.selectTicket(selectedTicket);
     props.updateCartTicket(selectedTicket.id);
-     if(selectedTicket.id){
-        navigate('/dashboard/ticket', {replace:true});
-      }
+    if (selectedTicket.id) {
+      navigate('/dashboard/ticket', { replace: true });
+    }
   }, [selectedTicket]);
-  
-  useEffect(() => {
-    console.log("props.ticketsupdated:", props.ticket);
-    setFilteredTickets(applySortFilter(props.ticket.tickets, getComparator(order, orderBy), filterTicket));
-   
-  }, [props.ticket.tickets]);
 
+  useEffect(() => {
+    console.log('props.ticketsupdated:', props.ticket);
+    setFilteredTickets(applySortFilter(props.ticket.tickets, getComparator(order, orderBy), filterTicket));
+  }, [props.ticket.tickets]);
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
-  
 
   const handleCloseMenu = () => {
     setOpen(null);
@@ -170,10 +165,10 @@ function applySortFilter(array, comparator, query) {
     setSelected(newSelected);
   };
 
-  const handleTicketSelect =(row)=>{
-    console.log("selected ticket",row)
-    setSelectedTicket(row)
-  }
+  const handleTicketSelect = (row) => {
+    console.log('selected ticket', row);
+    setSelectedTicket(row);
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -204,7 +199,7 @@ function applySortFilter(array, comparator, query) {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-          Tickets
+            Tickets
           </Typography>
           {/* <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
             New User
@@ -226,52 +221,67 @@ function applySortFilter(array, comparator, query) {
                   onRequestSort={handleRequestSort}
                   // onSelectAllClick={handleSelectAllClick}
                 />
-                <TableBody>
-                {filteredTickets? filteredTickets.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    console.log("ticket rows", row)
-                    const userId= row.user_id;
-                    const machineId= row.machine_id;
-                    const { id, status  } = row;
-                    // const selectedUser = selected.indexOf(name) !== -1;
+                {props.ticket.tickets.length > 0 ? (
+                  <TableBody>
+                    {filteredTickets
+                      ? filteredTickets.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                          console.log('ticket rows', row);
+                          const userId = row.user_id;
+                          const machineId = row.machine_id;
+                          const { id, status } = row;
+                          // const selectedUser = selected.indexOf(name) !== -1;
 
-                    return (
-                      <TableRow >
-                        {/* <TableCell padding="checkbox">
+                          return (
+                            <TableRow>
+                              {/* <TableCell padding="checkbox">
                           <Checkbox checked={ticketId} onChange={(event) => handleClick(event, name)} />
                         </TableCell> */}
 
-                        <TableCell component="th" scope="row" padding="20" align="center">
-                          {/* <Stack direction="row" alignItems="center" spacing={2}> */}
-                            {/* <Avatar alt={name} src={avatarUrl} /> */}
-                            <Typography variant="subtitle2" sx={{ whiteSpace: 'pre-wrap' }} >
-                              {id}
-                            </Typography>
-                          {/* </Stack> */}
-                        </TableCell>
+                              <TableCell component="th" scope="row" padding="20" align="center">
+                                {/* <Stack direction="row" alignItems="center" spacing={2}> */}
+                                {/* <Avatar alt={name} src={avatarUrl} /> */}
+                                <Typography variant="subtitle2" sx={{ whiteSpace: 'pre-wrap' }}>
+                                  {id}
+                                </Typography>
+                                {/* </Stack> */}
+                              </TableCell>
 
-                        <TableCell padding="20" align="center">{userId}</TableCell>
+                              <TableCell padding="20" align="center">
+                                {userId}
+                              </TableCell>
 
-                        <TableCell padding="20" align="center">{machineId}</TableCell>
+                              <TableCell padding="20" align="center">
+                                {machineId}
+                              </TableCell>
 
+                              <TableCell padding="20" align="center">
+                                <Label color={(status === 'banned' && 'error') || 'success'}>
+                                  {sentenceCase(status)}
+                                </Label>
+                              </TableCell>
 
-                        <TableCell padding="20" align="center">
-                          <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
-                        </TableCell>
-
-                        <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={()=>handleTicketSelect(row)}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  }):null}
-                  {/* {emptyRows > 0 && (
+                              <TableCell align="right">
+                                <IconButton size="large" color="inherit" onClick={() => handleTicketSelect(row)}>
+                                  <Iconify icon={'eva:more-vertical-fill'} />
+                                </IconButton>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })
+                      : null}
+                    {/* {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
                       <TableCell colSpan={6} />
                     </TableRow>
                   )} */}
-                </TableBody>
+                  </TableBody>
+                ) : (
+                  <Typography
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', padding: '50px' }}
+                  >
+                    No tickets to show
+                  </Typography>
+                )}
 
                 {isNotFound && (
                   <TableBody>
@@ -344,8 +354,9 @@ function applySortFilter(array, comparator, query) {
   );
 }
 
-const mapStateToProps =({ticket,isloading})=>({
-  ticket , isloading
-})
+const mapStateToProps = ({ ticket, isloading }) => ({
+  ticket,
+  isloading,
+});
 
-export default connect(mapStateToProps,{fetchTicketList,selectTicket,updateCartTicket})(TicketListPage);
+export default connect(mapStateToProps, { fetchTicketList, selectTicket, updateCartTicket })(TicketListPage);

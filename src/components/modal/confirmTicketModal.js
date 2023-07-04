@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Modal, TextField, IconButton } from '@mui/material';
 import { Close } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
+
 import { connect } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import ModalWrapper from './modalWrapper';
@@ -52,6 +54,8 @@ const generateRandomId = () => {
 };
 
 const AddConfirmTicketModal = (props) => {
+  const navigate = useNavigate();
+
   const classes = useStyles();
   const [status, setStatus] = useState('processing');
   const [weightChange, setWeightChangeEvent] = useState('');
@@ -78,7 +82,7 @@ const AddConfirmTicketModal = (props) => {
   };
 
   const getEventIdsByStatus = (status, events) => {
-    console.log("   inside getCheckedEventIds", events)
+    console.log('   inside getCheckedEventIds', events);
     const checkedEvents = events.filter((event) => event.status === status);
     const checkedEventIds = checkedEvents.map((event) => event.id);
     return checkedEventIds;
@@ -150,7 +154,7 @@ const AddConfirmTicketModal = (props) => {
       const events = getEventIdsByStatus('ADDED_TO_CART', props.event.events.events);
       const dummyEvents = getEventIdsByStatus('ADDED_TO_CART', props.dummyEvent.dummyEvents.dummyEvents);
       const userCart = getEventIdsByStatus('ADDED_TO_CART', props.cart.cartItems);
-      console.log("userCart", userCart)
+      console.log('userCart', userCart);
       const sortedEvents = props.event.events.events
         .filter((event) => {
           if (Array.isArray(events)) {
@@ -185,7 +189,7 @@ const AddConfirmTicketModal = (props) => {
       const sortedCart = props.cart.cartItems
         .filter((event) => {
           if (Array.isArray(userCart)) {
-            console.log("finding user cart",event)
+            console.log('finding user cart', event);
             return userCart.includes(event.id) && event.status === 'ADDED_TO_CART';
           }
           return false;
@@ -195,36 +199,38 @@ const AddConfirmTicketModal = (props) => {
       props.cartconfirmed();
 
       if (sortedCart.length > 0) {
-
         props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
-            // const sortedCart = props.cart.cartItems.filter(item => item.status === "ADDED_TO_CART");
+        // const sortedCart = props.cart.cartItems.filter(item => item.status === "ADDED_TO_CART");
         const sortedOrder = [];
 
-        sortedCart.forEach(item => {
-          console.log("checking sorted order",item )
+        sortedCart.forEach((item) => {
+          console.log('checking sorted order', item);
           sortedOrder.push({
             variantId: item.variantId,
-            quantity: parseInt(item.quantity, 10)
+            quantity: parseInt(item.quantity, 10),
           });
         });
-        console.log("sorted order inplemented",sortedOrder)
+        console.log('sorted order inplemented', sortedOrder);
         // calliing create oder request
-        props.createUserOrder({userId:props.ticket.ticket.user_id, ticketId:props.ticket.ticket.id, items:sortedOrder})
+        props.createUserOrder({
+          userId: props.ticket.ticket.user_id,
+          ticketId: props.ticket.ticket.id,
+          items: sortedOrder,
+        });
 
-    
-
-
-    // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
+        // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
       }
       console.log('handled confirm button');
       // setTimeout(() => {
       //   console.log('timeout working');
-      props.setModalState({
+      await props.setModalState({
         visible: true,
         modalName: 'loading',
         // modalContent: props.product.products.updatedVariants,
         isLoading: false,
       });
+
+      navigate('/dashboard/tickets');
       // loadModal(false);
       // return true;
       // }, 5000);

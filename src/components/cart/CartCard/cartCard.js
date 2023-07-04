@@ -79,7 +79,7 @@ const CartElement = ({ data }) => {
             <Typography variant="h6">Code: {data.id}</Typography>
             {/* <Typography variant="body1">Quantity: {data.quantity}</Typography> */}
             <Typography variant="h6">Status: {data.status}</Typography>
-            <Typography variant="h6">Time: {createdAt}</Typography>
+            {createdAt && !Number.isNaN(createdAt) && <Typography variant="h6">Time: {createdAt}</Typography>}
           </Box>
         </Box>
       </AccordionSummary>

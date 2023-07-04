@@ -527,15 +527,17 @@ const TicketPage = (props) => {
             >
               {isOrderGenerated ? 'Order Already Generated' : 'Confirm Ticket'}
             </Button>
-            <Button
-              variant="contained"
-              color="error"
-              style={{ color: 'white', height: '3rem' }}
-              onClick={handleClearButtonClick}
-              disabled={isDeletingCart}
-            >
-              {isDeletingCart ? 'Deleting..' : 'Delete Cart'}
-            </Button>
+            {isOrderGenerated ? null : (
+              <Button
+                variant="contained"
+                color="error"
+                style={{ color: 'white', height: '3rem' }}
+                onClick={handleClearButtonClick}
+                disabled={isDeletingCart}
+              >
+                {isDeletingCart ? 'Deleting..' : 'Delete Cart'}
+              </Button>
+            )}
           </Paper>
         </Grid>
       </Grid>

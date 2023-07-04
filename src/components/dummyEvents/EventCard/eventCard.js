@@ -90,8 +90,8 @@ const EventElement = (props) => {
           style={{ display: 'flex', flexDirection: 'row', gap: '10px', justifyContent: 'center', alignItems: 'center' }}
         >
           <Checkbox checked={isChecked} onChange={handleCheckboxChange} />
-          {/* <img height="50px" width="50px" src={variantImage} alt="" /> */}
-          <Typography variant="h6">{id}</Typography>
+          <img height="50px" width="50px" src={variantImage} alt="" />
+          <Typography variant="h6">{variantName}</Typography>
         </div>
       </AccordionSummary>
       <AccordionDetails>
