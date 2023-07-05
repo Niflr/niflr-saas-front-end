@@ -424,20 +424,22 @@ const TicketPage = (props) => {
               )}
             </Paper>
           </div>
-          <div className={classes.eventButtons} style={{ backgroundColor: 'white' }}>
-            <div
-              style={{
-                position: 'absolute',
-                borderRadius: '50%',
-                backgroundColor: '#ffffff',
-                boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-              }}
-            >
-              <Button variant="contained" color="primary" onClick={handleEventSaveButtonClick}>
-                Review & Add To Cart
-              </Button>
+          {isOrderGenerated ? null : (
+            <div className={classes.eventButtons} style={{ backgroundColor: 'white' }}>
+              <div
+                style={{
+                  position: 'absolute',
+                  borderRadius: '50%',
+                  backgroundColor: '#ffffff',
+                  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                }}
+              >
+                <Button variant="contained" color="primary" onClick={handleEventSaveButtonClick}>
+                  Review & Add To Cart
+                </Button>
+              </div>
             </div>
-          </div>
+          )}
           <div style={{ marginTop: '10px', height: '100%', maxHeight: '35vh' }}>
             <Typography variant="h6" gutterBottom className={classes.header}>
               Dummy Events
@@ -452,69 +454,35 @@ const TicketPage = (props) => {
                   )}
                 </div>
               </Paper>
-              <div className={classes.eventButtons} style={{ backgroundColor: 'white' }}>
-                {/* <div
-                  style={{
-                    position: 'absolute',
-                    borderRadius: '50%',
-                    backgroundColor: '#ffffff',
-                    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                  }}
-                >
-                  <Button variant="contained" color="primary" onClick={handleEventSaveButtonClick}>
-                    Add
-                  </Button>
-                </div> */}
-                {/* <IconButton
-                  style={{
-                    // alignSelf:"flex-start",
-                    //   position: 'absolute',
-                    borderRadius: '50%',
-                    backgroundColor: '#ffffff',
-                    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                  }}
-                  onClick={handleDummyEvents}
-                >
-                  <Add />
-                </IconButton> */}
-                {/* <IconButton
-                  style={{
-                    // position: 'absolute',
-                    borderRadius: '50%',
-                    backgroundColor: '#ffffff',
-                    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                  }}
-                  onClick={handleDummyEventSaveButtonClick}
-                >
-                  <AbcRounded />
-                </IconButton> */}
+              {isOrderGenerated ? null : (
+                <div className={classes.eventButtons} style={{ backgroundColor: 'white' }}>
+                  <div
+                    style={{
+                      position: 'relative',
+                      borderRadius: '4px',
+                      backgroundColor: '#ffffff',
+                      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                    }}
+                  >
+                    <Button variant="contained" color="primary" onClick={handleDummyEvents} disabled={isAddingVariant}>
+                      {isAddingVariant ? 'Hold on..' : 'Add Variant'}
+                    </Button>
+                  </div>
 
-                <div
-                  style={{
-                    position: 'relative',
-                    borderRadius: '4px',
-                    backgroundColor: '#ffffff',
-                    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                  }}
-                >
-                  <Button variant="contained" color="primary" onClick={handleDummyEvents} disabled={isAddingVariant}>
-                    {isAddingVariant ? 'Hold on..' : 'Add Variant'}
-                  </Button>
+                  <div
+                    style={{
+                      position: 'relative',
+                      borderRadius: '50%',
+                      backgroundColor: '#ffffff',
+                      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                    }}
+                  >
+                    <Button variant="contained" color="primary" onClick={handleDummyEventSaveButtonClick}>
+                      Add To Cart
+                    </Button>
+                  </div>
                 </div>
-
-                <div
-                  style={{
-                    position: 'relative',
-                    borderRadius: '50%',
-                    backgroundColor: '#ffffff',
-                    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                  }}
-                >
-                  <Button variant="contained" color="primary" onClick={handleDummyEventSaveButtonClick}>
-                    Add To Cart
-                  </Button>
-                </div>
-              </div>
+              )}
             </div>
           </div>
           <Paper className={classes.buttonContainer}>
@@ -525,7 +493,7 @@ const TicketPage = (props) => {
               onClick={handleConfirmButtonClick}
               disabled={isOrderGenerated}
             >
-              {isOrderGenerated ? 'Order Already Generated' : 'Confirm Ticket'}
+              {isOrderGenerated ? 'Order Already Generated' : 'Confirm Order'}
             </Button>
             {isOrderGenerated ? null : (
               <Button
@@ -535,7 +503,7 @@ const TicketPage = (props) => {
                 onClick={handleClearButtonClick}
                 disabled={isDeletingCart}
               >
-                {isDeletingCart ? 'Deleting..' : 'Delete Cart'}
+                {isDeletingCart ? 'Clearing..' : 'Clear Cart'}
               </Button>
             )}
           </Paper>

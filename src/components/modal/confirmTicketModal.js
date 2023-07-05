@@ -156,7 +156,7 @@ const AddConfirmTicketModal = (props) => {
       console.log('user dummy events', dummyEvents);
       const userCart = getEventIdsByStatus('ADDED_TO_CART', props.cart.cartItems);
       console.log('userCart', userCart);
-      
+
       const sortedEvents = props.event.events.events
         .filter((event) => {
           if (Array.isArray(events)) {
@@ -210,6 +210,7 @@ const AddConfirmTicketModal = (props) => {
           sortedOrder.push({
             variantId: item.variantId || item.variant_id,
             quantity: parseInt(item.quantity, 10),
+            variantName: item.variant_name || item.variantName,
           });
         });
         console.log('sorted order inplemented', sortedOrder);

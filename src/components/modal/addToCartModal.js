@@ -85,7 +85,7 @@ const AddToCartModal = (props) => {
     // ... implement the logic to add events to the cart ...
 
     // Close the modal
-  
+
     props.eventAddToCart();
     // const sortedCart = props.cart.cartItems.filter(item => item.status === "ADDED_TO_CART");
 
@@ -112,7 +112,7 @@ const AddToCartModal = (props) => {
       </div>
       {props.selectedEvents.map((selectedEvent) => {
         return (
-          <div style={{ padding: '10px', fontSize: '1em' }}>
+          <div style={{ padding: '20px', fontSize: '1em' }}>
             <ul>
               <li>
                 {' '}

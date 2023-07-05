@@ -76,10 +76,10 @@ const CartElement = ({ data }) => {
       >
         <Box display="flex" flexDirection="row" alignItems="center">
           <Box ml={2}>
-            <Typography variant="h6">Code: {data.id}</Typography>
+            <Typography variant="h6">{data.variant_name ? data.variant_name : data.variantName}</Typography>
             {/* <Typography variant="body1">Quantity: {data.quantity}</Typography> */}
             <Typography variant="h6">Status: {data.status}</Typography>
-            {createdAt && !Number.isNaN(createdAt) && <Typography variant="h6">Time: {createdAt}</Typography>}
+            {createdAt && !Number.isNaN(createdAt) && <Typography variant="h6">Quantity: {data.quantity}</Typography>}
           </Box>
         </Box>
       </AccordionSummary>

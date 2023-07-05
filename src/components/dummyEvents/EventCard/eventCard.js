@@ -14,13 +14,13 @@ const EventElement = (props) => {
   const status = props.renderEvent.status;
   const ticketId = props.renderEvent.ticket_id;
   const quantity = props.renderEvent.quantity;
-  const variantName = props.renderEvent.variantName;
+  const variantName = props.renderEvent.variant_name || props.renderEvent.variantName;
   const variantId = props.renderEvent.variant_id || props.renderEvent.variantId;
-  
+
   // console.log("variant id", variantId)
   const userId = props.renderEvent.user_id;
   const createdAt = new Date(props.renderEvent.createdAt).toLocaleString();
-  const variantImage = props.renderEvent.imageUrl;
+  const variantImage = props.renderEvent.image_url;
   const [isChecked, setIsChecked] = useState(false);
 
   const [accordionProps, setAccordionProps] = useState({ disabled: false });
