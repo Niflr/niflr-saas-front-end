@@ -17,6 +17,7 @@ import {
   RESET_EVENTS,
   EVENTS_CONFIRMED,
   EVENTS_ADDED_TO_CART,
+  REMOVE_EVENTS_FROM_CART
 } from '../types/index';
 
 const DATA = {
@@ -93,6 +94,23 @@ export default (state = DATA, action) => {
       const updatedEvents = state.events.events.map((event) => {
         if (event.status === 'ADDED_TO_CART') {
           return { ...event, status: 'checked' };
+        }
+        return event;
+      });
+      return {
+        ...state,
+        events: { ...state.events, events: updatedEvents },
+      };
+    }
+
+    case REMOVE_EVENTS_FROM_CART:
+
+    {
+      console.log("remove event from cart called",action.payload)
+      const updatedEvents = state.events.events.map((event) => {
+        if (event.status === "ADDED_TO_CART" && event.id === action.payload) {
+          console.log("remove event from cart called",action.payload)
+          return { ...event, status: "checked" };
         }
         return event;
       });

@@ -17,6 +17,14 @@ import {
 } from '@mui/material';
 import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
+import { connect } from 'react-redux';
+import {
+  updateEventStatus,
+  updateDummyEventStatus,
+  resetEventById,
+  resetDummyEventById,
+  removeFromCart
+} from '../../../actions';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -57,23 +65,46 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const CartElement = ({ data }) => {
+const CartElement = (props ) => {
   const classes = useStyles();
   const [quantity, setQuantity] = useState(0);
   //  useState(parseInt(data.Quantity, 10));
 
-  const createdAt = new Date(data.createdAt).toLocaleString();
+  const createdAt = new Date(props.data.createdAt).toLocaleString();
   console.log('CREATED AT: ', createdAt);
 
   const handleAddQuantity = () => {
     setQuantity((prevQuantity) => prevQuantity + 1);
   };
 
+  const removeItemButtonClick = () => {
+
+    // make a function to fiter if the evnet id exists in events or dummyevents?
+    
+      // re setting events  and or dummy events in backend db
+     const cartEvent= props.data
+     if (props.event.events.events.some(event => cartEvent.id === props.event.events.events)){
+      props.updateEventStatus({ status: 'processing', event_ids: [cartEvent.id] });
+      props.resetEventById(cartEvent.id);
+     }
+     else{
+      props.updateDummyEventStatus({ status: 'processing', event_ids: [cartEvent.id] });
+      props.resetDummyEventById(cartEvent.id);
+     }
+    
+      props.removeFromCart(cartEvent.id);
+     
+      alert('Cart Item Deleted Successfully!');
+    
+  
+  };
+
+
   const handleSubtractQuantity = () => {
     setQuantity((prevQuantity) => Math.max(prevQuantity - 1, 0));
   };
 
-  console.log('ITEM DATA', data);
+  console.log('ITEM DATA', props.data);
   return (
     <TableContainer>
       <Table>
@@ -82,7 +113,8 @@ const CartElement = ({ data }) => {
             <TableCell>Field</TableCell>
             <TableCell>Value</TableCell>
             <TableCell>
-              <IconButton>
+              <IconButton 
+              onClick={removeItemButtonClick}>
                 <RemoveCircleOutline />
               </IconButton>
             </TableCell>
@@ -94,7 +126,7 @@ const CartElement = ({ data }) => {
               <Typography variant="h6">Name: </Typography>
             </TableCell>
             <TableCell>
-              <Typography variant="h6">{data.variant_name ? data.variant_name : data.variantName}</Typography>
+              <Typography variant="h6">{props.data.variant_name ? props.data.variant_name : props.data.variantName}</Typography>
             </TableCell>
           </TableRow>
           <TableRow>
@@ -102,7 +134,7 @@ const CartElement = ({ data }) => {
               <Typography variant="h6">Status:</Typography>
             </TableCell>
             <TableCell>
-              <Typography variant="h6">{data.status}</Typography>
+              <Typography variant="h6">{props.data.status}</Typography>
             </TableCell>
           </TableRow>
           <TableRow>
@@ -188,4 +220,16 @@ const CartElement = ({ data }) => {
 //   </CardContent>
 // </Card>
 
-export default CartElement;
+const mapStateToProps = ({ cart,event }) => ({
+  cart,event
+});
+
+
+export default connect(mapStateToProps, {
+  updateEventStatus,
+  updateDummyEventStatus,
+  resetEventById,
+  resetDummyEventById,
+  removeFromCart
+})(CartElement);
+

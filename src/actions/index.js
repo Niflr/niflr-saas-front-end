@@ -106,6 +106,8 @@ import {
   PUT_DUMMY_EVENT_STATUS,
   FETCH__DUMMY_EVENTS_LIST,
   CART_STATUS_CONFIRMED,
+  REMOVE_DUMMY_EVENTS_FROM_CART,
+  REMOVE_EVENTS_FROM_CART
 } from '../types/index';
 
 import RequestService from '../services/RequestService';
@@ -268,6 +270,8 @@ export const deleteData =
     }
   };
 
+ 
+
 export const updateTicketStatus = (ticketId, data) =>
   putData({
     url: `tickets/${ticketId}`,
@@ -345,6 +349,7 @@ export const fetchCartList = (params) =>
     action: FETCH__CART_DETAILS,
     domain: 'CLOUD',
   });
+ 
 
 //  fetch event list
 export const fetchEventList = (params) =>
@@ -385,6 +390,18 @@ export const eventAddToCart = () => {
   console.log('add event to cart');
   return {
     type: EVENTS_ADDED_TO_CART,
+  };
+};
+
+export const resetEventById=(eventId)=>{
+  return {
+    type: REMOVE_EVENTS_FROM_CART,
+    payload: eventId,
+  };
+};
+export const resetDummyEventById=(eventId)=>{
+  return {type: REMOVE_DUMMY_EVENTS_FROM_CART,
+    payload:eventId ,
   };
 };
 

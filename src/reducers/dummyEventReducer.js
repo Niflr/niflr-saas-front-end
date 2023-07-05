@@ -20,7 +20,8 @@ import {
     RESET_DUMMY_EVENTS,
     IS_DUMMY_EVENT_CHECKED,
     DUMMY_EVENTS_CONFIRMED,
-    DUMMY_EVENTS_ADDED_TO_CART
+    DUMMY_EVENTS_ADDED_TO_CART,
+    REMOVE_DUMMY_EVENTS_FROM_CART
   } from '../types/index';
   
   const DATA = {
@@ -132,6 +133,23 @@ import {
         {
           const updatedEvents = state.dummyEvents.dummyEvents.map((event) => {
             if (event.status === "ADDED_TO_CART") {
+              return { ...event, status: "checked" };
+            }
+            return event;
+          });
+          return {
+            ...state,
+            dummyEvents: { ...state.dummyEvents, dummyEvents: updatedEvents },
+          };
+        }
+
+        case REMOVE_DUMMY_EVENTS_FROM_CART:
+
+        {
+          // console.log("remove dummyevent from cart called",action.payload)
+          const updatedEvents = state.dummyEvents.dummyEvents.map((event) => {
+            if (event.status === "ADDED_TO_CART" && event.id === action.payload) {
+              console.log("remove dummyevent from cart called",action.payload)
               return { ...event, status: "checked" };
             }
             return event;
