@@ -15,7 +15,8 @@ const EventElement = (props) => {
   const ticketId = props.renderEvent.ticket_id;
   const quantity = props.renderEvent.quantity;
   const variantName = props.renderEvent.variantName;
-  const variantId = props.renderEvent.variant_id;
+  const variantId = props.renderEvent.variant_id || props.renderEvent.variantId;
+  
   // console.log("variant id", variantId)
   const userId = props.renderEvent.user_id;
   const createdAt = new Date(props.renderEvent.createdAt).toLocaleString();

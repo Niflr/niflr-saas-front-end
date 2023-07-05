@@ -153,8 +153,10 @@ const AddConfirmTicketModal = (props) => {
       // console.log('checking dummyevents', props.dummyEvent);
       const events = getEventIdsByStatus('ADDED_TO_CART', props.event.events.events);
       const dummyEvents = getEventIdsByStatus('ADDED_TO_CART', props.dummyEvent.dummyEvents.dummyEvents);
+      console.log('user dummy events', dummyEvents);
       const userCart = getEventIdsByStatus('ADDED_TO_CART', props.cart.cartItems);
       console.log('userCart', userCart);
+      
       const sortedEvents = props.event.events.events
         .filter((event) => {
           if (Array.isArray(events)) {
@@ -163,7 +165,7 @@ const AddConfirmTicketModal = (props) => {
           return false;
         })
         .map((event) => ({ ...event, status: 'CONFIRMED' }));
-      console.log('sorted dummy events', sortedEvents);
+      console.log('sorted  events', sortedEvents);
       props.eventsSaved();
       if (sortedEvents.length > 0) {
         props.updateEventStatus({ status: 'CONFIRMED', event_ids: events });
@@ -206,7 +208,7 @@ const AddConfirmTicketModal = (props) => {
         sortedCart.forEach((item) => {
           console.log('checking sorted order', item);
           sortedOrder.push({
-            variantId: item.variantId,
+            variantId: item.variantId || item.variant_id,
             quantity: parseInt(item.quantity, 10),
           });
         });
@@ -230,7 +232,7 @@ const AddConfirmTicketModal = (props) => {
         isLoading: false,
       });
 
-      navigate('/dashboard/tickets');
+      // navigate('/dashboard/tickets');
       // loadModal(false);
       // return true;
       // }, 5000);
