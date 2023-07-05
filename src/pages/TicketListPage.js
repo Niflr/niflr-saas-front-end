@@ -24,6 +24,8 @@ import {
   TablePagination,
 } from '@mui/material';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { ArrowForward } from '@mui/icons-material';
+import { fDateTime } from '../utils/formatTime';
 // components
 import Label from '../components/label';
 import Iconify from '../components/iconify';
@@ -43,7 +45,8 @@ const TABLE_HEAD = [
   { id: 'user_id', label: 'User ID', alignRight: false },
   { id: 'machine_id', label: 'Machine ID', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
-  { id: '' },
+  { id: 'created_at', label: 'Created At', alignRight: false },
+  { id: 'updated_at', label: 'Updated At', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -210,8 +213,8 @@ function TicketListPage(props) {
           {/* <UserListToolbar numSelected={selected.length} filterName={filterTicket} onFilterName={handleFilterByName} /> */}
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
+            <TableContainer sx={{ minWidth: 800, maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}>
+              <Table stickyHeader="true">
                 <UserListHead
                   order={order}
                   orderBy={orderBy}
@@ -259,10 +262,16 @@ function TicketListPage(props) {
                                   {sentenceCase(status)}
                                 </Label>
                               </TableCell>
+                              <TableCell padding="20" align="center">
+                                {fDateTime(row.createdAt)}
+                              </TableCell>
+                              <TableCell padding="20" align="center">
+                                {fDateTime(row.updatedAt)}
+                              </TableCell>
 
                               <TableCell align="right">
                                 <IconButton size="large" color="inherit" onClick={() => handleTicketSelect(row)}>
-                                  <Iconify icon={'eva:more-vertical-fill'} />
+                                  <ArrowForward />
                                 </IconButton>
                               </TableCell>
                             </TableRow>

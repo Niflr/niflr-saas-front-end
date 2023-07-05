@@ -122,7 +122,7 @@ const DummyAddToCartModal = (props) => {
               <li style={{ display: 'flex', justifyContent: 'space-around' }}>
                 {' '}
                 {/* <Checkbox checked={isChecked} onChange={handleCheckboxChange} /> */}
-                <div style={{ fontWeight: 'bold' }}>{selectedEvent.variant_name}</div>
+                <div style={{ fontWeight: 'bold' }}>{selectedEvent.variantName}</div>
                 <div>{selectedEvent.quantity}</div>
               </li>
             </ul>

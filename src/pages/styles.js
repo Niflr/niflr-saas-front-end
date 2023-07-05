@@ -32,6 +32,7 @@ export const useStyles = makeStyles(() => ({
     borderRadius: '5px',
     gap: '3px',
     alignItems: 'center',
+    overflowX: 'auto',
   },
 
   cartDivs: {
@@ -68,6 +69,7 @@ export const useStyles = makeStyles(() => ({
     width: '100%',
     maxHeight: '40vh',
     paddingX: '10px',
+    overflowX: 'auto',
     backgroundColor: 'white',
     borderRadius: '8px',
     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.6)',
@@ -129,6 +131,7 @@ export const useStyles = makeStyles(() => ({
     // maxHeight: '40%',
     zIndex: '1',
     overflow: 'auto',
+    maxHeight: '400px',
     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.6)',
   },
 

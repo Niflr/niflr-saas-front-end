@@ -38,7 +38,7 @@ const AddDummyEventModal = (props) => {
   const imageUrl = props.product.primaryImageUrl;
   const [status, setStatus] = useState('processing');
   const [weightChange, setWeightChangeEvent] = useState('');
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const handleClose = () => {
     setStatus('');
     setWeightChangeEvent('');
@@ -70,6 +70,7 @@ const AddDummyEventModal = (props) => {
       minute: '2-digit',
       second: '2-digit',
     });
+    const quantityValue = parseInt(quantity, 10);
 
     props.addDummyEvent({
       id,
@@ -78,7 +79,7 @@ const AddDummyEventModal = (props) => {
       machineId,
       userId,
       status: 'processing',
-      quantity,
+      quantity: quantityValue,
       variantName,
       imageUrl,
       createdAt,
@@ -111,10 +112,10 @@ const AddDummyEventModal = (props) => {
             width: '200px',
           }}
         >
-          <TextField label="variant name" value={variantName} disabled fullWidth />
+          <TextField label="Variant Name" value={variantName} disabled fullWidth />
           <TextField label="Status" value={status} disabled fullWidth />
 
-          <TextField label="add Quantity" value={weightChange} onChange={(e) => setWeightChangeEvent(e.target.value)} />
+          <TextField label="Add Quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)} />
 
           <div style={{ display: 'flex', gap: '4px', alignItems: 'center', justifyContent: 'center' }}>
             <Button variant="contained" color="primary" onClick={handleSave}>

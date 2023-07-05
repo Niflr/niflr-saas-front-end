@@ -23,7 +23,7 @@ import {
   updateDummyEventStatus,
   resetEventById,
   resetDummyEventById,
-  removeFromCart
+  removeFromCart,
 } from '../../../actions';
 
 const useStyles = makeStyles(() => ({
@@ -65,9 +65,9 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const CartElement = (props ) => {
+const CartElement = (props) => {
   const classes = useStyles();
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(parseInt(props.data.quantity, 10));
   //  useState(parseInt(data.Quantity, 10));
 
   const createdAt = new Date(props.data.createdAt).toLocaleString();
@@ -78,35 +78,28 @@ const CartElement = (props ) => {
   };
 
   const removeItemButtonClick = () => {
-
     // make a function to fiter if the evnet id exists in events or dummyevents?
-    
-      // re setting events  and or dummy events in backend db
-     const cartEvent= props.data
-     if (props.event.events.events.some(event =>(cartEvent.id === event.id && event.status === "ADDED_TO_CART") )){
+
+    // re setting events  and or dummy events in backend db
+    const cartEvent = props.data;
+    if (props.event.events.events.some((event) => cartEvent.id === event.id && event.status === 'ADDED_TO_CART')) {
       props.updateEventStatus({ status: 'processing', event_ids: [cartEvent.id] });
       props.resetEventById(cartEvent.id);
       props.removeFromCart(cartEvent.id);
       alert('Cart Item Deleted Successfully!');
-     }
-     else
-     if (props.dummyEvent.dummyEvents.dummyEvents.some(event =>(cartEvent.id === event.id && event.status === "ADDED_TO_CART") ))
-      {
+    } else if (
+      props.dummyEvent.dummyEvents.dummyEvents.some(
+        (event) => cartEvent.id === event.id && event.status === 'ADDED_TO_CART'
+      )
+    ) {
       props.updateDummyEventStatus({ status: 'processing', event_ids: [cartEvent.id] });
       props.resetDummyEventById(cartEvent.id);
       props.removeFromCart(cartEvent.id);
       alert('Cart Item Deleted Successfully!');
-     }
-    else{
+    } else {
       alert('This cart item cannot be deleted!');
     }
-      
-     
-     
-    
-  
   };
-
 
   const handleSubtractQuantity = () => {
     setQuantity((prevQuantity) => Math.max(prevQuantity - 1, 0));
@@ -121,49 +114,48 @@ const CartElement = (props ) => {
             <TableCell>Field</TableCell>
             <TableCell>Value</TableCell>
             <TableCell>
-              <IconButton 
-              onClick={removeItemButtonClick}>
+              <IconButton onClick={removeItemButtonClick}>
                 <RemoveCircleOutline />
               </IconButton>
             </TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
-          <TableRow>
-            <TableCell>
-              <Typography variant="h6">Name: </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography variant="h6">{props.data.variant_name ? props.data.variant_name : props.data.variantName}</Typography>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>
-              <Typography variant="h6">Status:</Typography>
-            </TableCell>
-            <TableCell>
-              <Typography variant="h6">{props.data.status}</Typography>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>
-              <Typography variant="h6">Quantity:</Typography>
-            </TableCell>
-            <TableCell>
-              <Box className={classes.quantityContainer}>
-                <IconButton onClick={handleSubtractQuantity}>
-                  <RemoveCircleOutline />
-                </IconButton>
-                <Typography variant="body1" className={classes.quantityText}>
-                  {quantity}
-                </Typography>
-                <IconButton onClick={handleAddQuantity}>
-                  <AddCircleOutline />
-                </IconButton>
-              </Box>
-            </TableCell>
-          </TableRow>
-        </TableBody>
+        <TableRow>
+          <TableCell>
+            <Typography variant="h6">Name: </Typography>
+          </TableCell>
+          <TableCell>
+            <Typography variant="h6">
+              {props.data.variant_name ? props.data.variant_name : props.data.variantName}
+            </Typography>
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>
+            <Typography variant="h6">Status:</Typography>
+          </TableCell>
+          <TableCell>
+            <Typography variant="h6">{props.data.status}</Typography>
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>
+            <Typography variant="h6">Quantity:</Typography>
+          </TableCell>
+          <TableCell>
+            <Box className={classes.quantityContainer}>
+              <IconButton onClick={handleSubtractQuantity}>
+                <RemoveCircleOutline />
+              </IconButton>
+              <Typography variant="body1" className={classes.quantityText}>
+                {quantity}
+              </Typography>
+              <IconButton onClick={handleAddQuantity}>
+                <AddCircleOutline />
+              </IconButton>
+            </Box>
+          </TableCell>
+        </TableRow>
       </Table>
     </TableContainer>
   );
@@ -228,16 +220,16 @@ const CartElement = (props ) => {
 //   </CardContent>
 // </Card>
 
-const mapStateToProps = ({ cart,event,dummyEvent }) => ({
-  cart,event,dummyEvent
+const mapStateToProps = ({ cart, event, dummyEvent }) => ({
+  cart,
+  event,
+  dummyEvent,
 });
-
 
 export default connect(mapStateToProps, {
   updateEventStatus,
   updateDummyEventStatus,
   resetEventById,
   resetDummyEventById,
-  removeFromCart
+  removeFromCart,
 })(CartElement);
-

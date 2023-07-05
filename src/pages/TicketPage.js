@@ -356,24 +356,24 @@ const TicketPage = (props) => {
           </Typography>
           <div className={classes.cartScroller}>
             <Paper className={classes.cartContainer}>
-              <div className={classes.cartDivs}>
-                {cart && cart.length > 0 ? (
-                  <CartContainer />
-                ) : (
-                  <span
-                    style={{
-                      display: 'flex',
-                      height: '100%',
-                      width: '100%',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'black',
-                    }}
-                  >
-                    No items added to Cart yet
-                  </span>
-                )}
-              </div>
+              {/* <div className={classes.cartDivs}> */}
+              {cart && cart.length > 0 ? (
+                <CartContainer />
+              ) : (
+                <span
+                  style={{
+                    display: 'flex',
+                    height: '100%',
+                    width: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'black',
+                  }}
+                >
+                  No items added to Cart yet
+                </span>
+              )}
+              {/* </div> */}
             </Paper>
             {/* <div className={classes.cartButtons}>
        
