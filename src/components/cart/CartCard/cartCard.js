@@ -83,7 +83,7 @@ const CartElement = (props ) => {
     
       // re setting events  and or dummy events in backend db
      const cartEvent= props.data
-     if (props.event.events.events.some(event => cartEvent.id === props.event.events.events)){
+     if (props.event.events.events.some(event => cartEvent.id === event.id)){
       props.updateEventStatus({ status: 'processing', event_ids: [cartEvent.id] });
       props.resetEventById(cartEvent.id);
      }
