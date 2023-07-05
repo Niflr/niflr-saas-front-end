@@ -83,18 +83,26 @@ const CartElement = (props ) => {
     
       // re setting events  and or dummy events in backend db
      const cartEvent= props.data
-     if (props.event.events.events.some(event => cartEvent.id === event.id)){
+     if (props.event.events.events.some(event =>(cartEvent.id === event.id && event.status === "ADDED_TO_CART") )){
       props.updateEventStatus({ status: 'processing', event_ids: [cartEvent.id] });
       props.resetEventById(cartEvent.id);
+      props.removeFromCart(cartEvent.id);
+      alert('Cart Item Deleted Successfully!');
      }
-     else{
+     else
+     if (props.dummyEvent.dummyEvents.dummyEvents.some(event =>(cartEvent.id === event.id && event.status === "ADDED_TO_CART") ))
+      {
       props.updateDummyEventStatus({ status: 'processing', event_ids: [cartEvent.id] });
       props.resetDummyEventById(cartEvent.id);
-     }
-    
       props.removeFromCart(cartEvent.id);
-     
       alert('Cart Item Deleted Successfully!');
+     }
+    else{
+      alert('This cart item cannot be deleted!');
+    }
+      
+     
+     
     
   
   };
@@ -220,8 +228,8 @@ const CartElement = (props ) => {
 //   </CardContent>
 // </Card>
 
-const mapStateToProps = ({ cart,event }) => ({
-  cart,event
+const mapStateToProps = ({ cart,event,dummyEvent }) => ({
+  cart,event,dummyEvent
 });
 
 
