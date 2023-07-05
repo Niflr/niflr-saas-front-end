@@ -25,7 +25,7 @@ export const useStyles = makeStyles(() => ({
   cartScroller: {
     display: 'flex',
     flexDirection: 'column',
-    height: '40%',
+    height: '100%',
     width: '100%',
     justifyContent: 'flex-start',
     backgroundColor: 'white',
