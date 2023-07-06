@@ -258,10 +258,13 @@ function TicketListPage(props) {
                               </TableCell>
 
                               <TableCell padding="20" align="center">
-                                <Label color={(status === 'banned' && 'error') || 'success'}>
-                                  {sentenceCase(status)}
-                                </Label>
+                                {status === 'TO_BE_REVIEWED' ? (
+                                  <Label color="error">{sentenceCase(status)}</Label>
+                                ) : (
+                                  <Label color="success">{sentenceCase(status)}</Label>
+                                )}
                               </TableCell>
+
                               <TableCell padding="20" align="center">
                                 {fDateTime(row.createdAt)}
                               </TableCell>

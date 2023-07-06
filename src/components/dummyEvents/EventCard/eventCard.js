@@ -20,7 +20,7 @@ const EventElement = (props) => {
   // console.log("variant id", variantId)
   const userId = props.renderEvent.user_id;
   const createdAt = new Date(props.renderEvent.createdAt).toLocaleString();
-  const variantImage = props.renderEvent.image_url;
+  const variantImage = props.renderEvent.imageUrl;
   const [isChecked, setIsChecked] = useState(false);
 
   const [accordionProps, setAccordionProps] = useState({ disabled: false });
