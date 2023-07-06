@@ -258,10 +258,10 @@ function TicketListPage(props) {
                               </TableCell>
 
                               <TableCell padding="20" align="center">
-                                {status === 'TO_BE_REVIEWED' ? (
-                                  <Label color="error">{sentenceCase(status)}</Label>
+                                {row.order_id ? (
+                                  <Label color="success">Confirmed</Label>
                                 ) : (
-                                  <Label color="success">{sentenceCase(status)}</Label>
+                                  <Label color="error">To Be Reviewed</Label>
                                 )}
                               </TableCell>
 
