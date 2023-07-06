@@ -19,7 +19,7 @@ export const useStyles = makeStyles(() => ({
     paddingRight: '10px',
     borderRadius: '8px',
     backgroundColor: 'white',
-    overflow: 'auto',
+    overflow: 'hidden',
   },
 
   cartScroller: {
@@ -98,7 +98,8 @@ export const useStyles = makeStyles(() => ({
     flex: '0 0 40%',
     display: 'flex',
     flexDirection: 'column',
-    height: '100%',
+    height: ']00%',
+    maxHeight: '800px',
     // width: '100%',
     paddingRight: '0px',
 

@@ -211,6 +211,7 @@ const TicketPage = (props) => {
 
   const handleEventSaveButtonClick = () => {
     const events = getEventNameByStatus('checked', props.event.events.events);
+
     console.log('CHECKED EVENTS: ', events);
     if (events.length > 0) {
       setSelectedEvents(events);

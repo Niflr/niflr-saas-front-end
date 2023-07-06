@@ -47,6 +47,7 @@ const TABLE_HEAD = [
   { id: 'status', label: 'Status', alignRight: false },
   { id: 'created_at', label: 'Created At', alignRight: false },
   { id: 'updated_at', label: 'Updated At', alignRight: false },
+  { id: 'action', label: 'Action', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------

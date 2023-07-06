@@ -7,14 +7,14 @@ import { setModalState } from '../../actions/index';
 const Loader = (props) => {
   console.log('isloading state', props);
   const [showTick, setShowTick] = useState(false);
-  const [message, setMessage] = useState('Confirming ticket...');
+  const [message, setMessage] = useState('Confirming order...');
 
   useEffect(() => {
     // console.log('called isLoading', isLoading);
     if (props.modal.isLoading === false && props.modal.visible === true) {
       console.log('called isLoading', props.modal.isLoading);
       setShowTick(true);
-      setMessage('Ticket Confirmed');
+      setMessage('Order Confirmed');
 
       // Simulating API call completion
       setTimeout(() => {

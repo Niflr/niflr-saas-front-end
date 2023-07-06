@@ -79,7 +79,7 @@ const ViewStoreProductsModal = (props) => {
 
   const handleCheckboxChange = (event, product) => {
     console.log('handling checked product', product);
-    setSelectedProduct(event.target.checked ? product : []);
+    setSelectedProduct(event.target.checked ? product : null);
   };
 
   const filteredProducts = props.products.filter((product) =>

@@ -263,7 +263,7 @@ const AddConfirmTicketModal = (props) => {
 
               // style={{ alignSelf: 'center' }}
             >
-              Confirm Ticket?
+              Confirm Order?
             </h2>
             {/* <IconButton
           style={{
