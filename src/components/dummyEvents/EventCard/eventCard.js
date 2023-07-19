@@ -19,7 +19,7 @@ const EventElement = (props) => {
 
   // console.log("variant id", variantId)
   const userId = props.renderEvent.user_id;
-  const createdAt = new Date(props.renderEvent.createdAt).toLocaleString();
+  const createdAt = props.renderEvent.createdAt;
   const variantImage = props.renderEvent.imageUrl;
   const [isChecked, setIsChecked] = useState(false);
 

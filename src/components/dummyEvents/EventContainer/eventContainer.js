@@ -4,13 +4,6 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import EventElement from '../EventCard/eventCard';
 
-// import {useStyles} from "./styles";
-
-// actions
-// import {
-//     fetchEventList,
-// } from "../../../actions";
-
 const useStyles = makeStyles({
   // handling styles for the component
   root: {

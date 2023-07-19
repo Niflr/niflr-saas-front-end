@@ -113,17 +113,18 @@ const AddToCartModal = (props) => {
       {props.selectedEvents.map((selectedEvent) => {
         return (
           <div style={{ padding: '20px', fontSize: '1em' }}>
-            <ul>
-              <li>
+            <ul style={{ width: '100%' }}>
+              <li style={{ display: 'flex', justifyContent: 'space-around' }}>
                 {' '}
                 {/* <Checkbox checked={isChecked} onChange={handleCheckboxChange} /> */}
-                {selectedEvent.name}{' '}
+                <div style={{ fontWeight: 'bold' }}>{selectedEvent.name}</div>
+                <div>{selectedEvent.quantity}</div>
               </li>
             </ul>
           </div>
         );
       })}
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'flex-start' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center' }}>
         <div
           style={{
             height: '50%',

@@ -1,9 +1,11 @@
 import { useEffect, useState, memo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import {
-  box,
+  Box,
   Grid,
+  Tab,
+  Tabs,
   Paper,
   Typography,
   Container,
@@ -11,10 +13,14 @@ import {
   CardContent,
   Card,
   Button,
+  Stack,
+  Divider,
   IconButton,
 } from '@mui/material';
 import { Add, AbcRounded, Clear } from '@mui/icons-material';
+import { styled } from '@mui/material/styles';
 import { connect } from 'react-redux';
+
 import AddToCartModal from '../components/modal/addToCartModal';
 
 import EventContainer from '../components/events/EventContainer/eventContainer';
@@ -70,24 +76,52 @@ const TicketPage = (props) => {
 
   const [areAllItemsConfirmed, setAreAllItemsConfirmed] = useState(false);
   const isOrderGenerated = props.ticket.ticket.order_id;
-  // const [isSaved,setIsSaved]= useState([]);
-  // const updatedCartItems = props.cart.cartItems.map((item) => {
-  //   const event = props.event.events.events.find((event) => event.id === item.event_id);
-  //   return {
-  //     ...item,
-  //     variant_name: event ? event.variant_name : '',
-  //   };
-  // });
 
-  // // Now the updatedCartItems array contains the variant_name field
-  // console.log('UPDATED CART ITEMS: ', updatedCartItems);
+  const [value, setValue] = useState(0);
+  const [subValue, setSubValue] = useState(0);
+
+  const racks = props.ticket.ticket.rack_map ? props.ticket.ticket.rack_map.rack_details : null;
+  const [activeRack, setActiveRack] = useState(racks && racks.length > 0 ? racks[0].rack_id : null);
+  const [activeRackCameras, setActiveRackCameras] = useState([]);
+
+  const [selectedCamera, setSelectedCamera] = useState(null);
+
+  useEffect(() => {
+    // Find the primary camera from the activeRackCameras array
+    const primaryCamera = activeRackCameras.find((camera) => camera.primary);
+    if (primaryCamera) {
+      setSelectedCamera(primaryCamera); // Set the primary camera as the default selected camera
+    }
+  }, [activeRackCameras]);
+
+  useEffect(() => {
+    // Assuming you have a function to get the active rack's data by its ID
+    const activeRackData = racks ? racks.find((rack) => rack.rack_id === activeRack) : null;
+
+    if (activeRackData) {
+      setActiveRackCameras(activeRackData.rack_cameras); // Set the active rack's cameras
+      // Now, the default selected camera will be set by the first useEffect, so it will be the primary camera of the active rack.
+      // You may also add additional logic here to handle the case when there's no primary camera.
+    }
+  }, [activeRack]);
+
+  const handlePrimaryTabChange = (event, newValue) => {
+    setValue(newValue);
+    // setSubValue(newValue); // Reset the selected tab in the secondary set
+  };
+
+  const handleSecondaryTabChange = (event, newValue) => {
+    setSubValue(newValue);
+    // setSubValue(newValue); // Reset the selected tab in the secondary set
+  };
+
   useEffect(() => {
     const url = `tickets/${props.ticket.ticket.id}`;
     window.history.pushState(null, null, url);
     return () => {
       window.history.pushState(null, null, '/dashboard/tickets');
     };
-  }, []); // Empty dependency array ensures that the effect runs only once
+  }, []);
 
   useEffect(() => {
     props.fetchVideoList(props.ticket.ticket.video);
@@ -118,36 +152,6 @@ const TicketPage = (props) => {
     setVideos(props.video.videos);
   }, [props.video]);
 
-  // useEffect(() => {
-  //     console.log("props.isSaved updated:", props.cart.isSaved);
-  //     setVideos(props.cart.isSaved);
-  //   }, [props.cart]);
-
-  // const renderVideoSlider =(videos)=>{
-  //     console.log("inside render video slider",videos)
-  //     return <VideoSlider videos ={videos} handleAddEvent={handleDummyEvents}/>
-  // }
-
-  const handleSaveButtonClick = () => {
-    props.setModalState({
-      visible: true,
-      modalName: 'addToCart',
-      // modalContent: props.ticket.ticket.id
-    });
-    // props.eventSaved()
-    // props.ticketSaved()
-    // const events = getEventIdsByStatus('checked', props.event.events.events);
-    // props.cartSaved();
-    // const cart = props.cart.cartItems;
-    // props.updateEventStatus({ status: 'saved', event_ids: events });
-    // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: cart });
-    // props.updateDummyEventStatus({"status":"saved", "event_ids":events})
-    // props.updateCartItemStatus()
-    // props.dummyEventsSaved();
-    // props.eventsSaved();
-    // console.log("handledd save button")
-  };
-
   const getEventIdsByStatus = (status, events) => {
     // console.log("   inside getCheckedEventIds", status)
     const checkedEvents = events.filter((event) => event.status === status);
@@ -155,23 +159,14 @@ const TicketPage = (props) => {
     return checkedEventIds;
   };
 
-  const getEventNameByStatus = (status, events) => {
+  const getEventsByStatus = (status, events) => {
     const checkedEvents = events.filter((event) => event.status === status);
     const checkedEventNameAndId = checkedEvents.map((event) => ({
       id: event.id,
       name: event.variant_name,
+      quantity: event.quantity,
     }));
     console.log('CHECKED EVENT NAMES AND IDS: ', checkedEventNameAndId);
-    return checkedEventNameAndId;
-  };
-
-  const getDummyEventNameByStatus = (status, events) => {
-    const checkedEvents = events.filter((event) => event.status === status);
-    const checkedEventNameAndId = checkedEvents.map((event) => ({
-      id: event.id,
-      name: event.variantName,
-    }));
-    console.log('CHECKED DUMMY EVENTS: ', checkedEventNameAndId);
     return checkedEventNameAndId;
   };
 
@@ -185,32 +180,14 @@ const TicketPage = (props) => {
         visible: true,
         modalName: 'confirmTicket',
         isLoading: false,
-        // modalContent: props.ticket.ticket.id
       });
 
-      // const events=getEventIdsByStatus("saved",props.event.events.events)
-      // props.updateEventStatus({"status":"confirmed", "event_ids":events})
-      // // props.updateDummyEventStatus({"status":"confirmed", "event_ids":dummyEvents})
-      // console.log("updating cart item status")
-      // props.updateCartItemStatus(props.ticket.ticket.id,{"status":"confirmed","TicketId":props.ticket.ticket.id})
-      // props.updateTicketStatus( props.ticket.ticket.id,
-      //     {"status": "confirmed",
-      //     "ticket_id": props.ticket.ticket.id}
-      //      )
-      // props.confirmEvents()
-      // props.cartconfirmed()
-
       console.log('handled confirm button');
-      // setIsLoading(false);
     }
   };
 
-  // const handleSaveButtonClick =()=>{
-
-  // }
-
   const handleEventSaveButtonClick = () => {
-    const events = getEventNameByStatus('checked', props.event.events.events);
+    const events = getEventsByStatus('checked', props.event.events.events);
 
     console.log('CHECKED EVENTS: ', events);
     if (events.length > 0) {
@@ -222,14 +199,10 @@ const TicketPage = (props) => {
         modalContent: events,
       });
 
-      // props.eventAddToCart();
       props.updateEventStatus({ status: 'ADDED_TO_CART', event_ids: events.map((event) => event.id) });
-      // props.addToCart()
     } else {
       alert('Please select some events first!');
-      // Display an error message or take any appropriate action
     }
-    // props.addToCart()
   };
 
   const handleDummyEventSaveButtonClick = () => {
@@ -245,28 +218,37 @@ const TicketPage = (props) => {
 
     // console.log('CHECKED DUMMY EVENTS: ', events);
     if (sortedEvents.length > 0) {
-      // setSelectedEvents(events);
       props.setModalState({
         visible: true,
         modalName: 'dummyEventAddToCart',
         modalContent: sortedEvents,
       });
-      // props.updateDummyEventStatus({ status: 'ADDED_TO_CART', event_ids: events.map((event) => event.id) });
     } else {
       alert('Please select some dummy events first!');
     }
-    // const sortedEvents = props.dummyEvent.dummyEvents.dummyEvents
-    //   .filter((event) => {
-    //     if (Array.isArray(events)) {
-    //       return events.includes(event.id) && event.status === 'checked';
-    //     }
-    //     return false;
-    //   })
-    //   .map((event) => ({ ...event, status: 'ADDED_TO_CART' }));
-    // console.log('sorted events', sortedEvents);
-    // props.dummyEventAddToCart();
   };
 
+  const handleRackItemClick = (rack) => {
+    // if (rack.rack_id === activeRack) {
+    //   // If the clicked rack is already active, deselect it
+    //   setActiveRack(null);
+    //   setActiveRackCameras([]);
+    //   setSelectedCamera(null); // Reset the selected camera
+    // } else {
+    // Set the clicked rack as active and update the active rack's cameras
+    setActiveRack(rack.rack_id);
+    setActiveRackCameras(rack.rack_cameras);
+    setSelectedCamera(null); // Reset the selected camera
+
+    console.log('active rack cameras', activeRackCameras);
+    // }
+  };
+
+  const handleCameraClick = (camera) => {
+    setSelectedCamera(camera); // Set the selected camera
+  };
+  console.log('selected camera', selectedCamera);
+  console.log(activeRackCameras, 'activeRackCameras');
   const handleClearButtonClick = () => {
     setIsDeletingCart(true);
     const events = getEventIdsByStatus('ADDED_TO_CART', props.event.events.events);
@@ -308,7 +290,6 @@ const TicketPage = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Redirect to /dashboard/tickets when going back to this page
     const handlePopState = () => {
       navigate('/dashboard/tickets');
     };
@@ -319,19 +300,38 @@ const TicketPage = (props) => {
       window.removeEventListener('popstate', handlePopState);
     };
   }, []);
+
+  function a11yProps(index) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }
+
+  const filteredVideos =
+    selectedCamera && videos.videos ? videos.videos.filter((video) => video.cam_name === selectedCamera.rtmp_path) : [];
+
+  console.log(filteredVideos, 'filtered videos');
   console.log('TICKET PAGE PROPS: ', props);
   console.log('SELECTED EVENTS: ', selectedEvents);
-  console.log('props.eventAddToCart', props.eventAddToCart);
-  // console.log("inside video page")
+
   console.log('CART', cart);
   console.log('VIDEOS: ', videos);
   return (
     <Container maxWidth={false} className={classes.pageContainer}>
-      <Grid container spacing={0}>
+      <Grid container spacing={0} style={{ width: '100%', height: '100%', overflow: 'hidden' }}>
         <Grid item xs={12} sm={6} md={8} className={classes.leftContainer}>
+          <Box sx={{ display: 'flex', borderBottom: 1, borderColor: 'divider', justifyContent: 'space-between' }}>
+            <Tabs value={value} onChange={handlePrimaryTabChange} aria-label="basic tabs example">
+              <Tab label="Primary View" {...a11yProps(0)} />{' '}
+              <Tabs value={value} onChange={handlePrimaryTabChange} aria-label="basic tabs example" />
+              <Tab label="ReID View" {...a11yProps(1)} disabled />
+            </Tabs>
+          </Box>
+
           <Paper className={classes.videoContainer}>
-            {props.video.count > 0 ? (
-              <VideoSlider videos={videos} handleAddEvent={handleDummyEvents} />
+            {filteredVideos.length > 0 ? (
+              <VideoSlider videos={filteredVideos} handleAddEvent={handleDummyEvents} />
             ) : (
               <span
                 style={{
@@ -342,22 +342,137 @@ const TicketPage = (props) => {
                   color: 'black',
                 }}
               >
-                No Video Available
+                {selectedCamera ? 'No Video Available for Selected Camera' : 'No Videos Available'}
               </span>
             )}
           </Paper>
+          {racks && (
+            <div
+              style={{
+                padding: '5px',
+                boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.6)',
+                overflowX: 'auto',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" flexItem />}>
+                {racks.map((rack) => (
+                  <Button
+                    style={{
+                      backgroundColor: rack.rack_id === activeRack ? '#2065D1' : 'white',
+                      color: rack.rack_id === activeRack ? 'white' : '#2065D1',
+                    }}
+                    key={rack.rack_id}
+                    onClick={() => handleRackItemClick(rack)}
+                  >
+                    {rack.rack_name}
+                  </Button>
+                ))}
+              </Stack>
+            </div>
+          )}
+          {activeRack && (
+            <div
+              style={{
+                padding: '5px',
+                boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.6)',
+                overflowX: 'auto',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" flexItem />}>
+                {activeRackCameras.map((camera) => (
+                  <Button
+                    key={camera.id}
+                    style={{
+                      backgroundColor: camera.primary ? 'green' : '#622A0F',
+                      color: 'white',
+                      fontWeight: selectedCamera === camera ? 'bold' : 'normal', // Highlight the selected camera
+                    }}
+                    onClick={() => handleCameraClick(camera)} // Handle camera selection
+                  >
+                    {camera.rtmp_path}
+                  </Button>
+                ))}
+              </Stack>
+            </div>
+          )}
+        </Grid>
 
-          <Typography
-            variant="h6"
-            gutterBottom
-            className={classes.header}
-            style={{ alignSelf: 'flex-start', marginTop: '10px', fontSize: '1.5rem', width: '20%' }}
-          >
-            User Cart
-          </Typography>
-          <div className={classes.cartScroller}>
+        <Grid item xs={12} sm={6} md={4} className={classes.rightContainer}>
+          <div>
+            <Typography variant="h6" gutterBottom className={classes.header}>
+              Events
+            </Typography>
+            <Paper className={classes.eventContainer}>
+              {props.event.events.events && props.event.events.events.length > 0 ? (
+                <div>
+                  <EventContainer />
+                </div>
+              ) : (
+                <span
+                  style={{
+                    display: 'flex',
+                    height: '100%',
+                    width: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'black',
+                  }}
+                >
+                  No Events
+                </span>
+              )}
+            </Paper>
+            {isOrderGenerated ? null : (
+              <div className={classes.eventButtons}>
+                <Button variant="contained" color="primary" onClick={handleEventSaveButtonClick}>
+                  Review & Add To Cart
+                </Button>
+              </div>
+            )}
+          </div>
+          <div>
+            <Typography variant="h6" gutterBottom className={classes.header}>
+              Dummy Events
+            </Typography>
+            <div>
+              <Paper className={classes.eventContainer}>
+                {props.dummyEvent.count > 0 ? (
+                  <DummyEventContainer />
+                ) : (
+                  <span
+                    style={{
+                      display: 'flex',
+                      height: '100%',
+                      width: '100%',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'black',
+                    }}
+                  >
+                    No Dummy Events
+                  </span>
+                )}
+              </Paper>
+              {isOrderGenerated ? null : (
+                <div className={classes.eventButtons}>
+                  <Button variant="contained" color="primary" onClick={handleDummyEvents} disabled={isAddingVariant}>
+                    {isAddingVariant ? 'Hold on..' : 'Add Variant'}
+                  </Button>
+
+                  <Button variant="contained" color="primary" onClick={handleDummyEventSaveButtonClick}>
+                    Add To Cart
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+          <div>
+            <Typography variant="h6" gutterBottom className={classes.header}>
+              User Cart
+            </Typography>
             <Paper className={classes.cartContainer}>
-              {/* <div className={classes.cartDivs}> */}
               {cart && cart.length > 0 ? (
                 <CartContainer />
               ) : (
@@ -374,118 +489,9 @@ const TicketPage = (props) => {
                   No items added to Cart yet
                 </span>
               )}
-              {/* </div> */}
-            </Paper>
-            {/* <div className={classes.cartButtons}>
-       
-              <IconButton
-                style={{
-                  // position: 'absolute',
-                  borderRadius: '50%',
-                  backgroundColor: '#ffffff',
-                  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                }}
-                onClick={() => {
-                  if (areAllItemsConfirmed) {
-                    return alert('Cannot remove confirmed items from cart!');
-                  }
-
-                  return handleClearButtonClick;
-                }}
-              >
-                <Clear />
-              </IconButton>
-            </div> */}
-          </div>
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={4} className={classes.rightContainer}>
-          <Typography variant="h6" gutterBottom className={classes.header}>
-            Events
-          </Typography>
-          <div className={classes.eventScroller}>
-            <Paper className={classes.eventContainer}>
-              {events ? (
-                <div>
-                  <EventContainer />
-                </div>
-              ) : (
-                <span
-                  style={{
-                    display: 'flex',
-                    height: '100%',
-                    width: '100%',
-                    alignItems: 'flex-start',
-                    justifyContent: 'flex-start',
-                    color: 'black',
-                  }}
-                >
-                  No Events
-                </span>
-              )}
             </Paper>
           </div>
-          {isOrderGenerated ? null : (
-            <div className={classes.eventButtons} style={{ backgroundColor: 'white' }}>
-              <div
-                style={{
-                  position: 'absolute',
-                  borderRadius: '50%',
-                  backgroundColor: '#ffffff',
-                  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                }}
-              >
-                <Button variant="contained" color="primary" onClick={handleEventSaveButtonClick}>
-                  Review & Add To Cart
-                </Button>
-              </div>
-            </div>
-          )}
-          <div style={{ marginTop: '10px', height: '100%', maxHeight: '35vh' }}>
-            <Typography variant="h6" gutterBottom className={classes.header}>
-              Dummy Events
-            </Typography>
-            <div className={classes.eventScroller}>
-              <Paper className={classes.eventContainer}>
-                <div>
-                  {props.dummyEvent.count > 0 ? (
-                    <DummyEventContainer />
-                  ) : (
-                    <Typography>No Dummy Events Available</Typography>
-                  )}
-                </div>
-              </Paper>
-              {isOrderGenerated ? null : (
-                <div className={classes.eventButtons} style={{ backgroundColor: 'white' }}>
-                  <div
-                    style={{
-                      position: 'relative',
-                      borderRadius: '4px',
-                      backgroundColor: '#ffffff',
-                      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                    }}
-                  >
-                    <Button variant="contained" color="primary" onClick={handleDummyEvents} disabled={isAddingVariant}>
-                      {isAddingVariant ? 'Hold on..' : 'Add Variant'}
-                    </Button>
-                  </div>
 
-                  <div
-                    style={{
-                      position: 'relative',
-                      borderRadius: '50%',
-                      backgroundColor: '#ffffff',
-                      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                    }}
-                  >
-                    <Button variant="contained" color="primary" onClick={handleDummyEventSaveButtonClick}>
-                      Add To Cart
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
           <Paper className={classes.buttonContainer}>
             <Button
               variant="contained"

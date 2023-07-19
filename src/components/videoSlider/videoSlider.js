@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import VideoElement from '../video/VideoCard/videoCard';
 
 const useStyles = makeStyles({
-  // handling styles for the component
   root: {
     //   maxWidth: 600,
     // backgroundColor: 'black',
@@ -52,6 +51,7 @@ const useStyles = makeStyles({
 });
 
 function VideoSlider(props) {
+  console.log('videos propsss', props);
   const classes = useStyles();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [addDummy, setAddDummy] = useState(true);
@@ -63,8 +63,8 @@ function VideoSlider(props) {
   };
 
   useEffect(() => {
-    console.log('calling set videos', JSON.stringify(props.video));
-    setVideos(props.video.videos.videos);
+    console.log('calling set videos', JSON.stringify(props.videos));
+    setVideos(props.videos);
   }, [props.video]);
 
   const handleRightArrowClick = () => {
@@ -78,8 +78,10 @@ function VideoSlider(props) {
   const formatVideoPosition = () => {
     return `${currentVideoIndex + 1}/${videos.length}`;
   };
+  console.log(videos[currentVideoIndex], 'videoss current');
   const renderVideos = (videos) => {
     console.log('videos exists', videos);
+
     return (
       <Card className={classes.root}>
         <VideoElement setEvent={setAddDummy} video={videos[currentVideoIndex]} />
@@ -88,54 +90,28 @@ function VideoSlider(props) {
           style={{
             display: 'flex',
             flexDirection: 'row',
-            // flexDirection: 'row',
           }}
         >
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              // flexDirection: 'row',
-            }}
+          <Button
+            variant="contained"
+            color="primary"
+            className={`${classes.arrowButton} ${classes.leftArrow}`}
+            onClick={handleLeftArrowClick}
           >
-            <Button
-              variant="contained"
-              color="primary"
-              className={`${classes.arrowButton} ${classes.leftArrow}`}
-              onClick={handleLeftArrowClick}
-            >
-              {'<'}
-            </Button>
-            <Typography variant="body2" style={{ marginTop: '7px' }}>
-              {formatVideoPosition()}
-            </Typography>
-            {/* place a counter in here */}
-            <Button
-              variant="contained"
-              color="primary"
-              className={`${classes.arrowButton} ${classes.rightArrow}`}
-              onClick={handleRightArrowClick}
-            >
-              {'>'}
-            </Button>
-          </div>
-          {/* {
-              addDummy ? <IconButton
-              style={{
-                  position: 'relative',
-                  width: '20%',
-
-                  borderRadius: '50%',
-                  backgroundColor: '#ffffff',
-                  boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                  marginBottom:'5px',
-                  marginLeft: '5px',
-              }}
-              onClick={props.handleAddEvent}
-              >
-      <Add  />
-      </IconButton> :null
-           }                  */}
+            {'<'}
+          </Button>
+          <Typography variant="body2" style={{ marginTop: '7px' }}>
+            {formatVideoPosition()}
+          </Typography>
+          {/* place a counter in here */}
+          <Button
+            variant="contained"
+            color="primary"
+            className={`${classes.arrowButton} ${classes.rightArrow}`}
+            onClick={handleRightArrowClick}
+          >
+            {'>'}
+          </Button>
         </div>
       </Card>
     );
@@ -143,7 +119,7 @@ function VideoSlider(props) {
 
   return (
     // console.log("videoslider props", props.video.status),
-    videos ? renderVideos(props.video.videos.videos) : null
+    videos ? renderVideos(props.videos) : null
   );
 }
 

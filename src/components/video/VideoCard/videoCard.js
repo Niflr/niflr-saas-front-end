@@ -7,12 +7,10 @@ import { makeStyles } from '@mui/styles';
 const useStyles = makeStyles({
   rootContainer: {
     width: '100%',
-    height: '85%',
+    height: '100%',
     margin: 'auto',
 
     flexDirection: 'column',
-
-
   },
   mark: {
     backgroundColor: 'gray',
@@ -64,7 +62,7 @@ function VideoElement(props) {
   //   const eventDate = new Date(eventTime);
   //   const videoStartDate = new Date(videoStartTime);
   //   const videoEndDate = new Date(videoEndTime);
-  
+
   //   return eventDate >= videoStartDate && eventDate <= videoEndDate;
   // }
 
@@ -75,7 +73,6 @@ function VideoElement(props) {
     // console.log("checking video duration",JSON.stringify(videoRef.current))
     // console.log("checking interval duration",intervalDuration)
     // const numberOfIntervals = Math.ceil(videoDuration / intervalDuration);
-    
     // console.log("checking video start time",videoStartTime)
     // console.log("checking video end time",videoEndTime)
     // const filteredEvents = events.filter(event => isEventInVideo(event.createdAt, videoStartTime, videoEndTime));
@@ -84,14 +81,12 @@ function VideoElement(props) {
     // for (let i = 0; i < numberOfIntervals; i+=1) {
     //   const intervalStart = i * intervalDuration;
     //   const intervalEnd = (i + 1) * intervalDuration;
-      
     //   // Check if there are any events within the interval
     //   const eventsWithinInterval = filteredEvents.filter(event => {
     //     const eventTime = new Date(event.createdAt).getTime() / 1000;
     //     return eventTime >= intervalStart && eventTime < intervalEnd;
     //   });
     //   if (eventsWithinInterval.length > 0) {
-        
     //     newIntervals.push(intervalEnd);
     //   }
     // }
@@ -99,12 +94,12 @@ function VideoElement(props) {
     // setTimeIntervals(newIntervals);
   }, [videoRef]);
 
-//   useEffect(() => {
-//     console.log("video events mapping", JSON.stringify(props.event.events));
-//     setEvents(props.event.events.events);
-// }, [props.event]);
+  //   useEffect(() => {
+  //     console.log("video events mapping", JSON.stringify(props.event.events));
+  //     setEvents(props.event.events.events);
+  // }, [props.event]);
   // const timeIntervals = [0, 0.03, 0.1, 0.5];
-  
+
   // const marks = timeIntervals.map((time) => ({
   //   value: time * videoRef.current.duration,
   //   // label: `${time.toFixed(2)}s`,
@@ -133,70 +128,62 @@ function VideoElement(props) {
       setIsPlaying(true);
     }
   };
-  
+
   return (
-    <Card 
-      className={classes.rootContainer}
-    >
-      <div
-      style={{
-        height: '80%',
-      }}
-      >
-          <CardMedia
-            component='video'
-            height='100%'
-            src={videoPath}
-            // controls
-            ref={videoRef}
-            onPause={handleVideoPause}
-            onPlay={handleVideoPlay}
-            currentTime={currentTime}
-            className={classes.media} 
-            onTimeUpdate={handleTimeUpdate}
-          />
-      </div>
-     
-      
+    <Card className={classes.rootContainer}>
       <div
         style={{
-        bottom: 0,
-        paddingTop: '20px',
-        paddingLeft: '20px',
-        paddingRight: '20px',
-        display: 'flex',
-        flexDirection: 'row',
+          height: '90%',
         }}
       >
-        <IconButton 
-          style={{
-            paddingRight: '20px',
-          }}
-          onClick={handlePlayPauseClick}
-        >
-          {isPlaying ? <Pause /> : <PlayArrow />}
-        </IconButton>
-          <Slider
-            value={currentTime}
-            min={0}
-            max={videoDuration}
-            onChange={handleSliderChange}
-            aria-labelledby='video-slider'
-            step={0.01}
-            // marks={marks}
-            // // disabled={!isVideoLoaded}
-            // classes={{
-            //   mark: classes.mark,
-            //   markActive: classes.markActive,
-            // }}
-          />
+        <CardMedia
+          component="video"
+          height="100%"
+          src={videoPath}
+          // controls
+          ref={videoRef}
+          onPause={handleVideoPause}
+          onPlay={handleVideoPlay}
+          currentTime={currentTime}
+          className={classes.media}
+          onTimeUpdate={handleTimeUpdate}
+        />
+      </div>
+
+      <div
+        style={{
+          bottom: 0,
+          // paddingTop: '20px',
+          paddingLeft: '20px',
+          paddingRight: '20px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'row',
+        }}
+      >
+        <IconButton onClick={handlePlayPauseClick}>{isPlaying ? <Pause /> : <PlayArrow />}</IconButton>
+        <Slider
+          value={currentTime}
+          min={0}
+          max={videoDuration}
+          onChange={handleSliderChange}
+          aria-labelledby="video-slider"
+          step={0.01}
+          // marks={marks}
+          // // disabled={!isVideoLoaded}
+          // classes={{
+          //   mark: classes.mark,
+          //   markActive: classes.markActive,
+          // }}
+        />
       </div>
     </Card>
   );
 }
 
-const mapStateToProps =({ event}) =>({
-  event 
-})
+const mapStateToProps = ({ event }) => ({
+  event,
+});
 
 export default connect(mapStateToProps)(VideoElement);

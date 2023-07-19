@@ -16,6 +16,7 @@ const EventElement = (props) => {
   console.log('checking event element props', props.renderEvent);
   const id = props.renderEvent.id;
   const scaleId = props.renderEvent.scale_id;
+  const rackId = props.renderEvent.rackId;
   const machineId = props.renderEvent.machine_id;
   const status = props.renderEvent.status;
   const weightChange = props.renderEvent.weight_change;
@@ -121,7 +122,7 @@ const EventElement = (props) => {
       <AccordionDetails>
         <Typography>ID: {id}</Typography>
 
-        <Typography>Scale ID: {scaleId}</Typography>
+        <Typography variant="h6">{rackId}</Typography>
         <Typography>Machine ID: {machineId}</Typography>
         {status ? <Typography>Status: {status}</Typography> : null}
         <Typography>Time: {createdAt}</Typography>

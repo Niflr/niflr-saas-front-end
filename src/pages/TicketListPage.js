@@ -196,12 +196,8 @@ function TicketListPage(props) {
 
   return (
     <>
-      {/* <Helmet>
-        <title> Tickets | Minimal UI </title>
-      </Helmet> */}
-
       <Container>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5} style={{ overflow: 'auto' }}>
           <Typography variant="h4" gutterBottom>
             Tickets
           </Typography>
@@ -214,7 +210,7 @@ function TicketListPage(props) {
           {/* <UserListToolbar numSelected={selected.length} filterName={filterTicket} onFilterName={handleFilterByName} /> */}
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 800, maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}>
+            <TableContainer component={Paper} sx={{ maxHeight: 'calc(100vh - 300px)' }}>
               <Table stickyHeader="true">
                 <UserListHead
                   order={order}

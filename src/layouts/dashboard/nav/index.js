@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
-import { Box, Link, Drawer, Typography, Avatar,IconButton, MenuItem } from '@mui/material';
-import {Menu} from "@mui/icons-material";
+import { Box, Link, Drawer, Typography, Avatar, IconButton, MenuItem } from '@mui/material';
+import { Menu } from '@mui/icons-material';
 // mock
 import account from '../../../_mock/account';
 // hooks
@@ -20,8 +20,7 @@ import navConfig from './config';
 
 const NAV_WIDTH = 280;
 
-const StyledAccount = styled('div')(({ theme }) => 
-({
+const StyledAccount = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(2, 2.5),
@@ -36,14 +35,14 @@ Nav.propTypes = {
   onCloseNav: PropTypes.func,
 };
 
-export default function Nav({  onCloseNav }) {
+export default function Nav({ onCloseNav }) {
   const { pathname } = useLocation();
   const [openNav, setOpenNav] = useState(false);
   const handleToggleNav = () => {
     setOpenNav(!openNav);
   };
   const isDesktop = useResponsive('up', 'lg');
-  console.log("checking desktop", isDesktop)
+  console.log('checking desktop', isDesktop);
 
   useEffect(() => {
     if (openNav) {
@@ -60,17 +59,7 @@ export default function Nav({  onCloseNav }) {
       }}
     >
       <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
-        <Logo />
-        {/* <IconButton
-          onClick={openNav}
-          sx={{
-            mr: 1,
-            color: '#00000',
-            // display: { lg: 'none' },
-          }}
-        >
-          <Menu />
-        </IconButton> */}
+        <img src="/assets/BryskLogo_750.png" alt="logo" />
       </Box>
 
       <Box sx={{ mb: 5, mx: 2.5 }}>
@@ -105,7 +94,7 @@ export default function Nav({  onCloseNav }) {
       //   width: { lg: NAV_WIDTH },
       // }}
     >
-    {/* <IconButton
+      {/* <IconButton
     color="inherit"
     aria-label="open navigation"
     edge="start"
@@ -114,8 +103,8 @@ export default function Nav({  onCloseNav }) {
   >
     <Menu />
   </IconButton> */}
-      
-        {/* <Drawer
+
+      {/* <Drawer
           
           variant="permanent"
           PaperProps={{
@@ -127,10 +116,8 @@ export default function Nav({  onCloseNav }) {
             },
           }}
         > */}
-          {renderContent}
-        {/* </Drawer> */}
-      
-      
+      {renderContent}
+      {/* </Drawer> */}
     </Box>
   );
 }

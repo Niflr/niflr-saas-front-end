@@ -61,16 +61,16 @@ export default function LoginPage() {
         {mdUp && (
           <StyledSection>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome Back to  NIFLR EDGE ADMIN
+              Hi, Welcome Back to BRYSK EDGE ADMIN
             </Typography>
-            <img src="/assets/illustrations/illustration_login.png" alt="login" />
+            <img src="/assets/BryskLogo_750.png" alt="login" />
           </StyledSection>
         )}
 
         <Container maxWidth="sm">
           <StyledContent>
             <Typography variant="h4" gutterBottom>
-              Sign in to Edge 
+              Sign in to Edge
             </Typography>
 
             <Divider sx={{ my: 3 }}>

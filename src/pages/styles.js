@@ -3,8 +3,10 @@ import { makeStyles } from '@mui/styles';
 export const useStyles = makeStyles(() => ({
   pageContainer: {
     display: 'flex',
+    flex: 1,
     flexDirection: 'column',
     height: '100vh',
+    maxHeight: '100vh',
     width: '100%',
     overflow: 'auto',
   },
@@ -15,11 +17,12 @@ export const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     width: '700px',
     height: '100%',
-    maxHeight: '100vh',
+    gap: '10px',
+    maxHeight: '2000px',
     paddingRight: '10px',
     borderRadius: '8px',
     backgroundColor: 'white',
-    overflow: 'hidden',
+    overflowY: 'auto',
   },
 
   cartScroller: {
@@ -27,12 +30,13 @@ export const useStyles = makeStyles(() => ({
     flexDirection: 'column',
     height: '100%',
     width: '100%',
-    justifyContent: 'flex-start',
+
+    justifyContent: 'center',
     backgroundColor: 'white',
     borderRadius: '5px',
     gap: '3px',
-    alignItems: 'center',
-    overflowX: 'auto',
+    alignItems: 'flex-start',
+    overflow: 'auto',
   },
 
   cartDivs: {
@@ -51,7 +55,7 @@ export const useStyles = makeStyles(() => ({
 
   videoContainer: {
     width: '100%',
-    height: '50%',
+    height: '70%',
 
     marginRight: '20px',
     borderRadius: '8px',
@@ -61,21 +65,18 @@ export const useStyles = makeStyles(() => ({
   },
 
   cartContainer: {
-    display: 'flex', // make the container a flex container
-    flexDirection: 'row', // arrange items in a row instead of a column
+    display: 'flex',
+    flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    height: '60%',
+    height: '200px',
     width: '100%',
-    maxHeight: '40vh',
+    maxHeight: '200px',
     paddingX: '10px',
-    overflowX: 'auto',
+
     backgroundColor: 'white',
     borderRadius: '8px',
     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.6)',
-
-    // borderWidth: '10px',
-    // borderColor: '#DCDCDC',
     overflow: 'auto',
   },
 
@@ -95,25 +96,21 @@ export const useStyles = makeStyles(() => ({
   },
 
   rightContainer: {
-    flex: '0 0 40%',
+    flex: '1', // Use flex: 1 to make it fill the remaining space
     display: 'flex',
     flexDirection: 'column',
-    height: ']00%',
-    maxHeight: '800px',
-    // width: '100%',
-    paddingRight: '0px',
-
+    gap: '15px',
+    height: '100%',
     backgroundColor: 'white',
-    overflow: 'auto',
     margin: '10px',
     marginLeft: '25px',
-
     padding: '10px',
+    overflowY: 'auto', // Enable vertical scrolling when content overflows
   },
 
   eventScroller: {
     position: 'relative',
-    height: '40%',
+    height: '35%',
     backgroundColor: 'white',
     borderRadius: '8px',
   },
@@ -124,7 +121,7 @@ export const useStyles = makeStyles(() => ({
     backgroundColor: 'white',
     borderRadius: '8px',
     padding: '10px',
-    height: '90%',
+    height: '200px',
     width: '100%',
     marginLeft: 'auto',
     marginRight: 'auto',
@@ -132,7 +129,7 @@ export const useStyles = makeStyles(() => ({
     // maxHeight: '40%',
     zIndex: '1',
     overflow: 'auto',
-    maxHeight: '400px',
+    maxHeight: '200px',
     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.6)',
   },
 
@@ -140,27 +137,26 @@ export const useStyles = makeStyles(() => ({
     position: 'relative',
     bottom: 0,
     zIndex: 1,
-    backgroundColor: 'rgba(30, 79, 106, 0.5)',
+    backgroundColor: 'white',
     borderRadius: '8px',
     height: '25%',
     width: '100%',
-    // maxWidth: 550,
     display: 'flex',
     alignItems: 'center',
     gap: '10px',
     padding: '10px',
-    marginTop: '5px',
+    // marginTop: '5px',
     marginBottom: '10px',
   },
 
   buttonContainer: {
     display: 'flex',
     gap: '30px',
-    height: '100%',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    maxWidth: 550,
-    maxHeight: '30vh',
+    height: '50px',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+
+    maxHeight: '40vh',
   },
   header: {
     marginBottom: '10px',
