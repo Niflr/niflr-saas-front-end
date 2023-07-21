@@ -219,6 +219,7 @@ const AddConfirmTicketModal = (props) => {
           userId: props.ticket.ticket.user_id,
           ticketId: props.ticket.ticket.id,
           items: sortedOrder,
+          storeId: props.ticket.ticket.store_Id,
         });
 
         // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
