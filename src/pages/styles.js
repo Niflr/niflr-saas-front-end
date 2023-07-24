@@ -69,9 +69,9 @@ export const useStyles = makeStyles(() => ({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    height: '200px',
+    height: '275px',
     width: '100%',
-    maxHeight: '200px',
+    maxHeight: '275px',
     paddingX: '10px',
 
     backgroundColor: 'white',

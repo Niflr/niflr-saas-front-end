@@ -14,8 +14,6 @@ const useStyles = makeStyles(() => ({
   paper: {
     backgroundColor: '#fff',
     borderRadius: '10px',
-    // boxShadow: theme.shadows[5],
-    // padding: theme.spacing(2, 4, 3),
   },
   header: {
     textAlign: 'center',
@@ -52,13 +50,6 @@ const AddDummyEventModal = (props) => {
     return `${timestamp}-${randomNum}`;
   };
 
-  // const generateUUID = () => {
-  //   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-  //     const r = (Math.random() * 16) | 0,
-  //       v = c == 'x' ? r : (r & 0x3) | 0x8;
-  //     return v.toString(16);
-  //   });
-  // };
   const handleSave = () => {
     props.resetProduct();
     const id = uuidv4();
@@ -87,14 +78,6 @@ const AddDummyEventModal = (props) => {
     // props.addToCart({ticketId,variantId,machineId,userId,status:"checked",quantity,variantName})
 
     props.closeModal();
-
-    // reset the product state
-    // console.log({ id, machineId, scaleId, ticketId, status, weightChange });
-    //  if(props.ticketId){
-
-    //   props.addDummyEvent({id,scaleId,status:"checked",machineId,weightChange,ticketId});
-    //  }
-    // TODO: Handle saving the event with the generated IDs and input values
   };
 
   return (
@@ -127,7 +110,6 @@ const AddDummyEventModal = (props) => {
           </div>
         </div>
       </form>
-      {/* <Button onClick={handleClose}>X</Button> */}
     </div>
   );
 };

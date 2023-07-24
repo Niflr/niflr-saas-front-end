@@ -51,12 +51,21 @@ const useStyles = makeStyles(() => ({
     //   height: 120,
     // },
   },
+  tableContainer: {
+    display: 'flex',
+    gap: '10px',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    width: '520px',
+    height: '100%',
+  },
   quantityContainer: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundColor: 'white',
+    width: '100%',
     // borderRadius: theme.spacing(1),
     // padding: theme.spacing(1),
   },
@@ -107,57 +116,59 @@ const CartElement = (props) => {
 
   console.log('ITEM DATA', props.data);
   return (
-    <TableContainer>
-      <Table>
-        <TableHead>
+    <Box>
+      <TableContainer className={classes.tableContainer} minWidth="100%">
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Field</TableCell>
+              <TableCell>Value</TableCell>
+              <TableCell>
+                <IconButton onClick={removeItemButtonClick}>
+                  <RemoveCircleOutline />
+                </IconButton>
+              </TableCell>
+            </TableRow>
+          </TableHead>
           <TableRow>
-            <TableCell>Field</TableCell>
-            <TableCell>Value</TableCell>
             <TableCell>
-              <IconButton onClick={removeItemButtonClick}>
-                <RemoveCircleOutline />
-              </IconButton>
+              <Typography variant="h6">Name: </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography variant="h6">
+                {props.data.variant_name ? props.data.variant_name : props.data.variantName}
+              </Typography>
             </TableCell>
           </TableRow>
-        </TableHead>
-        <TableRow>
-          <TableCell>
-            <Typography variant="h6">Name: </Typography>
-          </TableCell>
-          <TableCell>
-            <Typography variant="h6">
-              {props.data.variant_name ? props.data.variant_name : props.data.variantName}
-            </Typography>
-          </TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>
-            <Typography variant="h6">Status:</Typography>
-          </TableCell>
-          <TableCell>
-            <Typography variant="h6">{props.data.status}</Typography>
-          </TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>
-            <Typography variant="h6">Quantity:</Typography>
-          </TableCell>
-          <TableCell>
-            <Box className={classes.quantityContainer}>
-              <IconButton onClick={handleSubtractQuantity}>
-                <RemoveCircleOutline />
-              </IconButton>
-              <Typography variant="body1" className={classes.quantityText}>
-                {quantity}
-              </Typography>
-              <IconButton onClick={handleAddQuantity}>
-                <AddCircleOutline />
-              </IconButton>
-            </Box>
-          </TableCell>
-        </TableRow>
-      </Table>
-    </TableContainer>
+          <TableRow>
+            <TableCell>
+              <Typography variant="h6">Status:</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography variant="h6">{props.data.status}</Typography>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>
+              <Typography variant="h6">Quantity:</Typography>
+            </TableCell>
+            <TableCell>
+              <Box className={classes.quantityContainer}>
+                <IconButton onClick={handleSubtractQuantity}>
+                  <RemoveCircleOutline />
+                </IconButton>
+                <Typography variant="body1" className={classes.quantityText}>
+                  {quantity}
+                </Typography>
+                <IconButton onClick={handleAddQuantity}>
+                  <AddCircleOutline />
+                </IconButton>
+              </Box>
+            </TableCell>
+          </TableRow>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };
 

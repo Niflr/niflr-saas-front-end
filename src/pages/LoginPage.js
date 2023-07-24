@@ -63,7 +63,7 @@ export default function LoginPage() {
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
               Hi, Welcome Back to BRYSK EDGE ADMIN
             </Typography>
-            <img src="/assets/BryskLogo_750.png" alt="login" />
+            <img src="/assets/BryskLogo_750.png" height={150} width={400} alt="login" />
           </StyledSection>
         )}
 

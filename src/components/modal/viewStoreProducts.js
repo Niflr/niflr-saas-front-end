@@ -147,7 +147,9 @@ const ViewStoreProductsModal = (props) => {
           ))}
         </div>
 
-        <Button onClick={handleAddProduct}>select</Button>
+        <Button onClick={handleAddProduct} disabled={!selectedProduct}>
+          select
+        </Button>
       </div>
       {/* <List component="nav">
     

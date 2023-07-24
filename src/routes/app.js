@@ -29,7 +29,7 @@ export default function Router() {
         }
       />
       <Route
-        path="/dashboard/ticket"
+        path="/dashboard/tickets/:id"
         element={
           <ProtectedRoute>
             <TicketListLayout />

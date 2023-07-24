@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Modal, TextField, IconButton } from '@mui/material';
-import { Close } from '@mui/icons-material';
+
 import { useNavigate } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import { makeStyles } from '@mui/styles';
 import ModalWrapper from './modalWrapper';
-// import Loader from './confirmationModal';
-// import Loader from './confirmationModal';
+
 import {
   addDummyEvent,
   updateEventStatus,
@@ -25,7 +24,6 @@ import {
   updateDummyEventStatus,
   setModalState,
 } from '../../actions/index';
-// import ModalWrapper from './modalWrapper';
 
 const useStyles = makeStyles(() => ({
   paper: {
@@ -33,8 +31,6 @@ const useStyles = makeStyles(() => ({
     borderRadius: '10px',
     height: '150px',
     width: '300px',
-    // boxShadow: theme.shadows[5],
-    // padding: theme.spacing(2, 4, 3),
   },
   header: {
     // textAlign: 'center',
@@ -57,13 +53,7 @@ const AddConfirmTicketModal = (props) => {
   const navigate = useNavigate();
 
   const classes = useStyles();
-  const [status, setStatus] = useState('processing');
-  const [weightChange, setWeightChangeEvent] = useState('');
-  const id = generateRandomId();
-  const machineId = generateRandomId();
-  const scaleId = generateRandomId();
-  const [ticketId, setTicketID] = useState(props.ticketId);
-  const [cartItems, setCartItems] = useState(props.cart.cartItems);
+
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -87,68 +77,14 @@ const AddConfirmTicketModal = (props) => {
     const checkedEventIds = checkedEvents.map((event) => event.id);
     return checkedEventIds;
   };
-  const ordercreator = () => {
-    console.log('inside order creator', cartItems);
-    const newList = cartItems.map(({ variantId, quantity }) => ({
-      variantId,
-      qty: quantity,
-    }));
-    return newList;
-  };
 
-  const handleConfirmClick = () => {
-    console.log('setting isloading');
-    props.setModalState({
-      visible: false,
-      modalName: 'loading',
-      // modalContent: props.product.products.updatedVariants,
-      isLoading: false,
-    });
-  };
-  // const events = getEventIdsByStatus('ADDED_TO_CART', props.event.events.events);
-  // const sortedEvents = props.event.events.events
-  //   .filter((event) => {
-  //     if (Array.isArray(events)) {
-  //       return events.includes(event.id) && event.status === 'ADDED_TO_CART';
-  //     }
-  //     return false;
-  //   })
-  //   .map((event) => ({ ...event, status: 'CONFIRMED' }));
-  // console.log('setting isloading', isLoading);
-  // props.eventsSaved();
-  // if (sortedEvents.length > 0) {
-  //   props.updateEventStatus({ status: 'CONFIRMED', event_ids: events });
-
-  // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
-  // }
-
-  // setTimeout(() => {
-  //   console.log('timeout working');
-  //   loadModal(false);
-  //   return true;
-  // }, 5000);
-
-  const loadModal = (state) => {
-    console.log('loading modal state', state);
-    props.setModalState({ visible: state, isLoading: state });
-  };
   const handleConfirmButtonClick = async () => {
     props.setModalState({
       visible: true,
       modalName: 'loading',
       isLoading: true,
     });
-    // setTimeout(() => {
-    //   console.log('timeout working');
-    //   props.setModalState({
-    //     visible: false,
-    //     modalName: 'loading',
-    //     // modalContent: props.product.products.updatedVariants,
-    //     isLoading: false,
-    //   });
-    //   // loadModal(false);
-    //   return true;
-    // }, 5000);
+
     try {
       // console.log('checking dummyevents', props.dummyEvent);
       const events = getEventIdsByStatus('ADDED_TO_CART', props.event.events.events);
@@ -209,7 +145,7 @@ const AddConfirmTicketModal = (props) => {
           console.log('checking sorted order', item);
           sortedOrder.push({
             variantId: item.variantId || item.variant_id,
-            quantity: parseInt(item.quantity, 10),
+            qty: parseInt(item.quantity, 10),
             variantName: item.variant_name || item.variantName,
           });
         });
@@ -266,16 +202,6 @@ const AddConfirmTicketModal = (props) => {
             >
               Confirm Order?
             </h2>
-            {/* <IconButton
-          style={{
-            borderRadius: '50%',
-            backgroundColor: '#ffffff',
-            boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-          }}
-          // onClick={}
-        >
-          <Close />
-        </IconButton> */}
           </div>
 
           <div
@@ -304,7 +230,6 @@ const AddConfirmTicketModal = (props) => {
           </div>
         </div>
       )}
-      {/* <Button onClick={handleClose}>X</Button> */}
     </div>
   );
 };

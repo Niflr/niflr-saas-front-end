@@ -111,18 +111,26 @@ function TicketListPage(props) {
   const [selectedTicket, setSelectedTicket] = useState({});
 
   useEffect(() => {
-    console.log('calling use effect', props);
-
+    // Fetch ticket list initially when the component mounts
     props.fetchTicketList();
-    // if (!users) return <div>Loading...</div>;
-    // console.log("calling use effect 2", props.users)
+
+    // Set up the interval to fetch the ticket list every 5 seconds
+    const intervalId = setInterval(() => {
+      props.fetchTicketList();
+    }, 5000);
+
+    // Clean up the interval when the component unmounts
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
+
   useEffect(() => {
     console.log('setting selected ticket state', selectedTicket);
     props.selectTicket(selectedTicket);
     props.updateCartTicket(selectedTicket.id);
     if (selectedTicket.id) {
-      navigate('/dashboard/ticket', { replace: true });
+      navigate(`/dashboard/tickets/${selectedTicket.id}`, { replace: false });
     }
   }, [selectedTicket]);
 

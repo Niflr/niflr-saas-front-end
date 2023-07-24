@@ -61,6 +61,8 @@ import {
 } from '../actions';
 
 const TicketPage = (props) => {
+  const user = JSON.parse(window.localStorage.getItem('user'));
+  console.log('current user', user);
   // console.log(ticketId, 'ticket_id');
   const classes = useStyles();
   const [events, setEvents] = useState([]);
@@ -99,9 +101,7 @@ const TicketPage = (props) => {
     const activeRackData = racks ? racks.find((rack) => rack.rack_id === activeRack) : null;
 
     if (activeRackData) {
-      setActiveRackCameras(activeRackData.rack_cameras); // Set the active rack's cameras
-      // Now, the default selected camera will be set by the first useEffect, so it will be the primary camera of the active rack.
-      // You may also add additional logic here to handle the case when there's no primary camera.
+      setActiveRackCameras(activeRackData.rack_cameras);
     }
   }, [activeRack]);
 
@@ -115,13 +115,13 @@ const TicketPage = (props) => {
     // setSubValue(newValue); // Reset the selected tab in the secondary set
   };
 
-  useEffect(() => {
-    const url = `tickets/${props.ticket.ticket.id}`;
-    window.history.pushState(null, null, url);
-    return () => {
-      window.history.pushState(null, null, '/dashboard/tickets');
-    };
-  }, []);
+  // useEffect(() => {
+  //   const url = `tickets/${props.ticket.ticket.id}`;
+  //   window.history.pushState(null, null, url);
+  //   return () => {
+  //     window.history.pushState(null, null, '/dashboard/tickets');
+  //   };
+  // }, []);
 
   useEffect(() => {
     props.fetchVideoList(props.ticket.ticket.video);
@@ -143,8 +143,13 @@ const TicketPage = (props) => {
   useEffect(() => {
     // console.log("props.cart updated:", props.cart);
     setCart(props.cart.cartItems);
-    const allConfirmed = props.cart.cartItems.every((item) => item.status === 'CONFIRMED');
-    setAreAllItemsConfirmed(allConfirmed);
+    if (props.cart.cartItems) {
+      const allConfirmed = props.cart.cartItems.every((item) => item.status === 'CONFIRMED');
+      setAreAllItemsConfirmed(allConfirmed);
+    } else {
+      // If props.cart.cartItems is undefined, set the allConfirmed state to false or handle it as needed.
+      setAreAllItemsConfirmed(false);
+    }
   }, [props.cart]);
 
   useEffect(() => {
@@ -229,19 +234,11 @@ const TicketPage = (props) => {
   };
 
   const handleRackItemClick = (rack) => {
-    // if (rack.rack_id === activeRack) {
-    //   // If the clicked rack is already active, deselect it
-    //   setActiveRack(null);
-    //   setActiveRackCameras([]);
-    //   setSelectedCamera(null); // Reset the selected camera
-    // } else {
-    // Set the clicked rack as active and update the active rack's cameras
     setActiveRack(rack.rack_id);
     setActiveRackCameras(rack.rack_cameras);
     setSelectedCamera(null); // Reset the selected camera
 
     console.log('active rack cameras', activeRackCameras);
-    // }
   };
 
   const handleCameraClick = (camera) => {
@@ -289,17 +286,17 @@ const TicketPage = (props) => {
   }, [props.product]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const handlePopState = () => {
-      navigate('/dashboard/tickets');
-    };
+  // useEffect(() => {
+  //   const handlePopState = () => {
+  //     navigate('/dashboard/tickets');
+  //   };
 
-    window.addEventListener('popstate', handlePopState);
+  //   window.addEventListener('popstate', handlePopState);
 
-    return () => {
-      window.removeEventListener('popstate', handlePopState);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('popstate', handlePopState);
+  //   };
+  // }, []);
 
   function a11yProps(index) {
     return {
@@ -321,11 +318,15 @@ const TicketPage = (props) => {
     <Container maxWidth={false} className={classes.pageContainer}>
       <Grid container spacing={0} style={{ width: '100%', height: '100%', overflow: 'hidden' }}>
         <Grid item xs={12} sm={6} md={8} className={classes.leftContainer}>
+          <Typography variant="h6" style={{ padding: '10px' }}>
+            User: {user.name}
+          </Typography>
           <Box sx={{ display: 'flex', borderBottom: 1, borderColor: 'divider', justifyContent: 'space-between' }}>
             <Tabs value={value} onChange={handlePrimaryTabChange} aria-label="basic tabs example">
               <Tab label="Primary View" {...a11yProps(0)} />{' '}
               <Tabs value={value} onChange={handlePrimaryTabChange} aria-label="basic tabs example" />
               <Tab label="ReID View" {...a11yProps(1)} disabled />
+              <Tab label="Grid View" {...a11yProps(2)} />
             </Tabs>
           </Box>
 
