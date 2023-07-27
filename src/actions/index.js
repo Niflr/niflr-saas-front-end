@@ -107,7 +107,7 @@ import {
   FETCH__DUMMY_EVENTS_LIST,
   CART_STATUS_CONFIRMED,
   REMOVE_DUMMY_EVENTS_FROM_CART,
-  REMOVE_EVENTS_FROM_CART
+  REMOVE_EVENTS_FROM_CART,
 } from '../types/index';
 
 import RequestService from '../services/RequestService';
@@ -155,7 +155,7 @@ const postData =
     console.log('testing post call params', url, domain, data);
     const res = await requestService.post({ url, data, domain });
     console.log('testing post call', res);
-    
+
     if (res.success) {
       dispatch({
         type: `${action}_SUCCESS`,
@@ -169,7 +169,6 @@ const postData =
         isLoading: false,
       });
     }
-
   };
 
 const putData =
@@ -269,8 +268,6 @@ export const deleteData =
       });
     }
   };
-
- 
 
 export const updateTicketStatus = (ticketId, data) =>
   putData({
@@ -393,16 +390,14 @@ export const eventAddToCart = () => {
   };
 };
 
-export const resetEventById=(eventId)=>{
+export const resetEventById = (eventId) => {
   return {
     type: REMOVE_EVENTS_FROM_CART,
     payload: eventId,
   };
 };
-export const resetDummyEventById=(eventId)=>{
-  return {type: REMOVE_DUMMY_EVENTS_FROM_CART,
-    payload:eventId ,
-  };
+export const resetDummyEventById = (eventId) => {
+  return { type: REMOVE_DUMMY_EVENTS_FROM_CART, payload: eventId };
 };
 
 export const dummyEventAddToCart = () => {
@@ -422,7 +417,7 @@ export const cartCleared = () => {
 };
 
 // create order
-export const createUserOrder = ( data) =>
+export const createUserOrder = (data) =>
   // change url to:  url: `user_details/${userId}/order`,
   postData({
     url: `tickets/createOrder`,

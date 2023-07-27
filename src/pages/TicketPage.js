@@ -65,6 +65,7 @@ const TicketPage = (props) => {
   console.log('current user', user);
   // console.log(ticketId, 'ticket_id');
   const classes = useStyles();
+
   const [events, setEvents] = useState([]);
   const [dummyEvents, setDummyEvents] = useState([]);
   const [cart, setCart] = useState([]);
@@ -75,14 +76,14 @@ const TicketPage = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isDeletingCart, setIsDeletingCart] = useState(false);
   const [isAddingVariant, setIsAddingVariant] = useState(false);
+  const isOrderGenerated = props.ticket.ticket.order_id;
+  const racks = props.ticket.ticket.rack_map ? props.ticket.ticket.rack_map.rack_details : null;
 
   const [areAllItemsConfirmed, setAreAllItemsConfirmed] = useState(false);
-  const isOrderGenerated = props.ticket.ticket.order_id;
 
   const [value, setValue] = useState(0);
   const [subValue, setSubValue] = useState(0);
 
-  const racks = props.ticket.ticket.rack_map ? props.ticket.ticket.rack_map.rack_details : null;
   const [activeRack, setActiveRack] = useState(racks && racks.length > 0 ? racks[0].rack_id : null);
   const [activeRackCameras, setActiveRackCameras] = useState([]);
 
@@ -115,26 +116,22 @@ const TicketPage = (props) => {
     // setSubValue(newValue); // Reset the selected tab in the secondary set
   };
 
-  // useEffect(() => {
-  //   const url = `tickets/${props.ticket.ticket.id}`;
-  //   window.history.pushState(null, null, url);
-  //   return () => {
-  //     window.history.pushState(null, null, '/dashboard/tickets');
-  //   };
-  // }, []);
-
   useEffect(() => {
     props.fetchVideoList(props.ticket.ticket.video);
     props.fetchEventList(props.ticket.ticket.weight_change_events);
     props.fetchDummyEventList([props.ticket.ticket.id]);
     props.fetchCartList(props.ticket.ticket.id);
   }, [props.ticket]);
+
   console.log('FETCHING CART LIST: ', props.ticket.ticket.id);
+
   useEffect(() => {
     // console.log("props.ticketsupdated:", props.event);
     setEvents(props.event.events);
   }, [props.event]);
+
   console.log('EVENTS: ', events);
+
   useEffect(() => {
     console.log('dummy events updated:', props.dummyEvent);
     setDummyEvents(props.dummyEvent.dummyEvents);
@@ -143,6 +140,7 @@ const TicketPage = (props) => {
   useEffect(() => {
     // console.log("props.cart updated:", props.cart);
     setCart(props.cart.cartItems);
+    console.log('CART ITEMS INSIDE TICKET PAGE: ', cart);
     if (props.cart.cartItems) {
       const allConfirmed = props.cart.cartItems.every((item) => item.status === 'CONFIRMED');
       setAreAllItemsConfirmed(allConfirmed);
@@ -158,7 +156,6 @@ const TicketPage = (props) => {
   }, [props.video]);
 
   const getEventIdsByStatus = (status, events) => {
-    // console.log("   inside getCheckedEventIds", status)
     const checkedEvents = events.filter((event) => event.status === status);
     const checkedEventIds = checkedEvents.map((event) => event.id);
     return checkedEventIds;
@@ -253,14 +250,11 @@ const TicketPage = (props) => {
     if (events.length === 0 && dummyEvents.length === 0) {
       alert('No events to delete!');
     } else {
-      // re setting events in backend db
       props.updateEventStatus({ status: 'processing', event_ids: events });
       props.updateDummyEventStatus({ status: 'processing', event_ids: dummyEvents });
-      // props.deleteCartItems(props.ticket.ticket.id);
-      // clearing cart in global state
 
       props.cartCleared();
-      // clearing events and dummy events in global state
+
       props.resetEvents();
       props.resetDummyEvents();
       alert('Cart Items Deleted Successfully!');
@@ -284,19 +278,6 @@ const TicketPage = (props) => {
       });
     }
   }, [props.product]);
-  const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const handlePopState = () => {
-  //     navigate('/dashboard/tickets');
-  //   };
-
-  //   window.addEventListener('popstate', handlePopState);
-
-  //   return () => {
-  //     window.removeEventListener('popstate', handlePopState);
-  //   };
-  // }, []);
 
   function a11yProps(index) {
     return {

@@ -79,12 +79,6 @@ const DummyAddToCartModal = (props) => {
   };
 
   const handleDummyConfirmButtonClick = () => {
-    // Add selected events to the cart
-    // You can implement the logic to add the events to the cart
-    // using the selectedEvents array
-
-    // ... implement the logic to add events to the cart ...
-
     console.log('reviewing modal conent props', props.selectedEvents);
     // Close the modal
     props.dummyEventAddToCart();
@@ -151,22 +145,6 @@ const DummyAddToCartModal = (props) => {
           </Button>
         </div>
       </div>
-      {/* <form className={classes.form}>
-
-        <div
-          style={{
-            width: '100%',
-            height: '50%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '10px',
-          }}
-        >
-          <Button variant="contained" color="primary" onClick={handleConfirmButtonClick}>
-            Confirm
-          </Button>
-        </div>
-      </form> */}
     </div>
   );
 };

@@ -24,6 +24,7 @@ import {
   resetEventById,
   resetDummyEventById,
   removeFromCart,
+  updateCartItemStatus,
 } from '../../../actions';
 
 const useStyles = makeStyles(() => ({
@@ -83,9 +84,23 @@ const CartElement = (props) => {
   console.log('CREATED AT: ', createdAt);
 
   const handleAddQuantity = () => {
-    setQuantity((prevQuantity) => prevQuantity + 1);
+    const updatedQuantity = quantity + 1;
+    setQuantity(updatedQuantity);
+    if (props.event.events.events.some((event) => props.data.id === event.id && event.status === 'ADDED_TO_CART')) {
+      props.updateEventStatus({ qty: updatedQuantity, event_ids: [props.data.id] });
+      // props.updateCartItemStatus(props.cart.ticketId, {qty: updatedQuantity})
+      } else if (
+        props.dummyEvent.dummyEvents.dummyEvents.some(
+          (event) => props.data.id === event.id && event.status === 'ADDED_TO_CART'
+        )) {
+          props.updateDummyEventStatus({ qty: updatedQuantity, event_id: [props.data.id] });
+      // props.updateCartItemStatus(props.cart.ticketId, {qty: updatedQuantity})
+
+        } 
+
   };
 
+  console.log('CART CARD PROPS: ', props);
   const removeItemButtonClick = () => {
     // make a function to fiter if the evnet id exists in events or dummyevents?
 
@@ -101,7 +116,7 @@ const CartElement = (props) => {
         (event) => cartEvent.id === event.id && event.status === 'ADDED_TO_CART'
       )
     ) {
-      props.updateDummyEventStatus({ status: 'processing', event_ids: [cartEvent.id] });
+      props.updateDummyEventStatus({ status: 'processing', event_id: [cartEvent.id] });
       props.resetDummyEventById(cartEvent.id);
       props.removeFromCart(cartEvent.id);
       alert('Cart Item Deleted Successfully!');
@@ -109,9 +124,21 @@ const CartElement = (props) => {
       alert('This cart item cannot be deleted!');
     }
   };
-
+  // console.log("cart event.id", [])
   const handleSubtractQuantity = () => {
-    setQuantity((prevQuantity) => Math.max(prevQuantity - 1, 0));
+    const updatedQuantity = Math.max(quantity - 1, 0);
+    setQuantity(updatedQuantity);
+    if (props.event.events.events.some((event) => props.data.id === event.id && event.status === 'ADDED_TO_CART')) {
+    props.updateEventStatus({ qty: updatedQuantity, event_ids: [props.data.id] });
+    // props.updateCartItemStatus(props.cart.ticketId, {qty: updatedQuantity})
+    } else if (
+      props.dummyEvent.dummyEvents.dummyEvents.some(
+        (event) => props.data.id === event.id && event.status === 'ADDED_TO_CART'
+      )) {
+        props.updateDummyEventStatus({ qty: updatedQuantity, event_id: [props.data.id] });
+      // props.updateCartItemStatus(props.cart.ticketId, {qty: updatedQuantity})
+      } 
+
   };
 
   console.log('ITEM DATA', props.data);
@@ -243,4 +270,5 @@ export default connect(mapStateToProps, {
   resetEventById,
   resetDummyEventById,
   removeFromCart,
+  updateCartItemStatus,
 })(CartElement);

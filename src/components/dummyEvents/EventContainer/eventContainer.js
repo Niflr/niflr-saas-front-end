@@ -5,7 +5,6 @@ import { makeStyles } from '@mui/styles';
 import EventElement from '../EventCard/eventCard';
 
 const useStyles = makeStyles({
-  // handling styles for the component
   root: {
     maxWidth: 600,
     margin: 'auto',
@@ -47,10 +46,7 @@ const DummyEventContainer = (props) => {
     }
     return null;
   };
-  // useEffect(() => {
-  //     console.log("calling use effect", props)
-  //     // props.fetchEventList()
-  // }, []);
+
   useEffect(() => {
     // console.log("props. dummy event events updated:", JSON.stringify(props.dummyEvent.dummyEvents.dummyEvents));
     setDummyEvents(props.dummyEvent.dummyEvents.dummyEvents);

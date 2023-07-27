@@ -1,14 +1,6 @@
-import { React, useState, memo, useEffect } from 'react';
-import {
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Typography,
-  Checkbox,
-  FormControlLabel,
-  CardMedia,
-} from '@mui/material';
-import { ExpandMoreOutlined, OneKPlusOutlined } from '@mui/icons-material';
+import { React, useState, useEffect } from 'react';
+import { Accordion, AccordionSummary, AccordionDetails, Typography, Checkbox } from '@mui/material';
+import { ExpandMoreOutlined } from '@mui/icons-material';
 import { connect } from 'react-redux';
 import { addToCart, removeFromCart, eventChecked } from '../../../actions/index';
 
@@ -19,6 +11,7 @@ const EventElement = (props) => {
   const rackId = props.renderEvent.rackId;
   const machineId = props.renderEvent.machine_id;
   const status = props.renderEvent.status;
+  const eventStatus = props.renderEvent.events_status;
   const weightChange = props.renderEvent.weight_change;
   const ticketId = props.event.events.ticketId;
   const variantId = props.renderEvent.variant_id;
@@ -34,28 +27,6 @@ const EventElement = (props) => {
     props.eventChecked(id);
     setIsChecked(!isChecked);
   };
-
-  // useEffect(() => {
-  //   console.log("calling event use effect", isChecked)
-  //   if(isChecked){
-  //     console.log("checking event use effect in chekd",isChecked)
-  //   }
-  //   else {
-  //   console.log("delete from cart function called")
-  //   props.removeFromCart({id})
-  // }
-  // }, [isChecked]);
-
-  // useEffect((  ) => {
-  //   if(isSaved){
-  //     console.log("checking event use effect in saved",isSaved)
-  //     props.addToCart({id, scaleId, status, machineId, weightChange, ticketId})
-  //   }
-  //   else {
-  //   console.log("delete from cart function called")
-  //   // props.removeFromCart({id})
-  // }
-  // },[isSaved])
 
   useEffect(() => {
     switch (props.renderEvent.status) {
@@ -110,9 +81,18 @@ const EventElement = (props) => {
   }, [props.renderEvent.status]);
   return (
     <Accordion {...accordionProps}>
-      <AccordionSummary expandIcon={<ExpandMoreOutlined />}>
+      <AccordionSummary
+        style={{ borderLeft: `2px solid ${eventStatus === 'PICKED' ? 'green' : 'red'}` }}
+        expandIcon={<ExpandMoreOutlined />}
+      >
         <div
-          style={{ display: 'flex', flexDirection: 'row', gap: '10px', justifyContent: 'center', alignItems: 'center' }}
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: '10px',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
           <Checkbox checked={isChecked} onChange={handleCheckboxChange} />
           <img height="50px" width="50px" src={variantImage} alt="" />

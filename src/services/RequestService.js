@@ -18,6 +18,7 @@ export default class RequestService {
     axios.defaults.headers = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      'apikey': 'zf6jrzcrqvqoazk'
       // 'x-access-token': localStorage.getItem('niflr_admin_token'),
     };
     switch (domain) {
@@ -35,10 +36,16 @@ export default class RequestService {
       case 'LOCAL':
         console.log("inside local domain")
         axios.defaults.baseURL = 'http://localhost:1234/api/';
+      
         break;
         case 'CLOUD':
           console.log("inside cloud domain")
           axios.defaults.baseURL = 'https://label-api.niflrpassdev.com/api';
+          axios.defaults.headers = {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'apikey': 'zf6jrzcrqvqoazk'
+          };
           break;
       case 'ADMIN':
         console.log("inside admin domain")

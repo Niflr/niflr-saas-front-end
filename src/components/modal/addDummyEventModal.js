@@ -12,6 +12,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
   },
   paper: {
+    width: '250px',
     backgroundColor: '#fff',
     borderRadius: '10px',
   },

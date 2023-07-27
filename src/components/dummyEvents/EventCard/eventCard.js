@@ -31,27 +31,9 @@ const EventElement = (props) => {
   };
 
   const handleAccordionChange = () => {
-    console.log('seeing expaned');
-    // setAccordionProps({expanded:!expanded})
     setExpanded(!expanded);
   };
 
-  // useEffect(() => {
-  //   console.log("calling event use effect", isChecked)
-  //   if(isChecked){
-  //     console.log("checking event use effect in chekd",isChecked)
-  //     // setAccordionProps({ disabled: true })
-
-  //     // props.addToCart({ticketId,variantId,machineId,userId,status:"checked",quantity,variantName})
-  //   }
-  //   else {
-  //     // setAccordionProps({ disabled: false })
-  //   console.log("delete from cart function called")
-  //   // props.removeFromCart({id})
-  // }
-  // }, [isChecked]);
-  // console.log("inside events",props)
-  // const accordionProps = isChecked ? { disabled: true } : {};
   useEffect(() => {
     switch (props.renderEvent.status) {
       case 'checked':

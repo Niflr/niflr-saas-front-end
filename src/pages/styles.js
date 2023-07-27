@@ -96,7 +96,7 @@ export const useStyles = makeStyles(() => ({
   },
 
   rightContainer: {
-    flex: '1', // Use flex: 1 to make it fill the remaining space
+    flex: '1',
     display: 'flex',
     flexDirection: 'column',
     gap: '15px',
@@ -105,7 +105,7 @@ export const useStyles = makeStyles(() => ({
     margin: '10px',
     marginLeft: '25px',
     padding: '10px',
-    overflowY: 'auto', // Enable vertical scrolling when content overflows
+    overflowY: 'auto',
   },
 
   eventScroller: {

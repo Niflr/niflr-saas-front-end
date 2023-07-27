@@ -25,13 +25,9 @@ const useStyles = makeStyles(() => ({
     borderRadius: '10px',
     height: '80%',
     width: '100%',
-    // boxShadow: theme.shadows[5],
-    // padding: theme.spacing(2, 4, 3),
   },
   header: {
     paddingLeft: '5px',
-    // textAlign: 'center',
-    // alignSelf: 'center'
   },
 }));
 
@@ -78,14 +74,6 @@ const AddToCartModal = (props) => {
   };
 
   const handleConfirmButtonClick = () => {
-    // Add selected events to the cart
-    // You can implement the logic to add the events to the cart
-    // using the selectedEvents array
-
-    // ... implement the logic to add events to the cart ...
-
-    // Close the modal
-
     props.eventAddToCart();
     // const sortedCart = props.cart.cartItems.filter(item => item.status === "ADDED_TO_CART");
 
@@ -146,22 +134,6 @@ const AddToCartModal = (props) => {
           </Button>
         </div>
       </div>
-      {/* <form className={classes.form}>
-
-        <div
-          style={{
-            width: '100%',
-            height: '50%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '10px',
-          }}
-        >
-          <Button variant="contained" color="primary" onClick={handleConfirmButtonClick}>
-            Confirm
-          </Button>
-        </div>
-      </form> */}
     </div>
   );
 };

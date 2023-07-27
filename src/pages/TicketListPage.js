@@ -241,17 +241,10 @@ function TicketListPage(props) {
 
                           return (
                             <TableRow>
-                              {/* <TableCell padding="checkbox">
-                          <Checkbox checked={ticketId} onChange={(event) => handleClick(event, name)} />
-                        </TableCell> */}
-
                               <TableCell component="th" scope="row" padding="20" align="center">
-                                {/* <Stack direction="row" alignItems="center" spacing={2}> */}
-                                {/* <Avatar alt={name} src={avatarUrl} /> */}
                                 <Typography variant="subtitle2" sx={{ whiteSpace: 'pre-wrap' }}>
                                   {id}
                                 </Typography>
-                                {/* </Stack> */}
                               </TableCell>
 
                               <TableCell padding="20" align="center">
@@ -286,11 +279,6 @@ function TicketListPage(props) {
                           );
                         })
                       : null}
-                    {/* {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )} */}
                   </TableBody>
                 ) : (
                   <Typography

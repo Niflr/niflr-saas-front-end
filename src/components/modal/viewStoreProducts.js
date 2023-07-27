@@ -24,6 +24,7 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#fff',
     borderRadius: '10px',
     height: '300px',
+    width: '500px',
     overflow: 'hidden',
   },
   header: {
@@ -148,25 +149,9 @@ const ViewStoreProductsModal = (props) => {
         </div>
 
         <Button onClick={handleAddProduct} disabled={!selectedProduct}>
-          select
+          Select
         </Button>
       </div>
-      {/* <List component="nav">
-    
-        {products.map((product) => (
-          <ListItem
-            key={product.productId}
-            button
-            onClick={() => handleProductClick(product)}
-            disabled={selectedProduct && product.variantId !== selectedProduct.variantId}
-            className={selectedProduct && product.variantId !== selectedProduct.variantId ? classes.disabled : ''}
-          >
-            <ListItemText primary={product.variantName} 
-            // secondary={product.description}
-             />
-          </ListItem>
-        ))}
-      </List> */}
     </div>
   );
 };
