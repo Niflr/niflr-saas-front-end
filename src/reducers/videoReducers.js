@@ -21,7 +21,9 @@ const DATA = {
     isLoading: false,
     error: false,
     status: null,
+    count: 0
   };
+
   
   export default (state = DATA, action) => {
     // console.log("reducer testing",action)
@@ -30,8 +32,8 @@ const DATA = {
       //  console.log("fetch video success")
         return { ...state, isLoading: action.isLoading, video: action.payload.video };
       case FETCH__VIDEOS_LIST_SUCCESS:
-        // console.log("fetch video list success",action.payload.videos)
-        return { ...state, isLoading: action.isLoading, videos:action.payload , status: "fetched" };
+        // console.log("fetch video list count",action.payload.length)
+        return { ...state, isLoading: action.isLoading, videos:action.payload , status: "fetched", count: action.payload.videos.length};
       case PUT__VIDEO_DETAILS_SUCCESS:
       default:
         return state;

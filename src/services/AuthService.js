@@ -1,15 +1,16 @@
 import decode from 'jwt-decode';
+import axios from 'axios';
 
 export default class AuthService {
   constructor(domain) {
     const uri = `${process.env.ADMIN_HOST}/api`;
     console.log("login uri",uri, domain )
-    this.domain = `http://localhost:3000/api/${domain}`;
+    this.domain = `https://label-api.niflrpassdev.com/api/${domain}`;
     console.log("logi domain", this.domain)
   }
 
   register = async (name, email, password) => {
-    const res = await this.fetch(this.domain, {
+    const res = await this.fetchData(this.domain, {
       method: 'POST',
       body: JSON.stringify({ name, email, password }),
     });
@@ -18,10 +19,9 @@ export default class AuthService {
 
   login  =async ({ email, password }) => {
     console.log("checking login", email, password)
-    const res = await this.fetch(this.domain, {
-      method: 'POST',
-      body: JSON.stringify({ email, password })
-    });
+    const body= { email, password }
+    const res = await axios({ method: 'POST', url:this.domain, data: { email, password } });
+    
     // this.setToken(res.token);
     // if (res.userPermissions) {
     //   this.setPermissions(res);
@@ -66,27 +66,23 @@ export default class AuthService {
 
 //   logout = () => (localStorage.removeItem('niflr_admin_token'))
 
-  fetch = async (url, options) => {
-    const headers = {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    }
-
+  fetchData = async (url, body) => {
+    axios.defaults.headers = {
+      "Accept": 'application/json',
+      'Content-Type': 'application/json',
+    };
+    
+    // console.log("headers",headers)
     // if (this.loggedIn()) {
     //   headers['x-access-token'] = this.getToken()
     // }
-    const res = await fetch(url, {  ...options });
+    console.log("Instance property:", this.uri);
+
+   console.log("Instance property:", url,body);
+    const res = await axios({ method: 'POST', url, data: body });
     console.log("fetch req response",res)
-    return this.checkStatus(res).json();
+    return res;
   }
 
-//   checkStatus = (response) => {
-//     if (response.status >= 200 && response.status < 300) {
-//       return response
-//     }
-//       const error = new Error(response.statusText)
-//       error.response = response
-//       throw error
-    
-//   }
+
 }

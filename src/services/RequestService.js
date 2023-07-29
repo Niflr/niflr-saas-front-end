@@ -10,39 +10,47 @@ export default class RequestService {
   getBaseUrlAndToken = (domain) => {
     console.log("domain",domain)
     console.log(" error removal", this.loggedIn())
-    // if (!this.loggedIn()) {
-    //   localStorage.removeItem('niflr_admin_token');
-    //   return;
-    // }
-
     axios.defaults.headers = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      // 'x-access-token': localStorage.getItem('niflr_admin_token'),
-    };
+        };
     switch (domain) {
       case 'RETURN':
         axios.defaults.baseURL = 'http://localhost:3000/api/';
         break;
-      case 'MACHINE':
-        axios.defaults.baseURL = 'http://localhost:3000/api/';
-        axios.defaults.headers = {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'n-mach-secret': process.env.MACHINE_SECRET,
-        };
-        break;
-      case 'LOCAL':
-        console.log("inside local domain")
-        axios.defaults.baseURL = 'http://localhost:1234/api/';
-        break;
+        case 'MACHINE':
+          axios.defaults.baseURL = 'http://localhost:3000/api/';
+          axios.defaults.headers = {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'n-mach-secret': process.env.MACHINE_SECRET,
+          };
+          break;
+          case 'LOCAL':
+            console.log("inside local domain")
+            axios.defaults.baseURL = 'http://localhost:1234/api/';
+            
+            break;
+            case 'CLOUD':
+              console.log("inside cloud domain")
+              console.log("user token--->", JSON.parse((window.localStorage.getItem("user"))).token)
+
+
+          axios.defaults.baseURL = 'https://label-api.niflrpassdev.com/api';
+          axios.defaults.headers = {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'x-access-token': JSON.parse((window.localStorage.getItem("user"))).token,
+            // 'apikey': 'zf6jrzcrqvqoazk'
+          };
+          break;
       case 'ADMIN':
         console.log("inside admin domain")
-        axios.defaults.baseURL = 'https://niflrpassdev.com/api/';
+        axios.defaults.baseURL = 'https://cs-niflrpassdev.com/api/';
         axios.defaults.headers = {
          'accept': 'application/json',
           'content-type': 'application/json',
-          'x-access-token': process.env.xAccessToken,
+          'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImZhNDhhN2IyLWIwYjAtNGM3Yi1iMzNiLTRkNGM0MWQzYTc1YSIsIm5hbWUiOiJrdXNoYWwgZ29zd2FtaSIsImlhdCI6MTY4Nzc2NjQ0MywiZXhwIjoxNjg3ODUyODQzfQ.cP_Tqz5z0xea6zQnvs0GwOJyru6LyZ2uWkU2XNsj_90',
         };
         break;
       case 'DEVELOPMENT':
@@ -89,7 +97,7 @@ export default class RequestService {
 
   put = async ({ url, data, params, domain }) => {
     this.getBaseUrlAndToken(domain);
-    console.log("put request data", data)
+    console.log("put request data",domain, data)
     try {
       const res = await axios({ method: 'PUT', url: `${url}${params || ''}`, data });
       console.log("put response", res)

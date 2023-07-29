@@ -50,27 +50,27 @@ export default function LoginPage() {
       </Helmet> */}
 
       <StyledRoot>
-        <Logo
+        {/* <Logo
           sx={{
             position: 'fixed',
             top: { xs: 16, sm: 24, md: 40 },
             left: { xs: 16, sm: 24, md: 40 },
           }}
-        />
+        /> */}
 
         {mdUp && (
           <StyledSection>
+            <img style={{ margin: '20px' }} src="/assets/BryskLogo_750.png" height={50} width={200} alt="login" />
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome Back to  NIFLR EDGE ADMIN
+              Hi, Welcome Back to BRYSK EDGE ADMIN
             </Typography>
-            <img src="/assets/illustrations/illustration_login.png" alt="login" />
           </StyledSection>
         )}
 
         <Container maxWidth="sm">
           <StyledContent>
             <Typography variant="h4" gutterBottom>
-              Sign in to Edge 
+              Sign in to Edge
             </Typography>
 
             <Divider sx={{ my: 3 }}>

@@ -1,18 +1,19 @@
-import { SET_MODAL_STATE } from '../types/index'
+import { SET_MODAL_STATE } from '../types/index';
 
- const defaultModalState = {
-    visible: false,
-    modalName: 'SPINNER',
-    modalHeader: 'Oops!',
-    modalContent: '',
+const defaultModalState = {
+  visible: false,
+  modalName: 'SPINNER',
+  modalHeader: 'Oops!',
+  modalContent: '',
+  isLoading: false,
 };
 
 export default (state = defaultModalState, action) => {
-    // console.log("calling modal action",action)
-    switch (action.type) {
-        case SET_MODAL_STATE:
-            return { ...defaultModalState, ...action.payload }
-        default:
-            return state
-    }
-}
+  // console.log("calling modal action",action)
+  switch (action.type) {
+    case SET_MODAL_STATE:
+      return { ...defaultModalState, ...action.payload };
+    default:
+      return state;
+  }
+};

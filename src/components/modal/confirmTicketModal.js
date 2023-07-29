@@ -1,19 +1,29 @@
-import React, { useState } from 'react';
-import { Button, Modal, TextField,IconButton } from '@mui/material';
-import { Close } from '@mui/icons-material';
-import {connect} from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { Button, Modal, TextField, IconButton } from '@mui/material';
+
+import { useNavigate } from 'react-router-dom';
+
+import { connect } from 'react-redux';
 import { makeStyles } from '@mui/styles';
-import {addDummyEvent,
-        updateEventStatus,
-        createDummyEvents,
-        updateCartItemStatus,
-        updateTicketStatus, 
-        confirmEvents,
-        cartconfirmed,
-        cartCleared,
-        createUserOrder,
-        confirmUserOrder
-      } from '../../actions/index';
+import ModalWrapper from './modalWrapper';
+
+import {
+  addDummyEvent,
+  updateEventStatus,
+  createDummyEvents,
+  updateCartItemStatus,
+  updateTicketStatus,
+  confirmEvents,
+  cartconfirmed,
+  cartCleared,
+  createUserOrder,
+  // confirmUserOrder,
+  dummyEventsSaved,
+  eventsSaved,
+  createCart,
+  updateDummyEventStatus,
+  setModalState,
+} from '../../actions/index';
 
 const useStyles = makeStyles(() => ({
   paper: {
@@ -21,22 +31,18 @@ const useStyles = makeStyles(() => ({
     borderRadius: '10px',
     height: '150px',
     width: '300px',
-    // boxShadow: theme.shadows[5],
-    // padding: theme.spacing(2, 4, 3),
   },
-  header:{
+  header: {
     // textAlign: 'center',
     // alignSelf: 'center'
- 
   },
-  form:{
-    width:'100%',
-    height:'50%',
+  form: {
+    width: '100%',
+    height: '50%',
     display: 'flex',
     justifyContent: 'center',
     // alignItems: 'center',
-  }
-
+  },
 }));
 
 const generateRandomId = () => {
@@ -44,174 +50,213 @@ const generateRandomId = () => {
 };
 
 const AddConfirmTicketModal = (props) => {
+  const navigate = useNavigate();
+
   const classes = useStyles();
-  const [status, setStatus] = useState('processing');
-  const [weightChange, setWeightChangeEvent] = useState('');
-  const id = generateRandomId();
-  const machineId = generateRandomId();
-  const scaleId = generateRandomId();
-  const [ticketId,setTicketID] = useState(props.ticketId);
-  const [cartItems,setCartItems] = useState(props.cart.cartItems);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(props.modal.isLoading);
+  }, [props.modal.isLoading]);
+
+  useEffect(() => {
+    console.log('checking isloading', isLoading);
+    // setIsLoading(props.modal.isLoading);
+  }, [isLoading]);
+
   const handleClose = () => {
-    setStatus('');
-    setWeightChangeEvent('');
+    // setStatus('');
+    // setWeightChangeEvent('');
     props.closeModal();
   };
 
-  const getEventIdsByStatus = (status,events) => {
-    // console.log("   inside getCheckedEventIds", status)
+  const getEventIdsByStatus = (status, events) => {
+    console.log('   inside getCheckedEventIds', events);
     const checkedEvents = events.filter((event) => event.status === status);
     const checkedEventIds = checkedEvents.map((event) => event.id);
     return checkedEventIds;
   };
-  const ordercreator= () => {
-    console.log("inside order creator",cartItems)
-      const newList = cartItems.map(({ variantId, quantity }) => ({
-        variantId,
-        qty: quantity,
-      }));
-      return newList;
-    };
 
+  const handleConfirmButtonClick = async () => {
+    props.setModalState({
+      visible: true,
+      modalName: 'loading',
+      isLoading: true,
+    });
 
-  const handleConfirmButtonClick =()=>{
- 
-    // add all dummy events to db 
-    console.log("checking dummyevents",props.dummyEvent)
-    props.createDummyEvents(props.ticket.ticket.id,
-      {
-        "ticket_id": props.ticket.ticket.id,
-        "dummyEvents":props.dummyEvent.dummyEvents.dummyEvents
+    try {
+      // console.log('checking dummyevents', props.dummyEvent);
+      const events = getEventIdsByStatus('ADDED_TO_CART', props.event.events.events);
+      const dummyEvents = getEventIdsByStatus('ADDED_TO_CART', props.dummyEvent.dummyEvents.dummyEvents);
+      console.log('user dummy events', dummyEvents);
+      const userCart = getEventIdsByStatus('ADDED_TO_CART', props.cart.cartItems);
+      console.log('userCart', userCart);
+
+      const sortedEvents = props.event.events.events
+        .filter((event) => {
+          if (Array.isArray(events)) {
+            return events.includes(event.id) && event.status === 'ADDED_TO_CART';
+          }
+          return false;
+        })
+        .map((event) => ({ ...event, status: 'CONFIRMED' }));
+      console.log('sorted  events', sortedEvents);
+      props.eventsSaved();
+      if (sortedEvents.length > 0) {
+        props.updateEventStatus({ status: 'CONFIRMED', event_ids: events });
+
+        // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
       }
-      )
-    const order = ordercreator();
-    console.log("checking order",order)
-    // create an order for the cart
-    props.createUserOrder(
-      props.ticket.ticket.user_id,
-      {
-        "items":order,
-        "addressId":props.ticket.ticket.store_Id,
+      const sortedDummyEvents = props.dummyEvent.dummyEvents.dummyEvents
+        .filter((event) => {
+          if (Array.isArray(dummyEvents)) {
+            return dummyEvents.includes(event.id) && event.status === 'ADDED_TO_CART';
+          }
+          return false;
+        })
+        .map((event) => ({ ...event, status: 'CONFIRMED' }));
+      console.log('sorted dummy events', sortedDummyEvents);
+      props.dummyEventsSaved();
+      if (sortedDummyEvents.length > 0) {
+        console.log('sorting dummy events');
+        props.updateDummyEventStatus({ status: 'CONFIRMED', event_id: dummyEvents });
+        // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
       }
-    )
-    
-    // confirm the order
-    // props.confirmUserOrder()
-    // updating tikcet status 
-    
-    props.updateTicketStatus( props.ticket.ticket.id,
-      {"status": "confirmed",
-      "ticket_id": props.ticket.ticket.id}
-       )
-    
 
-    // update event status in db
+      const sortedCart = props.cart.cartItems
+        .filter((event) => {
+          if (Array.isArray(userCart)) {
+            console.log('finding user cart', event);
+            return userCart.includes(event.id) && event.status === 'ADDED_TO_CART';
+          }
+          return false;
+        })
+        .map((event) => ({ ...event, status: 'CONFIRMED' }));
+      console.log('sorted cart', sortedCart);
+      props.cartconfirmed();
 
-    const events=getEventIdsByStatus("saved",props.event.events.events)
-    props.updateEventStatus({"status":"confirmed", "event_ids":events})
+      if (sortedCart.length > 0) {
+        props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
+        // const sortedCart = props.cart.cartItems.filter(item => item.status === "ADDED_TO_CART");
+        const sortedOrder = [];
 
-    
-    // props.updateDummyEventStatus({"status":"confirmed", "event_ids":dummyEvents})
-    // console.log("updating cart item status")
-    // update cart item status in db
-    props.updateCartItemStatus(props.ticket.ticket.id,{"status":"confirmed","TicketId":props.ticket.ticket.id})
-    // update event status in state
-    props.confirmEvents()
-    // update cart item status in state
-    props.cartconfirmed()
-    // props.cartCleared()
-   // add dummy events to db status "confirmed"
-   // add cart items to db if not already added chec kby ticekt id and variant id
-   // clear cart state
-    console.log("handled confirm button")
-  }
+        sortedCart.forEach((item) => {
+          console.log('checking sorted order', item);
+          sortedOrder.push({
+            variantId: item.variantId || item.variant_id,
+            qty: parseInt(item.quantity, 10),
+            variantName: item.variant_name || item.variantName,
+          });
+        });
+        console.log('sorted order inplemented', sortedOrder);
+        // calliing create oder request
+        props.createUserOrder({
+          userId: props.ticket.ticket.user_id,
+          ticketId: props.ticket.ticket.id,
+          items: sortedOrder,
+          storeId: props.ticket.ticket.store_Id,
+        });
+
+        // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
+      }
+      console.log('handled confirm button');
+      // setTimeout(() => {
+      //   console.log('timeout working');
+      await props.setModalState({
+        visible: true,
+        modalName: 'loading',
+        // modalContent: props.product.products.updatedVariants,
+        isLoading: false,
+      });
+
+      // navigate('/dashboard/tickets');
+      // loadModal(false);
+      // return true;
+      // }, 5000);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
-      
-       <div className={classes.paper}>
-        <div 
-        style={{
-          width: '100%',
-          height: '50%',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center' 
-        }}
-        >
-        <h2 
-        className={classes.header} 
-        // style={{ alignSelf: 'center' }}
-        >
-          Confirm Ticket
-        
-        </h2>
-        <IconButton
-                                        style={{
-                                            borderRadius: '50%',
-                                            backgroundColor: '#ffffff',
-                                            boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                                            
-                                        }}
-                                        // onClick={}
-                                        >
-                                <Close />
-                            </IconButton>
-        </div>
-      
+    <div className={classes.paper}>
+      {props.modal.isLoading ? (
+        <ModalWrapper />
+      ) : (
+        <div>
+          <div
+            style={{
+              width: '100%',
+              height: '50%',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-evenly',
+              alignItems: 'center',
+            }}
+          >
+            <h2
+              className={classes.header}
 
-      <form  className={classes.form}>
-      {/* <TextField label="ID" value={id} disabled fullWidth />
-        <TextField label="Machine ID" value={machineId} disabled fullWidth />
-        <TextField label="Scale ID" value={scaleId} disabled fullWidth />
-        <TextField label="Ticket ID" value={ticketId} disabled fullWidth />
-      <TextField label="Status" value={status} disabled fullWidth/> */}
-      {/* <br /> */}
-      {/* <TextField
-        label="Weight Change Event"
-        value={weightChange}
-        onChange={(e) => setWeightChangeEvent(e.target.value)}
-      /> */}
-      {/* <br />
-      <br /> */}
-      <div style={{
-        width: '100%',
-        height: '50%',
-        alignItems: 'center' ,
-        justifyContent: 'center',
-      }}>
-      <Button 
-      variant="contained" 
-      color="primary" 
-      onClick={handleConfirmButtonClick}
-      >
-        Confirm
-      </Button>
-    
-      </div>
-   
-      </form>
-        {/* <Button onClick={handleClose}>X</Button> */}
+              // style={{ alignSelf: 'center' }}
+            >
+              Confirm Order?
+            </h2>
+          </div>
+
+          <div
+            style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-evenly' }}
+          >
+            <div
+              style={{
+                height: '50%',
+                padding: '10px',
+              }}
+            >
+              <Button variant="contained" color="primary" onClick={handleConfirmButtonClick}>
+                Confirm
+              </Button>
+            </div>
+            <div
+              style={{
+                height: '50%',
+                padding: '10px',
+              }}
+            >
+              <Button variant="contained" color="primary" onClick={handleClose}>
+                Cancel
+              </Button>
+            </div>
+          </div>
         </div>
+      )}
+    </div>
   );
-
-
 };
 
+const mapStateToProps = ({ cart, dummyEvent, event, ticket, order, modal }) => ({
+  cart,
+  dummyEvent,
+  event,
+  ticket,
+  order,
+  modal,
+});
 
-const mapStateToProps =({cart, dummyEvent,event,ticket,order}) =>({
-  cart,dummyEvent ,event,ticket,order
-})
-
-export default  connect(mapStateToProps,{
-                        addDummyEvent,
-                        updateEventStatus,
-                        updateCartItemStatus,
-                        updateTicketStatus,
-                        confirmEvents,
-                        cartconfirmed,
-                        cartCleared,
-                        createDummyEvents,
-                        createUserOrder,
-                        confirmUserOrder
-                      })(AddConfirmTicketModal);
+export default connect(mapStateToProps, {
+  addDummyEvent,
+  updateEventStatus,
+  updateCartItemStatus,
+  updateTicketStatus,
+  confirmEvents,
+  cartconfirmed,
+  cartCleared,
+  createDummyEvents,
+  createUserOrder,
+  // confirmUserOrder,
+  dummyEventsSaved,
+  eventsSaved,
+  createCart,
+  updateDummyEventStatus,
+  setModalState,
+})(AddConfirmTicketModal);
