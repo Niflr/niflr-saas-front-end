@@ -21,8 +21,6 @@ import { Add, AbcRounded, Clear } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import { connect } from 'react-redux';
 
-import AddToCartModal from '../components/modal/addToCartModal';
-
 import EventContainer from '../components/events/EventContainer/eventContainer';
 import CartContainer from '../components/cart/CartContainer/cartContainer';
 import DummyEventContainer from '../components/dummyEvents/EventContainer/eventContainer';
@@ -73,7 +71,7 @@ const TicketPage = (props) => {
   const [products, setProducts] = useState(null);
 
   const [selectedEvents, setSelectedEvents] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+
   const [isDeletingCart, setIsDeletingCart] = useState(false);
   const [isAddingVariant, setIsAddingVariant] = useState(false);
   const isOrderGenerated = props.ticket.ticket.order_id;
@@ -86,6 +84,9 @@ const TicketPage = (props) => {
 
   const [activeRack, setActiveRack] = useState(racks && racks.length > 0 ? racks[0].rack_id : null);
   const [activeRackCameras, setActiveRackCameras] = useState([]);
+
+  const [isEntryButtonClicked, setIsEntryButtonClicked] = useState(false);
+  const [isExitButtonClicked, setIsExitButtonClicked] = useState(false);
 
   const [selectedCamera, setSelectedCamera] = useState(null);
 
@@ -116,6 +117,10 @@ const TicketPage = (props) => {
     // setSubValue(newValue); // Reset the selected tab in the secondary set
   };
 
+  useEffect(() => {
+    setIsEntryButtonClicked(true);
+    setActiveRack(null);
+  }, []);
   useEffect(() => {
     props.fetchVideoList(props.ticket.ticket.video);
     props.fetchEventList(props.ticket.ticket.weight_change_events);
@@ -231,11 +236,25 @@ const TicketPage = (props) => {
   };
 
   const handleRackItemClick = (rack) => {
-    setActiveRack(rack.rack_id);
-    setActiveRackCameras(rack.rack_cameras);
-    setSelectedCamera(null); // Reset the selected camera
+    if (rack === 'ENTRY') {
+      setIsEntryButtonClicked(true);
+      setIsExitButtonClicked(false);
+      setActiveRack(null); 
+      setSelectedCamera(null);
+    } else if (rack === 'EXIT') {
+      setIsExitButtonClicked(true);
+      setActiveRack(null); 
+      setSelectedCamera(null);
+      setIsEntryButtonClicked(false); 
+    } else {
+      setIsEntryButtonClicked(false);
 
-    console.log('active rack cameras', activeRackCameras);
+      setIsExitButtonClicked(false);
+
+      setActiveRack(rack.rack_id);
+      setActiveRackCameras(rack.rack_cameras);
+      setSelectedCamera(null); // Reset the selected camera
+    }
   };
 
   const handleCameraClick = (camera) => {
@@ -286,8 +305,15 @@ const TicketPage = (props) => {
     };
   }
 
-  const filteredVideos =
-    selectedCamera && videos.videos ? videos.videos.filter((video) => video.cam_name === selectedCamera.rtmp_path) : [];
+  let filteredVideos = [];
+
+  if (isEntryButtonClicked) {
+    filteredVideos = videos?.videos?.filter((video) => video.cam_name === 'ENTRY');
+  } else if (isExitButtonClicked) {
+    filteredVideos = videos?.videos?.filter((video) => video.cam_name === 'EXIT');
+  } else {
+    filteredVideos = videos?.videos?.filter((video) => video.cam_name === selectedCamera?.rtmp_path);
+  }
 
   console.log(filteredVideos, 'filtered videos');
   console.log('TICKET PAGE PROPS: ', props);
@@ -314,7 +340,7 @@ const TicketPage = (props) => {
           </Box>
 
           <Paper className={classes.videoContainer}>
-            {filteredVideos.length > 0 ? (
+            {filteredVideos?.length > 0 ? (
               <VideoSlider videos={filteredVideos} handleAddEvent={handleDummyEvents} />
             ) : (
               <span
@@ -340,6 +366,16 @@ const TicketPage = (props) => {
               }}
             >
               <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" flexItem />}>
+                <Button
+                  style={{
+                    backgroundColor: isEntryButtonClicked ? '#2065D1' : 'white',
+                    color: isEntryButtonClicked ? 'white' : '#2065D1',
+                  }}
+                  onClick={() => handleRackItemClick('ENTRY')}
+                >
+                  ENTRY
+                </Button>
+
                 {racks.map((rack) => (
                   <Button
                     style={{
@@ -352,6 +388,15 @@ const TicketPage = (props) => {
                     {rack.rack_name}
                   </Button>
                 ))}
+                <Button
+                  style={{
+                    backgroundColor: isExitButtonClicked ? '#2065D1' : 'white',
+                    color: isExitButtonClicked ? 'white' : '#2065D1',
+                  }}
+                  onClick={() => handleRackItemClick('EXIT')}
+                >
+                  EXIT
+                </Button>
               </Stack>
             </div>
           )}
