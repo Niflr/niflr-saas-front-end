@@ -1,8 +1,10 @@
 import ReactDOM from 'react-dom/client';
 //
+import { ErrorBoundary } from "react-error-boundary";
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
+
 // ----------------------------------------------------------------------
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -13,9 +15,24 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 //     }
 // )
+
+function fallbackRender({ error, resetErrorBoundary }) {
+  
+    return (
+      <div style={{display: 'flex', flexDirection: 'column', height: '100vh' ,alignItems: 'center', justifyContent: 'center'}}>
+        <h1>OOPS!</h1>
+        <h4>Something broke. Please refresh and try again!</h4>
+        {/* <pre style={{ color: "red" }}>{error.message}</pre> */}
+      </div>
+    );
+  }
+  
 root.render(
     // <Provider store={store}>
+    <ErrorBoundary fallbackRender={fallbackRender}>
+
     <App />
+    </ErrorBoundary>
 // </Provider>
 );
 

@@ -16,6 +16,7 @@ import {
   Stack,
   Divider,
   IconButton,
+  
 } from '@mui/material';
 import { Add, AbcRounded, Clear } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
@@ -103,8 +104,9 @@ const TicketPage = (props) => {
     const activeRackData = racks ? racks.find((rack) => rack.rack_id === activeRack) : null;
 
     if (activeRackData) {
-      setActiveRackCameras(activeRackData.rack_cameras);
+      setActiveRackCameras([...activeRackData.rack_cameras]);
     }
+
   }, [activeRack]);
 
   const handlePrimaryTabChange = (event, newValue) => {
@@ -248,20 +250,17 @@ const TicketPage = (props) => {
       setIsEntryButtonClicked(false); 
     } else {
       setIsEntryButtonClicked(false);
-
       setIsExitButtonClicked(false);
-
       setActiveRack(rack.rack_id);
       setActiveRackCameras(rack.rack_cameras);
-      setSelectedCamera(null); // Reset the selected camera
+      setSelectedCamera(null); 
     }
   };
 
   const handleCameraClick = (camera) => {
-    setSelectedCamera(camera); // Set the selected camera
+    setSelectedCamera(camera); 
   };
-  console.log('selected camera', selectedCamera);
-  console.log(activeRackCameras, 'activeRackCameras');
+
   const handleClearButtonClick = () => {
     setIsDeletingCart(true);
     const events = getEventIdsByStatus('ADDED_TO_CART', props.event.events.events);
@@ -315,12 +314,13 @@ const TicketPage = (props) => {
     filteredVideos = videos?.videos?.filter((video) => video.cam_name === selectedCamera?.rtmp_path);
   }
 
-  console.log(filteredVideos, 'filtered videos');
+
   console.log('TICKET PAGE PROPS: ', props);
-  console.log('SELECTED EVENTS: ', selectedEvents);
+
 
   console.log('CART', cart);
   console.log('VIDEOS: ', videos);
+
   return (
     <Container maxWidth={false} className={classes.pageContainer}>
       <Grid container spacing={0} style={{ width: '100%', height: '100%', overflow: 'hidden' }}>

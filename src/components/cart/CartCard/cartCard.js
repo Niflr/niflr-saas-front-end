@@ -35,22 +35,13 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
     gap: '5px',
     border: '3px solid black',
-    // margin: theme.spacing(2),
-    // padding: theme.spacing(2),
     width: '100%',
-    // [theme.breakpoints.up('sm')]: {
-    //   width: 'auto',
-    // },
   },
   media: {
     borderRadius: '50%',
     width: 100,
     height: 80,
     objectFit: 'cover',
-    // [theme.breakpoints.up('sm')]: {
-    //   width: 120,
-    //   height: 120,
-    // },
   },
   tableContainer: {
     display: 'flex',
@@ -67,8 +58,6 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'flex-start',
     backgroundColor: 'white',
     width: '100%',
-    // borderRadius: theme.spacing(1),
-    // padding: theme.spacing(1),
   },
   quantityText: {
     // margin: theme.spacing(0, 1),
@@ -86,17 +75,18 @@ const CartElement = (props) => {
   const handleAddQuantity = () => {
     const updatedQuantity = quantity + 1;
     setQuantity(updatedQuantity);
-    if (props.event.events.events.some((event) => props.data.id === event.id && event.status === 'ADDED_TO_CART')) {
-      props.updateEventStatus({ qty: updatedQuantity, event_ids: [props.data.id] });
-      // props.updateCartItemStatus(props.cart.ticketId, {qty: updatedQuantity})
-      } else if (
-        props.dummyEvent.dummyEvents.dummyEvents.some(
-          (event) => props.data.id === event.id && event.status === 'ADDED_TO_CART'
-        )) {
-          props.updateDummyEventStatus({ qty: updatedQuantity, event_id: [props.data.id] });
-      // props.updateCartItemStatus(props.cart.ticketId, {qty: updatedQuantity})
+    // props.addItemQuantity()
+    // if (props.event.events.events.some((event) => props.data.id === event.id && event.status === 'ADDED_TO_CART')) {
+    //   props.updateEventStatus({ qty: updatedQuantity, event_ids: [props.data.id] });
+    //   // props.updateCartItemStatus(props.cart.ticketId, {qty: updatedQuantity})
+    //   } else if (
+    //     props.dummyEvent.dummyEvents.dummyEvents.some(
+    //       (event) => props.data.id === event.id && event.status === 'ADDED_TO_CART'
+    //     )) {
+    //       props.updateDummyEventStatus({ qty: updatedQuantity, event_id: [props.data.id] });
+    //   // props.updateCartItemStatus(props.cart.ticketId, {qty: updatedQuantity})
 
-        } 
+    //     } 
 
   };
 
