@@ -63,6 +63,8 @@ const ViewStoreProductsModal = (props) => {
   console.log('products modal', props.products);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [filteredProducts, setFilteredProducts] = useState(props.products); // Initialize with all products
+
 
   const handleProductClick = (product) => {
     console.log('product clicked', product);
@@ -75,18 +77,24 @@ const ViewStoreProductsModal = (props) => {
   };
 
   const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
+    const value = event.target.value;
+    setSearchQuery(value);
+    
+    const updatedFilteredProducts = filterProducts(value);
+    setFilteredProducts(updatedFilteredProducts);
+  };
+  console.log("FILTERED PRODUCTS --> ", filteredProducts)
+  
+  const filterProducts = (query) => {
+    return props.products.filter((product) =>
+      product.variantName.toLowerCase().includes(query.trim().toLowerCase())
+    );
   };
 
   const handleCheckboxChange = (event, product) => {
     console.log('handling checked product', product);
     setSelectedProduct(event.target.checked ? product : null);
   };
-
-  const filteredProducts = props.products.filter((product) =>
-    product.variantName.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   //   const [status, setStatus] = useState('processing');
   //   const [weightChange, setWeightChangeEvent] = useState('');
   //   const id = generateRandomId();
@@ -107,6 +115,7 @@ const ViewStoreProductsModal = (props) => {
       <Grid item xs={12}>
         <input type="text" placeholder="Search products" value={searchQuery} onChange={handleSearchChange} />
       </Grid>
+      {filteredProducts.length > 0 ?
       <div className={classes.listContainer}>
         <Grid container spacing={2}>
           <Grid item xs={2}>
@@ -122,7 +131,7 @@ const ViewStoreProductsModal = (props) => {
 
         <div className={classes.list}>
           {filteredProducts.map((product) => (
-            <Grid item xs={12} key={product.variantId}>
+            <Grid item xs={12}>
               <ListItem
                 button
                 onClick={() => handleProductClick(product)}
@@ -152,6 +161,8 @@ const ViewStoreProductsModal = (props) => {
           Select
         </Button>
       </div>
+      : <Typography style={{display: "flex", alignItems: "center", justifyContent: "center"}}>No Matching Products Found</Typography>
+      }
     </div>
   );
 };

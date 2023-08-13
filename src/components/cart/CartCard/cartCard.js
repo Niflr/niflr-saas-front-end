@@ -171,15 +171,15 @@ const CartElement = (props) => {
             </TableCell>
             <TableCell>
               <Box className={classes.quantityContainer}>
-                <IconButton onClick={handleSubtractQuantity}>
+                {/* <IconButton onClick={handleSubtractQuantity}>
                   <RemoveCircleOutline />
-                </IconButton>
+                </IconButton> */}
                 <Typography variant="body1" className={classes.quantityText}>
                   {quantity}
                 </Typography>
-                <IconButton onClick={handleAddQuantity}>
+                {/* <IconButton onClick={handleAddQuantity}>
                   <AddCircleOutline />
-                </IconButton>
+                </IconButton> */}
               </Box>
             </TableCell>
           </TableRow>
