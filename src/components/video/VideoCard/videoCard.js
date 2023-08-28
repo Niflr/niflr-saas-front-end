@@ -78,9 +78,14 @@ function VideoElement(props) {
 
   const handlePlaybackSpeedChange = (speed) => {
     setSelectedPlaybackSpeed(speed);
-    videoRef.current.playbackRate = speed;
-  };
-  
+    console.log("selectedPlaybackSpeed", selectedPlaybackSpeed)
+    };
+    
+    useEffect(() => {
+      if (videoRef.current) {
+        videoRef.current.playbackRate = selectedPlaybackSpeed;
+      }
+    }, [selectedPlaybackSpeed]);
 
 
   // const isEventInVideo = (eventTime, videoStartTime, videoEndTime) => {
@@ -157,13 +162,13 @@ function VideoElement(props) {
   return (
     <Card className={classes.rootContainer}>
       <div
-        style={{
-          height: '90%',
-        }}
+        // style={{
+        //   height: '90%',
+        // }}
       >
         <CardMedia
           component="video"
-          height="100%"
+          height="80%"
           src={videoPath}
           // controls
           ref={videoRef}
@@ -187,7 +192,6 @@ function VideoElement(props) {
           flexDirection: 'row',
         }}
       >
-        <IconButton onClick={handlePlayPauseClick}>{isPlaying ? <Pause /> : <PlayArrow />}</IconButton>
         <Slider
           value={currentTime}
           min={0}
@@ -202,33 +206,37 @@ function VideoElement(props) {
           //   markActive: classes.markActive,
           // }}
         />
-          {/* <Button
-            variant="outlined"
-            color="primary"
-            style={{marginLeft: '20px'}}
-            onClick={togglePlaybackSpeed}
+      </div>
+      <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px'}}>
+      <Button
+            variant="contained"
+            color={selectedPlaybackSpeed === 0.5 ? 'success': 'primary'}
+            onClick={()=>handlePlaybackSpeedChange(0.5)}
           >
-            {playbackSpeed === 1 ? '2x' : '1x'}
-          </Button> */}
-          <FormControl>
-
-  <div className={classes.playbackSpeedButton}>
-
-  <Select
-    value={selectedPlaybackSpeed}
-    style={{height: '25px', backgroundColor: palette.primary.main, color: 'white' }}
-    onChange={(event) => handlePlaybackSpeedChange(event.target.value)}
-  >
-    {playbackSpeedOptions.map((option) => (
-      <MenuItem key={option.value} value={option.value}>
-        {option.label}
-      </MenuItem>
-    ))}
-  </Select>
-  </div>
-</FormControl>
-
-
+            0.5x
+          </Button>
+          <Button
+            variant="contained"
+            color={selectedPlaybackSpeed === 1 ? 'success': 'primary'}
+            onClick={()=>handlePlaybackSpeedChange(1)}
+          >
+            1x
+          </Button>
+        <IconButton onClick={handlePlayPauseClick}>{isPlaying ? <Pause /> : <PlayArrow />}</IconButton>
+        <Button
+            variant='contained'
+            color={selectedPlaybackSpeed === 2 ? 'success': 'primary'}
+            onClick={()=>handlePlaybackSpeedChange(2)}
+          >
+            2x
+          </Button>
+          <Button
+            variant="contained"
+            color={selectedPlaybackSpeed === 4 ? 'success': 'primary'}
+            onClick={()=>handlePlaybackSpeedChange(4)}
+          >
+            4x
+          </Button>
       </div>
     </Card>
   );

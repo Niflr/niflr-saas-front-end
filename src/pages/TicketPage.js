@@ -123,6 +123,7 @@ const TicketPage = (props) => {
 
   useEffect(() => {
     setIsEntryButtonClicked(true);
+    handleRackItemClick('ENTRY')
     setActiveRack(null);
   }, []);
   useEffect(() => {
@@ -241,7 +242,7 @@ const TicketPage = (props) => {
 
   const handleRackItemClick = (rack) => {
     if (rack === 'ENTRY') {
-      setIsLoading(true);
+      // setIsLoading(true);
       setTimeout(()=> setIsLoading(false), 2000)
       setIsEntryButtonClicked(true);
       setIsExitButtonClicked(false);
@@ -373,6 +374,7 @@ const TicketPage = (props) => {
             <div
               style={{
                 padding: '5px',
+                marginTop: '15px',
                 boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.6)',
                 overflowX: 'auto',
                 whiteSpace: 'nowrap',

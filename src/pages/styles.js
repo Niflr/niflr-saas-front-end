@@ -55,13 +55,14 @@ export const useStyles = makeStyles(() => ({
 
   videoContainer: {
     width: '100%',
-    height: '70%',
+    height: '65%',
 
     marginRight: '20px',
     borderRadius: '8px',
     padding: '4px',
     marginBottom: '20px',
     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.6)',
+    backgroundColor: 'white'
   },
 
   cartContainer: {

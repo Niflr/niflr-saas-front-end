@@ -12,12 +12,14 @@ const useStyles = makeStyles({
     width: '100%',
     height: '100%',
     borderRadius: '10px',
+    gap: '10px',
     // margin: 'auto',
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: "white"
   },
 
   progressContainer: {
