@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { CardContent, Card, CardMedia, Typography, Button, IconButton, Slider } from '@mui/material';
+import { CardContent, Card, CardMedia, FormControl, Select, InputLabel, MenuItem,Typography, Button, IconButton, Slider } from '@mui/material';
 import { connect } from 'react-redux';
-import { addIcon, Pause, PlayArrow } from '@mui/icons-material';
+import { addIcon, BorderClear, BorderColor, Pause, PlayArrow } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
+import palette from '../../../theme/palette';
 
 const useStyles = makeStyles({
   rootContainer: {
@@ -33,6 +34,9 @@ const useStyles = makeStyles({
     fontSize: 40,
     color: '#fff',
   },
+  playbackSpeedButton: {
+    marginLeft: '10px',
+  },
   media: {
     '& input[type="range"]': {
       background: 'red', // Change the slider background color to red
@@ -42,7 +46,7 @@ const useStyles = makeStyles({
 
 function VideoElement(props) {
   const classes = useStyles();
-  console.log('props', props);
+  console.log('props in video card', props);
   const videoPath = props.video.video_path_cloud;
   const videoRef = useRef(null);
   const videoStartTime = props.video.start_time;
@@ -58,6 +62,27 @@ function VideoElement(props) {
   // const [videoDuration, setVideoDuration] = useState(0);
   const videoDuration = videoRef.current ? videoRef.current.duration : 0;
 
+
+  const playbackSpeedOptions = [
+    { value: 0.5, label: '0.5x' },
+    { value: 1, label: '1x' },
+    { value: 1.5, label: '1.5x' },
+    { value: 2, label: '2x' },
+    {value: 4, label: '4x'}
+  ];
+  
+  const [selectedPlaybackSpeed, setSelectedPlaybackSpeed] = useState(1);
+  
+
+
+
+  const handlePlaybackSpeedChange = (speed) => {
+    setSelectedPlaybackSpeed(speed);
+    videoRef.current.playbackRate = speed;
+  };
+  
+
+
   // const isEventInVideo = (eventTime, videoStartTime, videoEndTime) => {
   //   const eventDate = new Date(eventTime);
   //   const videoStartDate = new Date(videoStartTime);
@@ -66,33 +91,33 @@ function VideoElement(props) {
   //   return eventDate >= videoStartDate && eventDate <= videoEndDate;
   // }
 
-  useEffect(() => {
-    // setVideoDuration(videoRef.current.duration)
-    // setEvents(props.event.events.events);
-    // const newIntervals = [];
-    // console.log("checking video duration",JSON.stringify(videoRef.current))
-    // console.log("checking interval duration",intervalDuration)
-    // const numberOfIntervals = Math.ceil(videoDuration / intervalDuration);
-    // console.log("checking video start time",videoStartTime)
-    // console.log("checking video end time",videoEndTime)
-    // const filteredEvents = events.filter(event => isEventInVideo(event.createdAt, videoStartTime, videoEndTime));
-    // console.log("checking filtered events",filteredEvents)
-    // const intervalDuration = videoDuration / numberOfIntervals;
-    // for (let i = 0; i < numberOfIntervals; i+=1) {
-    //   const intervalStart = i * intervalDuration;
-    //   const intervalEnd = (i + 1) * intervalDuration;
-    //   // Check if there are any events within the interval
-    //   const eventsWithinInterval = filteredEvents.filter(event => {
-    //     const eventTime = new Date(event.createdAt).getTime() / 1000;
-    //     return eventTime >= intervalStart && eventTime < intervalEnd;
-    //   });
-    //   if (eventsWithinInterval.length > 0) {
-    //     newIntervals.push(intervalEnd);
-    //   }
-    // }
-    // console.log("new intervals", newIntervals)
-    // setTimeIntervals(newIntervals);
-  }, [videoRef]);
+  // useEffect(() => {
+  //   // setVideoDuration(videoRef.current.duration)
+  //   // setEvents(props.event.events.events);
+  //   // const newIntervals = [];
+  //   // console.log("checking video duration",JSON.stringify(videoRef.current))
+  //   // console.log("checking interval duration",intervalDuration)
+  //   // const numberOfIntervals = Math.ceil(videoDuration / intervalDuration);
+  //   // console.log("checking video start time",videoStartTime)
+  //   // console.log("checking video end time",videoEndTime)
+  //   // const filteredEvents = events.filter(event => isEventInVideo(event.createdAt, videoStartTime, videoEndTime));
+  //   // console.log("checking filtered events",filteredEvents)
+  //   // const intervalDuration = videoDuration / numberOfIntervals;
+  //   // for (let i = 0; i < numberOfIntervals; i+=1) {
+  //   //   const intervalStart = i * intervalDuration;
+  //   //   const intervalEnd = (i + 1) * intervalDuration;
+  //   //   // Check if there are any events within the interval
+  //   //   const eventsWithinInterval = filteredEvents.filter(event => {
+  //   //     const eventTime = new Date(event.createdAt).getTime() / 1000;
+  //   //     return eventTime >= intervalStart && eventTime < intervalEnd;
+  //   //   });
+  //   //   if (eventsWithinInterval.length > 0) {
+  //   //     newIntervals.push(intervalEnd);
+  //   //   }
+  //   // }
+  //   // console.log("new intervals", newIntervals)
+  //   // setTimeIntervals(newIntervals);
+  // }, [videoRef]);
 
   //   useEffect(() => {
   //     console.log("video events mapping", JSON.stringify(props.event.events));
@@ -177,6 +202,33 @@ function VideoElement(props) {
           //   markActive: classes.markActive,
           // }}
         />
+          {/* <Button
+            variant="outlined"
+            color="primary"
+            style={{marginLeft: '20px'}}
+            onClick={togglePlaybackSpeed}
+          >
+            {playbackSpeed === 1 ? '2x' : '1x'}
+          </Button> */}
+          <FormControl>
+
+  <div className={classes.playbackSpeedButton}>
+
+  <Select
+    value={selectedPlaybackSpeed}
+    style={{height: '25px', backgroundColor: palette.primary.main, color: 'white' }}
+    onChange={(event) => handlePlaybackSpeedChange(event.target.value)}
+  >
+    {playbackSpeedOptions.map((option) => (
+      <MenuItem key={option.value} value={option.value}>
+        {option.label}
+      </MenuItem>
+    ))}
+  </Select>
+  </div>
+</FormControl>
+
+
       </div>
     </Card>
   );

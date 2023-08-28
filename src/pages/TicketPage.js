@@ -16,7 +16,7 @@ import {
   Stack,
   Divider,
   IconButton,
-  
+  CircularProgress
 } from '@mui/material';
 import { Add, AbcRounded, Clear } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
@@ -90,6 +90,8 @@ const TicketPage = (props) => {
   const [isExitButtonClicked, setIsExitButtonClicked] = useState(false);
 
   const [selectedCamera, setSelectedCamera] = useState(null);
+
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Find the primary camera from the activeRackCameras array
@@ -239,26 +241,32 @@ const TicketPage = (props) => {
 
   const handleRackItemClick = (rack) => {
     if (rack === 'ENTRY') {
+      setIsLoading(true);
+      setTimeout(()=> setIsLoading(false), 2000)
       setIsEntryButtonClicked(true);
       setIsExitButtonClicked(false);
       setActiveRack(null); 
       setSelectedCamera(null);
     } else if (rack === 'EXIT') {
+      setIsLoading(true);
+      setTimeout(()=> setIsLoading(false), 2000)
       setIsExitButtonClicked(true);
       setActiveRack(null); 
       setSelectedCamera(null);
       setIsEntryButtonClicked(false); 
     } else {
-      setIsEntryButtonClicked(false);
-      setIsExitButtonClicked(false);
       setActiveRack(rack.rack_id);
       setActiveRackCameras(rack.rack_cameras);
       setSelectedCamera(null); 
+      setIsEntryButtonClicked(false);
+      setIsExitButtonClicked(false);
     }
   };
 
   const handleCameraClick = (camera) => {
+    setIsLoading(true);
     setSelectedCamera(camera); 
+    setTimeout(()=> setIsLoading(false), 2000)
   };
 
   const handleClearButtonClick = () => {
@@ -340,7 +348,12 @@ const TicketPage = (props) => {
           </Box>
 
           <Paper className={classes.videoContainer}>
-            {filteredVideos?.length > 0 ? (
+            {isLoading ? (
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                <CircularProgress />
+              </div>
+            ) : 
+              filteredVideos?.length > 0 ? (
               <VideoSlider videos={filteredVideos} handleAddEvent={handleDummyEvents} />
             ) : (
               <span

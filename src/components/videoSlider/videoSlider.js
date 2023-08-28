@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardMedia, Typography, Button, IconButton, Slider } from '@mui/material';
+import { Card, CardContent, CardMedia, Typography, Button, IconButton, Slider, CircularProgress } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
 import { connect } from 'react-redux';
@@ -17,7 +17,7 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    // justifyContent: 'space-between',
+    justifyContent: 'center',
   },
 
   progressContainer: {
@@ -57,18 +57,25 @@ function VideoSlider(props) {
   const [addDummy, setAddDummy] = useState(true);
   const [videos, setVideos] = useState([]);
   const [progressWidth, setProgressWidth] = useState(0);
+
+  const [isLoading, setIsLoading] = useState(true);
   // console.log("videoslider props", videos)
   const handleLeftArrowClick = () => {
+    setIsLoading(true);
     setCurrentVideoIndex((prevIndex) => (prevIndex === 0 ? videos.length - 1 : prevIndex - 1));
+    setTimeout(()=> setIsLoading(false), 2000)
   };
 
   useEffect(() => {
     console.log('calling set videos', JSON.stringify(props.videos));
     setVideos(props.videos);
+    setIsLoading(false);
   }, [props.video]);
 
   const handleRightArrowClick = () => {
+    setIsLoading(true);
     setCurrentVideoIndex((prevIndex) => (prevIndex === videos.length - 1 ? 0 : prevIndex + 1));
+    setTimeout(()=> setIsLoading(false), 2000)
   };
 
   // useEffect(() => {
@@ -97,6 +104,7 @@ function VideoSlider(props) {
             color="primary"
             className={`${classes.arrowButton} ${classes.leftArrow}`}
             onClick={handleLeftArrowClick}
+            disabled={isLoading || currentVideoIndex === 0}
           >
             {'<'}
           </Button>
@@ -109,6 +117,7 @@ function VideoSlider(props) {
             color="primary"
             className={`${classes.arrowButton} ${classes.rightArrow}`}
             onClick={handleRightArrowClick}
+            disabled={isLoading || currentVideoIndex === videos.length - 1}
           >
             {'>'}
           </Button>
@@ -118,8 +127,16 @@ function VideoSlider(props) {
   };
 
   return (
-    // console.log("videoslider props", props.video.status),
-    videos ? renderVideos(props.videos) : null
+    <div>
+  { isLoading ? (
+      <div style={{position: 'relative', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '570px' }}>
+           <CircularProgress />
+      </div>
+
+  ): (
+   renderVideos(props.videos)
+  )}
+    </div>
   );
 }
 

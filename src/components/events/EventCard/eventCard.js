@@ -103,6 +103,7 @@ const EventElement = (props) => {
         <Typography>ID: {id}</Typography>
 
         <Typography variant="h6">{rackId}</Typography>
+        <Typography>Quantity: {quantity}</Typography>
         <Typography>Machine ID: {machineId}</Typography>
         {status ? <Typography>Status: {status}</Typography> : null}
         <Typography>Time: {createdAt}</Typography>
