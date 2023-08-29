@@ -2,10 +2,8 @@ import decode from 'jwt-decode';
 import axios from 'axios';
 
 export default class AuthService {
-  constructor(domain) {
-    const uri = `${process.env.ADMIN_HOST}/api`;
-    console.log("login uri",uri, domain )
-    this.domain = `https://label-api.niflrpassdev.com/api/${domain}`;
+  constructor(path) {
+    this.domain = `https://label-api.niflrpassdev.com/api/${path}`;
     console.log("logi domain", this.domain)
   }
 
@@ -20,7 +18,7 @@ export default class AuthService {
   login  =async ({ email, password }) => {
     console.log("checking login", email, password)
     const body= { email, password }
-    const res = await axios({ method: 'POST', url:this.domain, data: { email, password } });
+    const res = await axios({ method: 'POST', url:this.domain, data: body });
     
     // this.setToken(res.token);
     // if (res.userPermissions) {

@@ -6,7 +6,6 @@ import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
 import { useAuth } from '../../../components/useAuth';
-import AuthService from '../../../services/AuthService';
 
 export default function LoginForm() {
   const navigate = useNavigate();
