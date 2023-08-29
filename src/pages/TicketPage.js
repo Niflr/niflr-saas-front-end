@@ -127,10 +127,10 @@ const TicketPage = (props) => {
     setActiveRack(null);
   }, []);
   useEffect(() => {
-    props.fetchVideoList(props.ticket.ticket.video);
-    props.fetchEventList(props.ticket.ticket.weight_change_events);
-    props.fetchDummyEventList([props.ticket.ticket.id]);
-    props.fetchCartList(props.ticket.ticket.id);
+      props.fetchVideoList(props.ticket.ticket.video);
+      props.fetchEventList(props.ticket.ticket.weight_change_events);
+      props.fetchDummyEventList([props.ticket.ticket.id]);
+      props.fetchCartList(props.ticket.ticket.id);
   }, [props.ticket]);
 
   console.log('FETCHING CART LIST: ', props.ticket.ticket.id);
