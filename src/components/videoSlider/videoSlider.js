@@ -98,7 +98,7 @@ function VideoSlider(props) {
         <div
           style={{
             display: 'flex',
-            flexDirection: 'row',
+            flexDirection: 'row'
           }}
         >
           <Button

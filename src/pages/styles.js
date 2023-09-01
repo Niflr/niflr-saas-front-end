@@ -18,7 +18,7 @@ export const useStyles = makeStyles(() => ({
     width: '700px',
     height: '100%',
     gap: '10px',
-    maxHeight: '2000px',
+    maxHeight: '2300px',
     paddingRight: '10px',
     borderRadius: '8px',
     backgroundColor: 'white',
@@ -56,15 +56,21 @@ export const useStyles = makeStyles(() => ({
   videoContainer: {
     width: '100%',
     height: '65%',
-
     marginRight: '20px',
     borderRadius: '8px',
     padding: '4px',
-    marginBottom: '20px',
+    marginBottom: '10px',
     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.6)',
     backgroundColor: 'white'
   },
 
+  rackContainer: {
+     padding: '5px',
+     marginTop: '1px',
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.6)',
+    overflowX: 'auto',
+     whiteSpace: 'nowrap',
+  },
   cartContainer: {
     display: 'flex',
     flexDirection: 'row',

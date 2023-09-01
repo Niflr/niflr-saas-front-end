@@ -10,7 +10,7 @@ const useStyles = makeStyles({
     width: '100%',
     height: '100%',
     margin: 'auto',
-
+    // paddingBottom: '15px',
     flexDirection: 'column',
   },
   mark: {
@@ -162,15 +162,16 @@ function VideoElement(props) {
   return (
     <Card className={classes.rootContainer}>
       <div
-        // style={{
-        //   height: '90%',
-        // }}
+        style={{
+          height: '400px',
+          width: '800px'
+        }}
       >
         <CardMedia
           component="video"
-          height="80%"
+          height="100%"
           src={videoPath}
-          // controls
+          controls
           ref={videoRef}
           onPause={handleVideoPause}
           onPlay={handleVideoPlay}
@@ -180,7 +181,7 @@ function VideoElement(props) {
         />
       </div>
 
-      <div
+      {/* <div
         style={{
           bottom: 0,
           // paddingTop: '20px',
@@ -206,8 +207,8 @@ function VideoElement(props) {
           //   markActive: classes.markActive,
           // }}
         />
-      </div>
-      <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px'}}>
+      </div> */}
+      <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', height: '70px'}}>
       <Button
             variant="contained"
             color={selectedPlaybackSpeed === 0.5 ? 'success': 'primary'}

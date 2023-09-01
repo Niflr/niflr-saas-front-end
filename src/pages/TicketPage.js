@@ -371,15 +371,7 @@ const TicketPage = (props) => {
             )}
           </Paper>
           {racks && (
-            <div
-              style={{
-                padding: '5px',
-                marginTop: '15px',
-                boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.6)',
-                overflowX: 'auto',
-                whiteSpace: 'nowrap',
-              }}
-            >
+            <div className={classes.rackContainer}>
               <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" flexItem />}>
                 <Button
                   style={{
