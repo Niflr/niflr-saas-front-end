@@ -369,7 +369,7 @@ const TicketPage = (props) => {
                 {selectedCamera ? 'No Video Available for Selected Camera' : 'No Videos Available'}
               </span>
             )}
-          </Paper>
+       
           {racks && (
             <div className={classes.rackContainer}>
               <Stack direction="row" spacing={2} divider={<Divider orientation="vertical" flexItem />}>
@@ -433,6 +433,7 @@ const TicketPage = (props) => {
               </Stack>
             </div>
           )}
+             </Paper>
         </Grid>
 
         <Grid item xs={12} sm={6} md={4} className={classes.rightContainer}>
