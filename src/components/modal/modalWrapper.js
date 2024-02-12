@@ -3,7 +3,6 @@ import { Modal } from '@mui/material';
 import { connect } from 'react-redux';
 import AddDummyEventModal from './addDummyEventModal';
 import ConfirmTicketModal from './confirmTicketModal';
-import confirmCartModal from './confirmCartModal';
 import ViewStoreProducts from './viewStoreProducts';
 import { setModalState } from '../../actions/index';
 import AddToCartModal from './addToCartModal';

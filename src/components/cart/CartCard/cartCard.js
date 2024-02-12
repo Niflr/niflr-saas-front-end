@@ -14,8 +14,8 @@ import {
   CardContent,
   IconButton,
   Typography,
+  Chip,
 } from '@mui/material';
-import { AddCircleOutline, RemoveCircleOutline } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
 import { connect } from 'react-redux';
 import {
@@ -92,9 +92,6 @@ const CartElement = (props) => {
 
   console.log('CART CARD PROPS: ', props);
   const removeItemButtonClick = () => {
-    // make a function to fiter if the evnet id exists in events or dummyevents?
-
-    // re setting events  and or dummy events in backend db
     const cartEvent = props.data;
     if (props.event.events.events.some((event) => cartEvent.id === event.id && event.status === 'ADDED_TO_CART')) {
       props.updateEventStatus({ status: 'processing', event_ids: [cartEvent.id] });
@@ -130,123 +127,23 @@ const CartElement = (props) => {
       } 
 
   };
-
   console.log('ITEM DATA', props.data);
   return (
-    <Box>
-      <TableContainer className={classes.tableContainer} minWidth="100%">
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Field</TableCell>
-              <TableCell>Value</TableCell>
-              <TableCell>
-                <IconButton onClick={removeItemButtonClick}>
-                  <RemoveCircleOutline />
-                </IconButton>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableRow>
-            <TableCell>
-              <Typography variant="h6">Name: </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography variant="h6">
-                {props.data.variant_name ? props.data.variant_name : props.data.variantName}
-              </Typography>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>
-              <Typography variant="h6">Status:</Typography>
-            </TableCell>
-            <TableCell>
-              <Typography variant="h6">{props.data.status}</Typography>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>
-              <Typography variant="h6">Quantity:</Typography>
-            </TableCell>
-            <TableCell>
-              <Box className={classes.quantityContainer}>
-                {/* <IconButton onClick={handleSubtractQuantity}>
-                  <RemoveCircleOutline />
-                </IconButton> */}
-                <Typography variant="body1" className={classes.quantityText}>
-                  {quantity}
-                </Typography>
-                {/* <IconButton onClick={handleAddQuantity}>
-                  <AddCircleOutline />
-                </IconButton> */}
-              </Box>
-            </TableCell>
-          </TableRow>
-        </Table>
-      </TableContainer>
-    </Box>
+    <div style={{ display: 'flex',  width: '100%', justifyContent: 'space-between', alignItems: 'center', padding: '10px' }}>
+      <div style={{ fontSize: '13px', cursor: 'pointer' }}>
+        {props?.data?.variantName}
+      </div>
+      {props ? (
+        <div style={{display: 'flex'}}>
+      <Chip size='small' label="Price"/>
+      <Chip size='small' label={`Qty: ${quantity}`}/>
+    </div>
+      ) : null
+    }
+  </div>
   );
 };
 
-// <Accordion className={classes.root}>
-//   <AccordionSummary
-//     style={{ width: '400px' }}
-//     // expandIcon={<ExpandMore />}
-//   >
-//     <Box display="flex" flexDirection="row" alignItems="center">
-//       <Box ml={2}>
-//         <Typography variant="h6">{data.variant_name ? data.variant_name : data.variantName}</Typography>
-//         {/* <Typography variant="body1">Quantity: {data.quantity}</Typography> */}
-//         <Typography variant="h6">Status: {data.status}</Typography>
-//         {createdAt && !Number.isNaN(createdAt) && <Typography variant="h6">Quantity: {data.quantity}</Typography>}
-//       </Box>
-//     </Box>
-//   </AccordionSummary>
-//   <AccordionDetails>
-//     <CardContent>
-//       <Box display="flex" flexDirection="column" alignItems="center">
-//         <Box className={classes.quantityContainer}>
-//           <IconButton onClick={handleSubtractQuantity}>
-//             <RemoveCircleOutline />
-//           </IconButton>
-//           <Typography variant="body1" className={classes.quantityText}>
-//             {quantity}
-//           </Typography>
-//           <IconButton onClick={handleAddQuantity}>
-//             <AddCircleOutline />
-//           </IconButton>
-//         </Box>
-//       </Box>
-//     </CardContent>
-//   </AccordionDetails>
-// </Accordion>
-// <Card className={classes.root}>
-//   <Box display="flex" flexDirection="row" alignItems="center">
-//     {/* <CardMedia className={classes.media} image={data.imageURL} /> */}
-//     <Box ml={2}>
-//       <Typography variant="h6">{data.id}</Typography>
-//       <Typography variant="body1">{data.scaleId}</Typography>
-//       <Typography variant="h6">{data.status}</Typography>
-//       <Typography variant="body1">{data.weightChange}</Typography>
-//     </Box>
-//   </Box>
-//   <CardContent>
-//     <Box display="flex" flexDirection="column" alignItems="center">
-//       <Box className={classes.quantityContainer}>
-//         <IconButton onClick={handleSubtractQuantity}>
-//           <RemoveCircleOutline />
-//         </IconButton>
-//         <Typography variant="body1" className={classes.quantityText}>
-//           {quantity}
-//         </Typography>
-//         <IconButton onClick={handleAddQuantity}>
-//           <AddCircleOutline />
-//         </IconButton>
-//       </Box>
-//     </Box>
-//   </CardContent>
-// </Card>
 
 const mapStateToProps = ({ cart, event, dummyEvent }) => ({
   cart,

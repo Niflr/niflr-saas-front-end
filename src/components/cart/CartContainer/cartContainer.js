@@ -41,66 +41,13 @@ const CartContainer = (props) => {
   const renderCart = (cart) => {
     console.log('checking cart', cart);
     return (
-      <div style={{ position: 'relative' }}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <IconButton
-            onClick={handleScrollLeft}
-            style={{
-              position: 'absolute',
-              left: 0,
-              top: '50%',
-              transform: 'translateY(-50%)',
-              zIndex: '3',
-              backgroundColor: '#2065D1',
-              color: 'white',
-              boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.6)',
-              display: visibleCartItemIndex === 0 ? 'none' : 'block',
-            }}
-          >
-            <ArrowBackRounded />
-          </IconButton>
-          <div
-            style={{
-              overflowX: 'auto',
-              maxWidth: '100%',
-              flex: 1,
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {cart.map((item, index) => (
-              <div
-                key={item.id}
-                style={{
-                  minWidth: '100%',
-                  display: index === visibleCartItemIndex ? 'block' : 'none',
-                }}
-              >
-                <CartElement data={item} />
-              </div>
-            ))}
-          </div>
-          <IconButton
-            onClick={handleScrollRight}
-            style={{
-              position: 'absolute',
-              right: 0,
-              top: '50%',
-              transform: 'translateY(-50%)',
-              zIndex: '3',
-
-              backgroundColor: '#2065D1',
-              color: 'white',
-              boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.6)',
-              display: visibleCartItemIndex === cart.length - 1 ? 'none' : 'block',
-            }}
-          >
-            <ArrowForwardRounded />
-          </IconButton>
+        <div style={{display:'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', width: "100%"}}>
+        {cart.map((item) => (
+          <CartElement data={item} />
+        ))}
         </div>
-      </div>
-    );
-    // return cart.map((item) => <CartElement data={item} />);
-  };
+    )
+    }
   useEffect(() => {
     console.log('props.cart updated:', props.cart);
     setCart(props.cart.cartItems);

@@ -1,7 +1,10 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { React, useState, useEffect } from 'react';
-import { Accordion, AccordionSummary, AccordionDetails, Typography, Checkbox } from '@mui/material';
+import { Accordion, AccordionSummary, AccordionDetails, Typography, Checkbox, Chip } from '@mui/material';
 import { ExpandMoreOutlined } from '@mui/icons-material';
 import { connect } from 'react-redux';
+import { Label, Icon, LabelDetail } from 'semantic-ui-react';
 import { addToCart, removeFromCart, eventChecked } from '../../../actions/index';
 
 const EventElement = (props) => {
@@ -18,10 +21,11 @@ const EventElement = (props) => {
   const quantity = props.renderEvent.quantity;
   const variantName = props.renderEvent.variant_name || props.renderEvent.variantName;
   const variantImage = props.renderEvent.variant_img;
-  const createdAt = new Date(props.renderEvent.createdAt).toLocaleString();
+  const createdAt = new Date(props.renderEvent.createdAt).toLocaleTimeString();
   const [isChecked, setIsChecked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [accordionProps, setAccordionProps] = useState({ disabled: false });
+  const isPicked = eventStatus === 'PICKED';
 
   const handleCheckboxChange = () => {
     props.eventChecked(id);
@@ -80,36 +84,20 @@ const EventElement = (props) => {
     }
   }, [props.renderEvent.status]);
   return (
-    <Accordion {...accordionProps}>
-      <AccordionSummary
-        style={{ borderLeft: `2px solid ${eventStatus === 'PICKED' ? 'green' : 'red'}` }}
-        expandIcon={<ExpandMoreOutlined />}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            gap: '10px',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Checkbox checked={isChecked} onChange={handleCheckboxChange} />
-          <img height="50px" width="50px" src={variantImage} alt="" />
-          <Typography variant="h6">{variantName}</Typography>
+    <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Checkbox checked={isChecked} onChange={handleCheckboxChange} />
+        <div style={{ fontSize: '13px', color: eventStatus === 'PICKED' ? 'green' : 'red', cursor: 'pointer' }}>
+          {variantName}
         </div>
-      </AccordionSummary>
-      <AccordionDetails>
-        <Typography>ID: {id}</Typography>
-
-        <Typography variant="h6">{rackId}</Typography>
-        <Typography>Quantity: {quantity}</Typography>
-        <Typography>Machine ID: {machineId}</Typography>
-        {status ? <Typography>Status: {status}</Typography> : null}
-        <Typography>Time: {createdAt}</Typography>
-      </AccordionDetails>
-    </Accordion>
+      </div>
+      <div style={{display: 'flex'}}>
+        <Chip size='small' label={createdAt}/>
+        <Chip size='small' label={`Qty: ${quantity}`}/>
+      </div>
+    </div>
   );
+
 };
 
 const mapStateToProps = ({ cart, event }) => ({

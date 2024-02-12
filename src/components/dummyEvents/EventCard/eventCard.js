@@ -1,7 +1,5 @@
-import { React, useState, memo, useEffect } from 'react';
-import { Accordion, AccordionSummary, AccordionDetails, Typography, Checkbox, FormControlLabel } from '@mui/material';
-import { ExpandMoreOutlined } from '@mui/icons-material';
-import { makeStyles } from '@mui/styles';
+import { React, useState, useEffect } from 'react';
+import { Checkbox, Chip } from '@mui/material';
 import { connect } from 'react-redux';
 import { addToCart, removeFromCart, dummyEventChecked } from '../../../actions/index';
 
@@ -19,36 +17,29 @@ const EventElement = (props) => {
 
   // console.log("variant id", variantId)
   const userId = props.renderEvent.user_id;
-  const createdAt = props.renderEvent.createdAt;
+  const createdAt = new Date(props.renderEvent.createdAt).toLocaleTimeString();
   const variantImage = props.renderEvent.imageUrl;
   const [isChecked, setIsChecked] = useState(false);
 
-  const [accordionProps, setAccordionProps] = useState({ disabled: false });
   const [expanded, setExpanded] = useState(false);
   const handleCheckboxChange = () => {
     props.dummyEventChecked(id);
     setIsChecked(!isChecked);
   };
 
-  const handleAccordionChange = () => {
-    setExpanded(!expanded);
-  };
 
   useEffect(() => {
     switch (props.renderEvent.status) {
       case 'checked':
         console.log('renderevent status checked');
-        setAccordionProps({ disabled: false });
         // setIsChecked(true);
         break;
       case 'CONFIRMED':
         console.log('renderevent status saved');
-        setAccordionProps({ disabled: true });
         setIsChecked(true);
         break;
       case 'ADDED_TO_CART':
         console.log('renderevent status processing');
-        setAccordionProps({ disabled: true });
         // props.addToCart({id, status, ticketId})
         // props.removeFromCart({id})
         if (props.cart.cartItems.some((item) => item.id === id)) {
@@ -67,23 +58,18 @@ const EventElement = (props) => {
     }
   }, [props.renderEvent.status]);
   return (
-    <Accordion {...accordionProps} expanded={expanded} onChange={handleAccordionChange}>
-      <AccordionSummary expandIcon={<ExpandMoreOutlined />}>
-        <div
-          style={{ display: 'flex', flexDirection: 'row', gap: '10px', justifyContent: 'center', alignItems: 'center' }}
-        >
-          <Checkbox checked={isChecked} onChange={handleCheckboxChange} />
-          <img height="50px" width="50px" src={variantImage} alt="" />
-          <Typography variant="h6">{variantName}</Typography>
+    <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Checkbox checked={isChecked} onChange={handleCheckboxChange} />
+        <div style={{ fontSize: '13px', cursor: 'pointer' }}>
+          {variantName}
         </div>
-      </AccordionSummary>
-      <AccordionDetails>
-        {/* <Typography>ID: {id}</Typography> */}
-        <Typography>Quantity: {quantity}</Typography>
-        <Typography>Status: {status}</Typography>
-        <Typography>Time: {createdAt}</Typography>
-      </AccordionDetails>
-    </Accordion>
+      </div>
+      <div style={{display: 'flex'}}>
+        <Chip size='small' label={createdAt}/>
+        <Chip size='small' label={`Qty: ${quantity}`}/>
+      </div>
+    </div>
   );
 };
 
