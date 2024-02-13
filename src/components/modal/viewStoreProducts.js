@@ -40,10 +40,10 @@ const useStyles = makeStyles(() => ({
     backgroundColor: '#f7f7f7',
   },
   avatar: {
-    width: '45%',
+    height: '100%',
     display: 'flex',
     justifyContent: 'center',
-    borderRadius: '50%',
+    borderRadius: '0%',
     overflow: 'hidden',
   },
   list: {
