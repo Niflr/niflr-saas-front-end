@@ -90,6 +90,22 @@ function applySortFilter(array, comparator, query) {
 }
 
 function TicketListPage(props) {
+
+  useEffect(() => {
+    // Fetch ticket list initially when the component mounts
+    props.fetchTicketList();
+
+    // Set up the interval to fetch the ticket list every 5 seconds
+    const intervalId = setInterval(() => {
+      props.fetchTicketList();
+    }, 5000);
+
+    // Clean up the interval when the component unmounts
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
   const user = JSON.parse(window.localStorage.getItem('user'));
   console.log('testing users', user);
   const [open, setOpen] = useState(null);
@@ -109,21 +125,6 @@ function TicketListPage(props) {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [selectedTicket, setSelectedTicket] = useState({});
-
-  useEffect(() => {
-    // Fetch ticket list initially when the component mounts
-    props.fetchTicketList();
-
-    // Set up the interval to fetch the ticket list every 5 seconds
-    const intervalId = setInterval(() => {
-      props.fetchTicketList();
-    }, 5000);
-
-    // Clean up the interval when the component unmounts
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
 
   useEffect(() => {
     console.log('setting selected ticket state', selectedTicket);

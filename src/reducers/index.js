@@ -9,6 +9,7 @@ import modalReducer from './modalReducer';
 import dummyEventReducer from './dummyEventReducer';
 import variantReducers from './variantReducers';
 import orderReducer from './orderReducer';
+import logReducer from './logReducer';
 
 const rootReducer = combineReducers({
 	auth: authReducer,
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
 	modal: modalReducer,
 	dummyEvent: dummyEventReducer,
 	product:variantReducers,
-	order:orderReducer
+	order:orderReducer,
+	logs: logReducer
 });
 export default rootReducer;
