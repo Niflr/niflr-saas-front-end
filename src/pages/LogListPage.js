@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
-import { useState, useEffect } from 'react';
+import { React, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 // @mui
 import {
@@ -8,14 +8,24 @@ import {
   Table,
   Stack,
   Paper,
+  MenuItem,
+  Select,
   TableRow,
   TableBody,
   TableCell,
+  TableHead,
+  TextField,
   Container,
   Typography,
   TableContainer,
   TablePagination,
+  IconButton,
+  Collapse,
+  Box
 } from '@mui/material';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Scrollbar from '../components/scrollbar';
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
@@ -28,6 +38,9 @@ const TABLE_HEAD = [
   { id: 'store_id', label: 'Store ID', alignRight: false },
   { id: 'metadata', label: 'Metadata', alignRight: false },
 ];
+
+const STORE_IDS = ['d5be68a6-4f67-4ee9-b031-38cb0b4d349d']
+const EVENT_NAMES = ['WGHT_CHNG', 'ENTRY_AUTHENTICATION', 'EXIT_AUTHENTICATION', 'UNACCOUNTED_WGHT_CHNG'];
 
 // // ----------------------------------------------------------------------
 
@@ -48,12 +61,10 @@ function getComparator(order, orderBy) {
 }
 
 function applySortFilter(array, comparator, query) {
-  console.log('testing apply sort fileter', array);
   if (array) {
     if (array.length) {
       const stabilizedThis = array.map((el, index) => [el, index]);
 
-      console.log('testing apply sort fileter', stabilizedThis);
       stabilizedThis.sort((a, b) => {
         const order = comparator(a[0], b[0]);
         if (order !== 0) return order;
@@ -72,7 +83,6 @@ function LogListPage(props) {
   
   useEffect(() => {
     // Fetch log list initially when the component mounts
-    console.log('Tested logs list');
     props.fetchLogsList();
 
     // Set up the interval to fetch the log list every 5 seconds
@@ -87,7 +97,6 @@ function LogListPage(props) {
   }, []);
 
   const user = JSON.parse(window.localStorage.getItem('user'));
-  console.log('testing users', user);
   const [open, setOpen] = useState(null);
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
@@ -103,12 +112,56 @@ function LogListPage(props) {
     applySortFilter(props.logs.logs, getComparator(order, orderBy), filterLogs)
   );
 
+  const [selectedEvents, setSelectedEvents] = useState([]);
+  const [selectedStores, setSelectedStores] = useState([]);
+
   const [rowsPerPage, setRowsPerPage] = useState(100);
+  const [expandedRows, setExpandedRows] = useState({});
+  const [beforeDate, setBeforeDate] = useState(null);
+  const [afterDate, setAfterDate] = useState(null);
+
+  const [eventFilter, setEventFilter] = useState([]);
+  const [storeFilter, setStoreFilter] = useState([]);
+  const [dateFilter, setDateFilter] = useState({ startDate: null, endDate: null });
+
+
+
+// Function to toggle row expansion
+  const toggleRowExpansion = (index) => {
+    setExpandedRows(prevExpandedRows => ({
+      ...prevExpandedRows,
+      [index]: !prevExpandedRows[index]
+    }));
+  };
+
+  // useEffect(() => {
+  //   setFilteredLogs(applySortFilter(props.logs.logs, getComparator(order, orderBy), filterLogs));
+  // }, [props.logs.logs]);
 
   useEffect(() => {
-    console.log('props.logsupdated:', props.logs);
-    setFilteredLogs(applySortFilter(props.logs.logs, getComparator(order, orderBy), filterLogs));
-  }, [props.logs.logs]);
+    let filtered = props.logs.logs;
+  
+    // Apply event name filter
+    if (selectedEvents.length) {
+      filtered = filtered.filter(row => selectedEvents.includes(row.event_name));
+    }
+  
+    // Apply store ID filter
+    if (selectedStores.length) {
+      filtered = filtered.filter(row => selectedStores.includes(row.store_id));
+    }
+  
+    // Apply timestamp filter
+    if (beforeDate) {
+      filtered = filtered.filter(row => new Date(row.timestamp) <= new Date(beforeDate));
+    }
+    if (afterDate) {
+      filtered = filtered.filter(row => new Date(row.timestamp) >= new Date(afterDate));
+    }
+  
+    setFilteredLogs(applySortFilter(filtered, getComparator(order, orderBy)));
+  }, [selectedEvents, selectedStores, beforeDate, afterDate, props.logs.logs, order, orderBy]);
+  
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -120,12 +173,28 @@ function LogListPage(props) {
     setPage(newPage);
   };
 
+
+  const handleEventFilterChange = (event) => {
+    const value = event.target.value;
+    setEventFilter(value); 
+    setSelectedEvents(...value, value);
+  };
+  
+  const handleStoreFilterChange = (event) => {
+    const value = event.target.value;
+    setStoreFilter(value); 
+    setSelectedStores(...value, value)
+  };
+  
+  const handleDateChange = (name) => (date) => {
+    setDateFilter((prev) => ({ ...prev, [name]: date })); 
+  };
+
   const handleChangeRowsPerPage = (event) => {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
-  console.log(props);
 
   return (
     <>
@@ -134,6 +203,7 @@ function LogListPage(props) {
            <Typography variant="h4" gutterBottom>
               Logs
            </Typography>
+           
          </Stack>
 
          <Card>
@@ -141,57 +211,84 @@ function LogListPage(props) {
                 <TableContainer component={Paper} sx={{ maxHeight: 'calc(100vh - 300px)'}}>
                 <Table stickyHeader = 'true'>
                  <UserListHead
-                   order={order}
-                   orderBy={orderBy}
-                   headLabel={TABLE_HEAD}
-                   rowCount={filteredLogs.length}
-                   numSelected={selected.length}
+                  order={order}
+                  orderBy={orderBy}
+                  headLabel={TABLE_HEAD}
+                  rowCount={filteredLogs.length}
+                  numSelected={selected.length}
+                  eventFilter={eventFilter}
+                  setEventFilter={setEventFilter}
+                  storeFilter={storeFilter}
+                  setStoreFilter={setStoreFilter}
+                  dateFilter={dateFilter}
+                  setDateFilter={setDateFilter}
                  />
 
                  {props.logs.logs.length > 0 ? (
                     <TableBody>
-                        {filteredLogs
-                            ? filteredLogs.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                
-                                const metadataCell = Object.entries(JSON.parse(row.metadata)).map(([key, val]) => {
+                      {filteredLogs.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
+                        const isRowExpanded = !!expandedRows[index];
+                        const metadataCell = Object.entries(JSON.parse(row.metadata)).map(([key, val]) => {
 
-                                  switch(key) {
-                                    case "WeightChange":
-                                      val = `${Math.round(val * 1000)}g`;
-                                      break;
-                                    case "unitWt":
-                                      val += 'g';
-                                      break;
-                                    default:
-                                      break;
-                                  }
-                                  return (
-                                  <Typography key={key} variant="body1" component="div">
-                                    <strong>{key}</strong>: {val}
-                                  </Typography>);
-                                })
 
-                                return (
-                                    <TableRow>
-                                        <TableCell padding="20" align="center" >
-                                            {row.event_name}
-                                        </TableCell>
-                                        <TableCell padding="20" align="center" >
-                                            {new Date(row.timestamp).toLocaleString()}
-                                        </TableCell>
-                                        <TableCell padding="20" align="center" >
-                                            {row.store_id}
-                                        </TableCell>
-                                        <TableCell padding="20" align="left" >
-                                            {metadataCell}
-                                        </TableCell>
-                                    </TableRow>
-                                );
-                                // const { id, status } = row;
-                            }) : null }
-
+                          switch(key) {
+                            case "WeightChange":
+                              val = `${Math.round(val * 1000)}g`;
+                              break;
+                            case "unitWt":
+                              val += 'g';
+                              break;
+                            default:
+                              break;
+                          }
+                          // return `<strong>${key}</strong>: ${val}`
+                          return (
+                            <Typography key={key} variant="body1" component="div">
+                              <div style={{display: 'flex', justifyContent: 'flex-start', gap: '20px'}}>
+                                  <div style={{paddingVertical:20, fontWeight: 'bold'}}>{key} :</div>
+                                  <div>{val}</div>
+                             </div>
+                            </Typography>);
+                        });
+                        
+                        return (
+                          <>
+                          <TableRow hover onClick={() => toggleRowExpansion(index)}>
+                            <TableCell padding="20" align="center">
+                              {row.event_name}
+                            </TableCell>
+                            <TableCell padding="20" align="center">
+                              {new Date(row.timestamp).toLocaleString()}
+                            </TableCell>
+                            <TableCell padding="20" align="center">
+                              {row.store_id}
+                            </TableCell>
+                            <TableCell padding="20" align="center">
+                              <IconButton aria-label="expand row" size="small">
+                                {isRowExpanded ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                              </IconButton>
+                            </TableCell>
+                          </TableRow>
+                          {isRowExpanded && (
+                            <TableRow>
+                              <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                                <Collapse in={isRowExpanded} timeout="auto" unmountOnExit>
+                                  <Box margin={1}>
+                                    {/* Your Metadata Expansion Logic Here */}
+                                    {metadataCell}
+                                  </Box>
+                                </Collapse>
+                              </TableCell>
+                            </TableRow>
+                          )}
+                      </>
+                        )   
+                          
+                        
+                      })}
                     </TableBody>
-                 ) : (
+
+) : (
                     <Typography style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', padding: '50px' }}>
                     No logs to show
                     </Typography>
