@@ -18,6 +18,12 @@ const EventElement = (props) => {
   const weightChange = props.renderEvent.weight_change;
   const ticketId = props.event.events.ticketId;
   const variantId = props.renderEvent.variant_id;
+  const price = props.renderEvent.price;
+  const cgst = props.renderEvent.cgst;
+  const sgst = props.renderEvent.sgst;
+  const igst = props.renderEvent.igst;
+  const cess = props.renderEvent.cess;
+  const tax = props.renderEvent.tax;
   const quantity = props.renderEvent.quantity;
   const variantName = props.renderEvent.variant_name || props.renderEvent.variantName;
   const variantImage = props.renderEvent.variant_img;
@@ -70,6 +76,13 @@ const EventElement = (props) => {
             weightChange,
             ticketId,
             variantId,
+            variantImage,
+            price,
+            cgst,
+            sgst,
+            igst,
+            cess,
+            tax,
             quantity,
             createdAt,
             variantName,
@@ -87,6 +100,7 @@ const EventElement = (props) => {
     <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <Checkbox checked={isChecked} onChange={handleCheckboxChange} />
+        <img height="50px" width="50px" src={variantImage} alt="" />
         <div style={{ fontSize: '13px', color: eventStatus === 'PICKED' ? 'green' : 'red', cursor: 'pointer' }}>
           {variantName}
         </div>

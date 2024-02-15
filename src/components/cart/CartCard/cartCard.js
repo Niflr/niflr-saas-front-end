@@ -130,12 +130,14 @@ const CartElement = (props) => {
   console.log('ITEM DATA', props.data);
   return (
     <div style={{ display: 'flex',  width: '100%', justifyContent: 'space-between', alignItems: 'center', padding: '10px' }}>
+      <img height="50px" width="50px" src={props.data.variantImage} alt="" />
       <div style={{ fontSize: '13px', cursor: 'pointer' }}>
         {props?.data?.variantName}
       </div>
       {props ? (
         <div style={{display: 'flex'}}>
-      <Chip size='small' label="Price"/>
+      <Chip size='small' label={`Price: Rs.${props.data.price}`}/>
+      <Chip size='small' label={`Tax: Rs.${props.data.tax}`}/>
       <Chip size='small' label={`Qty: ${quantity}`}/>
     </div>
       ) : null

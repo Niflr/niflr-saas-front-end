@@ -18,32 +18,36 @@ export default class RequestService {
       case 'RETURN':
         axios.defaults.baseURL = 'http://localhost:3000/api/';
         break;
-        case 'MACHINE':
-          axios.defaults.baseURL = 'http://localhost:3000/api/';
-          axios.defaults.headers = {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'n-mach-secret': process.env.MACHINE_SECRET,
-          };
-          break;
-          case 'LOCAL':
-            console.log("inside local domain")
-            axios.defaults.baseURL = 'http://localhost:1234/api/';
-            
-            break;
-            case 'CLOUD':
-              console.log("inside cloud domain")
-              console.log("user token--->", JSON.parse((window.localStorage.getItem("user"))).token)
+      case 'MACHINE':
+        axios.defaults.baseURL = 'http://localhost:3000/api/';
+        axios.defaults.headers = {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'n-mach-secret': process.env.MACHINE_SECRET,
+        };
+        break;
+      case 'LOCAL':
+        console.log("inside local domain")
+        axios.defaults.baseURL = 'http://localhost:1234/api/';
+        axios.defaults.headers = {
+          'Accept': '*/*',
+          'Content-type': 'application/json',
+          'apikey': 'igrXzjIKSanCcfsN'
+        }
+        break;
+          
+      case 'CLOUD':
+        console.log("inside cloud domain")
+        console.log("user token--->", JSON.parse((window.localStorage.getItem("user"))).token)
 
 
-          axios.defaults.baseURL = 'https://label-api.brysk-ca.com/api';
-          axios.defaults.headers = {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'x-access-token': JSON.parse((window.localStorage.getItem("user"))).token,
-            // 'apikey': 'zf6jrzcrqvqoazk'
-          };
-          break;
+      axios.defaults.baseURL = 'https://label-api.niflrpassdev.com/api';
+      axios.defaults.headers = {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'apikey': '4EzPPEG74vMrs4HNyq' // niflr-passdev apikey
+      };
+      break;
       case 'ADMIN':
         console.log("inside admin domain")
         axios.defaults.baseURL = 'https://cs-brysk-ca.com/api/';

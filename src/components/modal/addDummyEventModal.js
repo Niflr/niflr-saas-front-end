@@ -35,6 +35,12 @@ const AddDummyEventModal = (props) => {
   const userId = props.ticket.user_id;
   const ticketId = props.ticket.id;
   const imageUrl = props.product.primaryImageUrl;
+  const price = props.product.price;
+  const cgst = props.product.cgst;
+  const igst = props.product.igst;
+  const sgst = props.product.sgst;
+  const cess = props.product.cess;
+  const tax = props.product.cgst + props.product.sgst + props.product.igst + props.product.cess;
   const [status, setStatus] = useState('processing');
   const [weightChange, setWeightChangeEvent] = useState('');
   const [quantity, setQuantity] = useState(1);
@@ -72,6 +78,12 @@ const AddDummyEventModal = (props) => {
       userId,
       status: 'processing',
       quantity: quantityValue,
+      price,
+      cgst,
+      sgst,
+      igst,
+      cess,
+      tax,
       variantName,
       imageUrl,
       createdAt,
