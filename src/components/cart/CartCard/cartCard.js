@@ -11,7 +11,9 @@ import {
 } from '../../../actions';
 
 const CartElement = (props) => {
+  console.log("cart card props", props);
   const [price, setPrice] = useState(null);
+  const [image, setImage] = useState(null);
   const variantName = props.data.variantName || props.data.variant_name;
   const quantity = props.data.quantity;
 
@@ -19,12 +21,14 @@ const CartElement = (props) => {
     const event = props.event.events.events.find((event) => event.id === props.data.id);
     if (event) {
       setPrice(event.price);
+      setImage(event.variant_img);
     }
   }, [props.data.id, props.event.events.events]);
 
 
   return (
     <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center', padding: '10px' }}>
+      <img height="50px" width="50px" src={image} alt="" />
       <div style={{ fontSize: '13px', cursor: 'pointer' }}>
         {variantName}
       </div>

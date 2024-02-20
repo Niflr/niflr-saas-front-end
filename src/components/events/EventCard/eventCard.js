@@ -81,6 +81,7 @@ const EventElement = (props) => {
     <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <Checkbox checked={props.renderEvent.status === "checked"} onChange={handleCheckboxChange} />
+        <img height="50px" width="50px" src={variantImage} alt="" />
         <div style={{ fontSize: '13px', color: eventStatus === 'PICKED' ? 'green' : 'red', cursor: 'pointer' }}>
           {variantName}
         </div>

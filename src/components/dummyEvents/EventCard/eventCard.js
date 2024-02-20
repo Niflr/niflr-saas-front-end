@@ -63,6 +63,7 @@ const EventElement = (props) => {
     <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <Checkbox checked={isChecked} onChange={handleCheckboxChange} />
+        <img height="50px" width="50px" src={variantImage} alt="" />
         <div style={{ fontSize: '13px', cursor: 'pointer' }}>
           {variantName}
         </div>
