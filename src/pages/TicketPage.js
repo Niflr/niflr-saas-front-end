@@ -28,6 +28,7 @@ import DummyEventContainer from '../components/dummyEvents/EventContainer/eventC
 import { useStyles } from './styles';
 import VideoSlider from '../components/videoSlider/videoSlider';
 import ModalWrapper from '../components/modal/modalWrapper';
+import { fToTimeZone } from '../utils/formatTime';
 
 // actions
 import {
@@ -77,6 +78,31 @@ const TicketPage = (props) => {
   const [isAddingVariant, setIsAddingVariant] = useState(false);
   const isOrderGenerated = props.ticket.ticket.order_id;
   const racks = props.ticket.ticket.rack_map ? props.ticket.ticket.rack_map.rack_details : null;
+
+  const utcStartTimestamp = props.ticket.ticket.start_time;
+  const utcEndTimestamp = props.ticket.ticket.end_time;
+
+  const utcStartTime = new Date(utcStartTimestamp);
+  const utcEndTime = new Date(utcEndTimestamp);
+
+// Specify the time zone (Eastern Standard Time)
+const easternTimeZone = "America/Toronto";
+const canadianStartTime = new Intl.DateTimeFormat("en-US", {
+  timeZone: easternTimeZone,
+  hour: "numeric",
+  minute: "numeric",
+  second: "numeric"
+}).format(utcStartTime);
+
+const canadianEndTime = new Intl.DateTimeFormat("en-US", {
+  timeZone: easternTimeZone,
+  hour: "numeric",
+  minute: "numeric",
+  second: "numeric"
+}).format(utcEndTime);
+
+console.log("cst",canadianStartTime);
+console.log("cet",canadianEndTime);
 
   const [areAllItemsConfirmed, setAreAllItemsConfirmed] = useState(false);
 
@@ -155,7 +181,6 @@ const TicketPage = (props) => {
       const allConfirmed = props.cart.cartItems.every((item) => item.status === 'CONFIRMED');
       setAreAllItemsConfirmed(allConfirmed);
     } else {
-      // If props.cart.cartItems is undefined, set the allConfirmed state to false or handle it as needed.
       setAreAllItemsConfirmed(false);
     }
   }, [props.cart]);
@@ -191,6 +216,7 @@ const TicketPage = (props) => {
       props.setModalState({
         visible: true,
         modalName: 'confirmTicket',
+        modalContent: props.cart.cartItems,
         isLoading: false,
       });
 
@@ -273,6 +299,7 @@ const TicketPage = (props) => {
   const handleClearButtonClick = () => {
     setIsDeletingCart(true);
     const events = getEventIdsByStatus('ADDED_TO_CART', props.event.events.events);
+    console.log("events in cart", events);
     const dummyEvents = getEventIdsByStatus('ADDED_TO_CART', props.dummyEvent.dummyEvents.dummyEvents);
     if (events.length === 0 && dummyEvents.length === 0) {
       alert('No events to delete!');
@@ -291,21 +318,17 @@ const TicketPage = (props) => {
 
   const handleDummyEvents = async () => {
     setIsAddingVariant(true);
+
     console.log('store ID', props.ticket.ticket.store_Id);
     await props.fetchStoreProductsList({ machineId: props.ticket.ticket.machine_id });
-    setIsAddingVariant(false);
-  };
-
-  useEffect(() => {
-    if (props.product.products.updatedVariants) {
-      props.setModalState({
+    props.setModalState({
         visible: true,
         modalName: 'viewStoreProducts',
         modalContent: props.product.products.updatedVariants,
       });
-    }
-  }, [props.product]);
-
+    setIsAddingVariant(false);
+  };
+  
   function a11yProps(index) {
     return {
       id: `simple-tab-${index}`,
@@ -330,14 +353,15 @@ const TicketPage = (props) => {
   console.log('CART', cart);
   console.log('VIDEOS: ', videos);
 
+  
   return (
     <Container maxWidth={false} className={classes.pageContainer}>
       <Grid container spacing={0} style={{ width: '100%', height: '100%', overflow: 'hidden' }}>
         <Grid item xs={12} sm={6} md={8} className={classes.leftContainer}>
           <div style={{ display: 'flex', justifyContent: 'space-evenly', gap: '5px', padding: '10px' }}>
             <Typography variant="h6">User: {props.ticket.ticket.user_id}</Typography>
-            <Typography variant="h6">Entry: {new Date(props.ticket.ticket.start_time).toLocaleString()}</Typography>
-            <Typography variant="h6">Exit: {new Date(props.ticket.ticket.end_time).toLocaleString()}</Typography>
+            <Typography variant="h6">Entry: {canadianStartTime}</Typography>
+            <Typography variant="h6">Exit: {canadianEndTime}</Typography>
           </div>
           <Box sx={{ display: 'flex', borderBottom: 1, borderColor: 'divider', justifyContent: 'space-between' }}>
             <Tabs value={value} onChange={handlePrimaryTabChange} aria-label="basic tabs example">

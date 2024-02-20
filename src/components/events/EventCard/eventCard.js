@@ -24,8 +24,6 @@ const EventElement = (props) => {
   const createdAt = new Date(props.renderEvent.createdAt).toLocaleTimeString();
   const [isChecked, setIsChecked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const [accordionProps, setAccordionProps] = useState({ disabled: false });
-  const isPicked = eventStatus === 'PICKED';
 
   const handleCheckboxChange = () => {
     props.eventChecked(id);
@@ -36,25 +34,21 @@ const EventElement = (props) => {
     switch (props.renderEvent.status) {
       case 'checked':
         console.log('renderevent status checked', isChecked);
-        setAccordionProps({ disabled: false });
 
         // setIsChecked(!isChecked);
         break;
       case 'CONFIRMED':
         console.log('renderevent status saved');
-        setAccordionProps({ disabled: true });
         setIsChecked(true);
         break;
 
       case 'processing':
         console.log('renderevent status processing');
-        setAccordionProps({ disabled: false });
         // props.removeFromCart({id})
         // setIsChecked(!isChecked); // remove if you want the check to still be there after cart cleared
         break;
       case 'ADDED_TO_CART':
         console.log('renderevent status ADDED_TO_CART');
-        setAccordionProps({ disabled: true });
         console.log('event id:', id);
         if (props.cart.cartItems.some((item) => item.id === id)) {
           // If the id exists in cart.cartItems, call props.removeFromCart()
@@ -86,7 +80,7 @@ const EventElement = (props) => {
   return (
     <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <Checkbox checked={isChecked} onChange={handleCheckboxChange} />
+        <Checkbox checked={props.renderEvent.status === "checked"} onChange={handleCheckboxChange} />
         <div style={{ fontSize: '13px', color: eventStatus === 'PICKED' ? 'green' : 'red', cursor: 'pointer' }}>
           {variantName}
         </div>

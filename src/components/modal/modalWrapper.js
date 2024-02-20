@@ -27,6 +27,7 @@ const ModalWrapper = (props) => {
           <ConfirmTicketModal
             closeModal={closeModal}
             loadModal={loadModal}
+            cartItems={props.modal.modalContent}
             // ticketId ={props.modal.modalContent}
           />
         );

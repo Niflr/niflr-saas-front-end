@@ -17,7 +17,9 @@ const EventElement = (props) => {
 
   // console.log("variant id", variantId)
   const userId = props.renderEvent.user_id;
-  const createdAt = new Date(props.renderEvent.createdAt).toLocaleTimeString();
+  const createdAt =  props.renderEvent.createdAt.split(", ")[1];
+ 
+  console.log("created at:", createdAt)
   const variantImage = props.renderEvent.imageUrl;
   const [isChecked, setIsChecked] = useState(false);
 
@@ -66,7 +68,7 @@ const EventElement = (props) => {
         </div>
       </div>
       <div style={{display: 'flex'}}>
-        <Chip size='small' label={createdAt}/>
+        {/* <Chip size='small' label={createdAt}/> */}
         <Chip size='small' label={`Qty: ${quantity}`}/>
       </div>
     </div>

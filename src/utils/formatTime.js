@@ -1,4 +1,5 @@
 import { format, getTime, formatDistanceToNow } from 'date-fns';
+import { zonedTimeToUtc, utcToZonedTime} from "date-fns-tz";
 
 // ----------------------------------------------------------------------
 
@@ -24,4 +25,9 @@ export function fToNow(date) {
         addSuffix: true,
       })
     : '';
+}
+
+export function fToTimeZone(date) {
+  const timeZone = 'America/Toronto';
+  return date ? utcToZonedTime(zonedTimeToUtc(new Date(date), timeZone), timeZone) : '';
 }

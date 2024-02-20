@@ -16,20 +16,29 @@ import {
   cartCleared,
   createCart,
   createUserOrder,
-  // confirmUserOrder,
 } from '../../actions/index';
 
 const useStyles = makeStyles(() => ({
   paper: {
     backgroundColor: '#fff',
     borderRadius: '10px',
-    height: '80%',
-    width: '100%',
+    width: 'auto',
+    height: 'auto', 
+    padding: '20px', 
+    maxWidth: '90%', 
+    maxHeight: '90vh', 
+    overflow: 'auto', 
   },
   header: {
     paddingLeft: '5px',
   },
+  eventItem: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '10px 0',
+  },
 }));
+
 
 const generateRandomId = () => {
   return Math.floor(Math.random() * 10000000000);
@@ -40,99 +49,40 @@ const AddToCartModal = (props) => {
   const [status, setStatus] = useState('processing');
   const [weightChange, setWeightChangeEvent] = useState('');
   const [isChecked, setIsChecked] = useState(false);
-  console.log('ADD TO CART PROPS: ', props);
-  // const id = props.event.events.events.id;
-
-  const machineId = generateRandomId();
-  const scaleId = generateRandomId();
-  const [ticketId, setTicketID] = useState(props.ticketId);
-  // const [selectedEvents, setSelectedEvents] = useState([]);
 
   const handleClose = () => {
     setStatus('');
     setWeightChangeEvent('');
     props.closeModal();
   };
-  const handleCheckboxChange = () => {
-    // props.eventChecked(id);
-    setIsChecked(!isChecked);
-  };
-
-  const handleEventSelection = (eventId) => {
-    const updatedSelectedEvents = [...props.selectedEvents];
-
-    if (updatedSelectedEvents.includes(eventId)) {
-      // Deselect event
-      const index = updatedSelectedEvents.indexOf(eventId);
-      updatedSelectedEvents.splice(index, 1);
-    } else {
-      // Select event
-      updatedSelectedEvents.push(eventId);
-    }
-
-    // setSelectedEvents(updatedSelectedEvents);
-  };
 
   const handleConfirmButtonClick = () => {
     props.eventAddToCart();
-    // const sortedCart = props.cart.cartItems.filter(item => item.status === "ADDED_TO_CART");
-
-    // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
-    // props.createCart(props.ticket.ticket.id);
     handleClose();
   };
 
-  console.log('Selected Events:', props.selectedEvents);
   return (
     <div className={classes.paper}>
       <div
         style={{
-          width: '400px',
-          height: '40%',
-          display: 'flex',
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start',
-          marginTop: '20px',
-          paddingLeft: '10px',
+          marginBottom: '20px', // Add margin for spacing
         }}
       >
         <h4 className={classes.header}>Are you sure you want to add these to cart?</h4>
       </div>
-      {props.selectedEvents.map((selectedEvent) => {
-        return (
-          <div style={{ padding: '20px', fontSize: '1em' }}>
-            <ul style={{ width: '100%' }}>
-              <li style={{ display: 'flex', justifyContent: 'space-around' }}>
-                {' '}
-                {/* <Checkbox checked={isChecked} onChange={handleCheckboxChange} /> */}
-                <div style={{ fontWeight: 'bold' }}>{selectedEvent.name}</div>
-                <div>{selectedEvent.quantity}</div>
-              </li>
-            </ul>
-          </div>
-        );
-      })}
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'center' }}>
-        <div
-          style={{
-            height: '50%',
-            padding: '10px',
-          }}
-        >
-          <Button variant="contained" color="primary" onClick={handleConfirmButtonClick}>
-            Confirm
-          </Button>
+      {props.selectedEvents.map((selectedEvent) => (
+        <div key={selectedEvent.id} className={classes.eventItem}>
+          <div>{selectedEvent.name}</div>
+          <div>{selectedEvent.quantity}</div>
         </div>
-        <div
-          style={{
-            height: '50%',
-            padding: '10px',
-          }}
-        >
-          <Button variant="contained" color="primary" onClick={handleClose}>
-            Cancel
-          </Button>
-        </div>
+      ))}
+      <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '20px' }}>
+        <Button variant="contained" color="primary" onClick={handleConfirmButtonClick}>
+          Confirm
+        </Button>
+        <Button variant="contained" color="primary" onClick={handleClose}>
+          Cancel
+        </Button>
       </div>
     </div>
   );
@@ -157,5 +107,4 @@ export default connect(mapStateToProps, {
   createDummyEvents,
   createUserOrder,
   createCart,
-  // confirmUserOrder,
 })(AddToCartModal);

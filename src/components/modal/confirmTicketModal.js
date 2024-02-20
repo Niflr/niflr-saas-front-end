@@ -29,8 +29,12 @@ const useStyles = makeStyles(() => ({
   paper: {
     backgroundColor: '#fff',
     borderRadius: '10px',
-    height: '150px',
-    width: '300px',
+    width: 'auto',
+    height: 'auto', 
+    padding: '10px', 
+    maxWidth: '100%', 
+    maxHeight: '90vh', 
+    overflow: 'auto', 
   },
   header: {
     // textAlign: 'center',
@@ -43,13 +47,17 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
     // alignItems: 'center',
   },
+  cartItem: {
+    display: 'flex',
+    gap: '20px',
+    justifyContent: 'space-between',
+    padding: '10px 0',
+  },
 }));
 
-const generateRandomId = () => {
-  return Math.floor(Math.random() * 10000000000);
-};
 
 const AddConfirmTicketModal = (props) => {
+  console.log("confirm tkt props", props);
   const navigate = useNavigate();
 
   const classes = useStyles();
@@ -69,6 +77,11 @@ const AddConfirmTicketModal = (props) => {
     // setStatus('');
     // setWeightChangeEvent('');
     props.closeModal();
+  };
+
+  const getEventPrice = (eventId) => {
+    const event = props.event.events.events.find((event) => event.id === eventId);
+    return event ? event.price : null;
   };
 
   const getEventIdsByStatus = (status, events) => {
@@ -161,8 +174,7 @@ const AddConfirmTicketModal = (props) => {
         // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
       }
       console.log('handled confirm button');
-      // setTimeout(() => {
-      //   console.log('timeout working');
+
       await props.setModalState({
         visible: true,
         modalName: 'loading',
@@ -170,10 +182,6 @@ const AddConfirmTicketModal = (props) => {
         isLoading: false,
       });
 
-      // navigate('/dashboard/tickets');
-      // loadModal(false);
-      // return true;
-      // }, 5000);
     } catch (error) {
       console.log(error);
     }
@@ -184,51 +192,30 @@ const AddConfirmTicketModal = (props) => {
       {props.modal.isLoading ? (
         <ModalWrapper />
       ) : (
-        <div>
-          <div
-            style={{
-              width: '100%',
-              height: '50%',
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-evenly',
-              alignItems: 'center',
-            }}
-          >
-            <h2
-              className={classes.header}
-
-              // style={{ alignSelf: 'center' }}
-            >
-              Confirm Order?
-            </h2>
-          </div>
-
-          <div
-            style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-evenly' }}
-          >
-            <div
-              style={{
-                height: '50%',
-                padding: '10px',
-              }}
-            >
-              <Button variant="contained" color="primary" onClick={handleConfirmButtonClick}>
-                Confirm
-              </Button>
-            </div>
-            <div
-              style={{
-                height: '50%',
-                padding: '10px',
-              }}
-            >
-              <Button variant="contained" color="primary" onClick={handleClose}>
-                Cancel
-              </Button>
-            </div>
-          </div>
+        <div className={classes.paper}>
+        <div
+          style={{
+            marginBottom: '20px', 
+          }}
+        >
+          <h4 className={classes.header}>Are you sure you want to confirm this order?</h4>
         </div>
+        {props.cartItems.map((cartItem) => (
+          <div key={cartItem.id} className={classes.cartItem}>
+            <div>{cartItem.variantName || cartItem.variant_name} x {cartItem.quantity}</div>
+            <div>{getEventPrice(cartItem.id)}</div> 
+            {/* <div>{cartItem.quantity}</div> */}
+          </div>
+        ))}
+        <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '20px' }}>
+          <Button variant="contained" color="primary" onClick={handleConfirmButtonClick}>
+            Confirm
+          </Button>
+          <Button variant="contained" color="primary" onClick={handleClose}>
+            Cancel
+          </Button>
+        </div>
+      </div>
       )}
     </div>
   );
