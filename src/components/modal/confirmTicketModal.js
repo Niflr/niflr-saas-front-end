@@ -81,7 +81,11 @@ const AddConfirmTicketModal = (props) => {
 
   const getEventPrice = (eventId) => {
     const event = props.event.events.events.find((event) => event.id === eventId);
-    return event ? event.price : null;
+    const dummyEvent = props.dummyEvent.dummyEvents.dummyEvents.find((dummyEvent) => dummyEvent.id === eventId);
+    if (event && event.events_status) {
+        return event.price;
+      }
+    return dummyEvent.price;
   };
 
   const getEventIdsByStatus = (status, events) => {
@@ -202,8 +206,8 @@ const AddConfirmTicketModal = (props) => {
         </div>
         {props.cartItems.map((cartItem) => (
           <div key={cartItem.id} className={classes.cartItem}>
-            <div>{cartItem.variantName || cartItem.variant_name} x {cartItem.quantity}</div>
-            <div>{getEventPrice(cartItem.id)}</div> 
+            <div>{cartItem.variantName || cartItem.variant_name} x <strong>{cartItem.quantity}</strong></div>
+            <strong>{getEventPrice(cartItem.id)}</strong> 
             {/* <div>{cartItem.quantity}</div> */}
           </div>
         ))}

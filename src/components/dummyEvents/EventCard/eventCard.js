@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { addToCart, removeFromCart, dummyEventChecked } from '../../../actions/index';
 
 const EventElement = (props) => {
-  console.log('checking dummy event element props', props.renderEvent);
+  console.log('checking dummy event element props', props);
   //   const { id, scale_id, machine_id, status } = event;
   const id = props.renderEvent.id;
   // console.log('render dummy event props', props);
@@ -20,10 +20,10 @@ const EventElement = (props) => {
   const createdAt =  props.renderEvent.createdAt.split(", ")[1];
  
   console.log("created at:", createdAt)
-  const variantImage = props.renderEvent.imageUrl;
+  const variantImage = props.renderEvent.imageUrl || props.renderEvent.image_url;
   const [isChecked, setIsChecked] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
 
-  const [expanded, setExpanded] = useState(false);
   const handleCheckboxChange = () => {
     props.dummyEventChecked(id);
     setIsChecked(!isChecked);
@@ -39,6 +39,7 @@ const EventElement = (props) => {
       case 'CONFIRMED':
         console.log('renderevent status saved');
         setIsChecked(true);
+        setIsSaved(true);
         break;
       case 'ADDED_TO_CART':
         console.log('renderevent status processing');
@@ -62,7 +63,7 @@ const EventElement = (props) => {
   return (
     <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <Checkbox checked={isChecked} onChange={handleCheckboxChange} />
+        <Checkbox checked={isChecked} onChange={handleCheckboxChange} disabled={isSaved} />
         <img height="50px" width="50px" src={variantImage} alt="" />
         <div style={{ fontSize: '13px', cursor: 'pointer' }}>
           {variantName}

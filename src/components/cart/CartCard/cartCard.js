@@ -18,12 +18,20 @@ const CartElement = (props) => {
   const quantity = props.data.quantity;
 
   useEffect(() => {
-    const event = props.event.events.events.find((event) => event.id === props.data.id);
+    const event = props?.event?.events?.events?.find((event) => event.id === props.data.id);
     if (event) {
       setPrice(event.price);
       setImage(event.variant_img);
     }
   }, [props.data.id, props.event.events.events]);
+
+  useEffect(() => {
+    const dummyEvent = props?.dummyEvent?.dummyEvents?.dummyEvents?.find((dummyEvent) => dummyEvent.id === props.data.id);
+    if (dummyEvent) {
+      setPrice(dummyEvent.price);
+      setImage(dummyEvent.image_url);
+    }
+  }, [props.data.id, props.dummyEvent.dummyEvents.dummyEvents]);
 
 
   return (

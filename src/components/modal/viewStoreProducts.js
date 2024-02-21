@@ -65,7 +65,6 @@ const ViewStoreProductsModal = (props) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredProducts, setFilteredProducts] = useState(props.products); // Initialize with all products
 
-
   const handleProductClick = (product) => {
     console.log('product clicked', product);
     setSelectedProduct(product);
@@ -112,26 +111,29 @@ const ViewStoreProductsModal = (props) => {
       <Typography variant="h6" gutterBottom>
         Select a product:
       </Typography>
-      <Grid item xs={12}>
+      <Grid item xs={15}>
         <input type="text" placeholder="Search products" value={searchQuery} onChange={handleSearchChange} />
       </Grid>
-      {filteredProducts.length > 0 ?
+      {filteredProducts?.length > 0 ?
       <div className={classes.listContainer}>
         <Grid container spacing={2}>
           <Grid item xs={2}>
             <Typography variant="subtitle1">Select</Typography>
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={3}>
             <Typography variant="subtitle1">Image</Typography>
           </Grid>
           <Grid item xs={5}>
             <Typography variant="subtitle1">Product Name</Typography>
           </Grid>
+          <Grid item xs={1}>
+            <Typography variant="subtitle1">Price</Typography>
+          </Grid>
         </Grid>
 
         <div className={classes.list}>
           {filteredProducts.map((product) => (
-            <Grid item xs={12}>
+            <Grid item xs={15}>
               <ListItem
                 button
                 onClick={() => handleProductClick(product)}
@@ -145,11 +147,14 @@ const ViewStoreProductsModal = (props) => {
                       onChange={(event) => handleCheckboxChange(event, product)}
                     />
                   </Grid>
-                  <Grid item xs={5}>
+                  <Grid item xs={3}>
                     <Avatar className={classes.avatar} alt={product.variantName} src={product.primaryImageUrl} />
                   </Grid>
                   <Grid item xs={5}>
                     <ListItemText primary={product.variantName} />
+                  </Grid>
+                  <Grid item xs={1}>
+                    <ListItemText primary={product.price} />
                   </Grid>
                 </Grid>
               </ListItem>
