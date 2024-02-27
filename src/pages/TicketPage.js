@@ -156,7 +156,10 @@ console.log("cet",canadianEndTime);
       props.fetchVideoList(props.ticket.ticket.video);
       props.fetchEventList(props.ticket.ticket.weight_change_events);
       props.fetchDummyEventList([props.ticket.ticket.id]);
-      props.fetchCartList(props.ticket.ticket.id);
+      if(isOrderGenerated) {
+        props.fetchCartList(props.ticket.ticket.id);
+      }
+      // props.fetchCartList(props.ticket.ticket.id);
   }, [props.ticket]);
 
   console.log('FETCHING CART LIST: ', props.ticket.ticket.id);
@@ -191,8 +194,8 @@ console.log("cet",canadianEndTime);
   }, [props.video]);
 
   const getEventIdsByStatus = (status, events) => {
-    const checkedEvents = events.filter((event) => event.status === status);
-    const checkedEventIds = checkedEvents.map((event) => event.id);
+    const checkedEvents = events?.filter((event) => event.status === status);
+    const checkedEventIds = checkedEvents?.map((event) => event.id);
     return checkedEventIds;
   };
 
@@ -200,7 +203,7 @@ console.log("cet",canadianEndTime);
     const checkedEvents = events.filter((event) => event.status === status);
     const checkedEventNameAndId = checkedEvents.map((event) => ({
       id: event.id,
-      name: event.variant_name,
+      name: event.variantName,
       quantity: event.quantity,
     }));
     console.log('CHECKED EVENT NAMES AND IDS: ', checkedEventNameAndId);
@@ -301,7 +304,7 @@ console.log("cet",canadianEndTime);
     const events = getEventIdsByStatus('ADDED_TO_CART', props.event.events.events);
     console.log("events in cart", events);
     const dummyEvents = getEventIdsByStatus('ADDED_TO_CART', props.dummyEvent.dummyEvents.dummyEvents);
-    if (events.length === 0 && dummyEvents.length === 0) {
+    if (events?.length === 0 && dummyEvents?.length === 0) {
       alert('No events to delete!');
     } else {
       props.updateEventStatus({ status: 'processing', event_ids: events });
@@ -319,7 +322,7 @@ console.log("cet",canadianEndTime);
   const handleDummyEvents = async () => {
     setIsAddingVariant(true);
 
-    console.log('store ID', props.ticket.ticket.store_Id);
+    console.log('store ID', props.ticket.ticket.storeId);
     await props.fetchStoreProductsList({ machineId: props.ticket.ticket.machine_id });
     props.setModalState({
         visible: true,

@@ -80,12 +80,12 @@ const AddConfirmTicketModal = (props) => {
   };
 
   const getEventPrice = (eventId) => {
-    const event = props.event.events.events.find((event) => event.id === eventId);
+    const event = props?.event?.events?.events?.find((event) => event.id === eventId);
     const dummyEvent = props.dummyEvent.dummyEvents.dummyEvents.find((dummyEvent) => dummyEvent.id === eventId);
     if (event && event.events_status) {
         return event.price;
       }
-    return dummyEvent.price;
+    return dummyEvent && dummyEvent.price ? dummyEvent.price : null;
   };
 
   const getEventIdsByStatus = (status, events) => {
@@ -154,16 +154,16 @@ const AddConfirmTicketModal = (props) => {
       props.cartconfirmed();
 
       if (sortedCart.length > 0) {
-        props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
+        props.createCart(props.ticket.ticket.id, { ticketId: props.ticket.ticket.id, cartItems: sortedCart });
         // const sortedCart = props.cart.cartItems.filter(item => item.status === "ADDED_TO_CART");
         const sortedOrder = [];
 
         sortedCart.forEach((item) => {
           console.log('checking sorted order', item);
           sortedOrder.push({
-            variantId: item.variantId || item.variant_id,
+            variantId: item.variantId,
             qty: parseInt(item.quantity, 10),
-            variantName: item.variant_name || item.variantName,
+            variantName: item.variantName,
           });
         });
         console.log('sorted order inplemented', sortedOrder);
@@ -172,7 +172,7 @@ const AddConfirmTicketModal = (props) => {
           userId: props.ticket.ticket.user_id,
           ticketId: props.ticket.ticket.id,
           items: sortedOrder,
-          storeId: props.ticket.ticket.store_Id,
+          storeId: props.ticket.ticket.storeId,
         });
 
         // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
@@ -204,9 +204,10 @@ const AddConfirmTicketModal = (props) => {
         >
           <h4 className={classes.header}>Are you sure you want to confirm this order?</h4>
         </div>
-        {props.cartItems.map((cartItem) => (
+        {props.cartItems.filter(item => item.ticketId === props.cart.ticketId).map((cartItem) => (
           <div key={cartItem.id} className={classes.cartItem}>
-            <div>{cartItem.variantName || cartItem.variant_name} x <strong>{cartItem.quantity}</strong></div>
+            <img height="50px" width="50px" src={cartItem.variantImageUrl} alt="" />
+            <div>{cartItem.variantName} x <strong>{cartItem.quantity}</strong></div>
             <strong>{getEventPrice(cartItem.id)}</strong> 
             {/* <div>{cartItem.quantity}</div> */}
           </div>

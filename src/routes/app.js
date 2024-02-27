@@ -4,6 +4,7 @@ import { ProtectedRoute } from '../components/protectedRouter';
 import DashboardLayout from '../layouts/dashboard/DashboardLayout';
 import UserListLayout from '../layouts/dashboard/UserListLayout';
 import TicketListLayout from '../layouts/dashboard/TicketListLayout';
+import StoreLogsLayout from '../layouts/dashboard/StoreLogsLayout'
 
 // ----------------------------------------------------------------------
 
@@ -25,6 +26,14 @@ export default function Router() {
         element={
           <ProtectedRoute>
             <UserListLayout />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/dashboard/logs"
+        element={
+          <ProtectedRoute>
+            <StoreLogsLayout />
           </ProtectedRoute>
         }
       />

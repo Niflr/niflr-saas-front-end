@@ -14,22 +14,24 @@ const CartElement = (props) => {
   console.log("cart card props", props);
   const [price, setPrice] = useState(null);
   const [image, setImage] = useState(null);
-  const variantName = props.data.variantName || props.data.variant_name;
+  const variantName = props.data.variantName;
   const quantity = props.data.quantity;
 
   useEffect(() => {
     const event = props?.event?.events?.events?.find((event) => event.id === props.data.id);
+    console.log("event inside cart card-->", event)
     if (event) {
       setPrice(event.price);
-      setImage(event.variant_img);
+      setImage(event.variantImageUrl);
     }
   }, [props.data.id, props.event.events.events]);
 
   useEffect(() => {
     const dummyEvent = props?.dummyEvent?.dummyEvents?.dummyEvents?.find((dummyEvent) => dummyEvent.id === props.data.id);
+    console.log("dummyevent inside cart card-->", dummyEvent)
     if (dummyEvent) {
       setPrice(dummyEvent.price);
-      setImage(dummyEvent.image_url);
+      setImage(dummyEvent.variantImageUrl);
     }
   }, [props.data.id, props.dummyEvent.dummyEvents.dummyEvents]);
 
@@ -37,7 +39,7 @@ const CartElement = (props) => {
   return (
     <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center', padding: '10px' }}>
       <img height="50px" width="50px" src={image} alt="" />
-      <div style={{ fontSize: '13px', cursor: 'pointer' }}>
+      <div style={{ fontSize: '13px' }}>
         {variantName}
       </div>
       <div style={{display: "flex"}}>

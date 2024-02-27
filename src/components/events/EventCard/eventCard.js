@@ -8,7 +8,7 @@ import { Label, Icon, LabelDetail } from 'semantic-ui-react';
 import { addToCart, removeFromCart, eventChecked } from '../../../actions/index';
 
 const EventElement = (props) => {
-  console.log('checking event element props', props.renderEvent);
+  console.log('checking event element props', props);
   const id = props.renderEvent.id;
   const scaleId = props.renderEvent.scale_id;
   const rackId = props.renderEvent.rackId;
@@ -16,11 +16,11 @@ const EventElement = (props) => {
   const status = props.renderEvent.status;
   const eventStatus = props.renderEvent.events_status;
   const weightChange = props.renderEvent.weight_change;
-  const ticketId = props.event.events.ticketId;
-  const variantId = props.renderEvent.variant_id;
+  const ticketId = props.cart.ticketId;
+  const variantId = props.renderEvent.variantId;
   const quantity = props.renderEvent.quantity;
-  const variantName = props.renderEvent.variant_name || props.renderEvent.variantName;
-  const variantImage = props.renderEvent.variant_img;
+  const variantName = props.renderEvent.variantName;
+  const variantImage = props.renderEvent.variantImageUrl;
   const createdAt = new Date(props.renderEvent.createdAt).toLocaleTimeString();
   const [isChecked, setIsChecked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -34,6 +34,7 @@ const EventElement = (props) => {
     switch (props.renderEvent.status) {
       case 'checked':
         console.log('renderevent status checked', isChecked);
+        setIsChecked(true);
 
         // setIsChecked(!isChecked);
         break;
@@ -68,6 +69,7 @@ const EventElement = (props) => {
             quantity,
             createdAt,
             variantName,
+            variantImage
           });
         }
 
@@ -81,9 +83,9 @@ const EventElement = (props) => {
   return (
     <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <Checkbox checked={props.renderEvent.status === "checked"} onChange={handleCheckboxChange} disabled={isSaved} />
+        <Checkbox checked={isChecked} onChange={handleCheckboxChange} disabled={isSaved} />
         <img height="50px" width="50px" src={variantImage} alt="" />
-        <div style={{ fontSize: '13px', color: eventStatus === 'PICKED' ? 'green' : 'red', cursor: 'pointer' }}>
+        <div style={{ fontSize: '13px', color: eventStatus === 'PICKED' ? 'green' : 'red' }}>
           {variantName}
         </div>
       </div>

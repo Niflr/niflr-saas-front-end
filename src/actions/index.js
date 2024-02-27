@@ -108,13 +108,16 @@ import {
   CART_STATUS_CONFIRMED,
   REMOVE_DUMMY_EVENTS_FROM_CART,
   REMOVE_EVENTS_FROM_CART,
+  FETCH__LOGS_LIST,
+  FETCH__LOGS_LIST_SUCCESS,
+  FETCH__LOGS_LIST_FAILURE,
 } from '../types/index';
 
 import RequestService from '../services/RequestService';
 
 const requestService = new RequestService();
 const fetchList =
-  ({ url, domain, action, params, search, data }) =>
+  ({ url, domain, action, params, search = true, data }) =>
   async (dispatch) => {
     dispatch({
       type: action,
@@ -318,7 +321,7 @@ export const createDummyEvents = (ticketId, data) =>
 export const deleteCartItems = (ticketId) =>
   putData({
     url: `cartItems/delete/${ticketId}`,
-    data: { TicketId: ticketId },
+    data: { ticketId },
     action: DELETE__CART_DETAILS,
     domain: 'CLOUD',
   });
@@ -540,4 +543,12 @@ export const fetchStoreProductsList = (params) =>
     data: params,
     action: FETCH__PRODUCTS_LIST,
     domain: 'CLOUD',
+  });
+
+export const fetchLogsList = (params) =>
+  fetchList({
+    url: 'logs/getLogs',
+    params,
+    action: FETCH__LOGS_LIST,
+    domain: 'CLOUD'
   });

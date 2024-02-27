@@ -10,17 +10,17 @@ const EventElement = (props) => {
   // console.log('render dummy event props', props);
 
   const status = props.renderEvent.status;
-  const ticketId = props.renderEvent.ticket_id;
+  const ticketId = props.cart.ticketId;
   const quantity = props.renderEvent.quantity;
-  const variantName = props.renderEvent.variant_name || props.renderEvent.variantName;
-  const variantId = props.renderEvent.variant_id || props.renderEvent.variantId;
+  const variantName = props.renderEvent.variantName;
+  const variantId = props.renderEvent.variantId;
 
   // console.log("variant id", variantId)
   const userId = props.renderEvent.user_id;
   const createdAt =  props.renderEvent.createdAt.split(", ")[1];
  
   console.log("created at:", createdAt)
-  const variantImage = props.renderEvent.imageUrl || props.renderEvent.image_url;
+  const variantImage = props.renderEvent.variantImageUrl;
   const [isChecked, setIsChecked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
@@ -34,7 +34,7 @@ const EventElement = (props) => {
     switch (props.renderEvent.status) {
       case 'checked':
         console.log('renderevent status checked');
-        // setIsChecked(true);
+        setIsChecked(true);
         break;
       case 'CONFIRMED':
         console.log('renderevent status saved');
@@ -65,7 +65,7 @@ const EventElement = (props) => {
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <Checkbox checked={isChecked} onChange={handleCheckboxChange} disabled={isSaved} />
         <img height="50px" width="50px" src={variantImage} alt="" />
-        <div style={{ fontSize: '13px', cursor: 'pointer' }}>
+        <div style={{ fontSize: '13px' }}>
           {variantName}
         </div>
       </div>

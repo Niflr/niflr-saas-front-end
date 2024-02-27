@@ -86,7 +86,7 @@ const DummyAddToCartModal = (props) => {
     if (props.selectedEvents.length > 0) {
       console.log('makging db sync');
       props.createDummyEvents(props.ticket.ticket.id, {
-        ticket_id: props.ticket.ticket.id,
+        ticketId: props.ticket.ticket.id,
         dummyEvents: props.selectedEvents,
       });
       handleClose();
@@ -116,7 +116,7 @@ const DummyAddToCartModal = (props) => {
               <li style={{ display: 'flex', justifyContent: 'space-around' }}>
                 {' '}
                 {/* <Checkbox checked={isChecked} onChange={handleCheckboxChange} /> */}
-                <div style={{ fontWeight: 'bold' }}>{selectedEvent.variant_name || selectedEvent.variantName}</div>
+                <div style={{ fontWeight: 'bold' }}>{selectedEvent.variantName}</div>
                 <div>{selectedEvent.quantity}</div>
               </li>
             </ul>
