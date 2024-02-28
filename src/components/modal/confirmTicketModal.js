@@ -190,7 +190,7 @@ const AddConfirmTicketModal = (props) => {
       console.log(error);
     }
   };
-
+  console.log("props.cartItems", props.cartItems)
   return (
     <div className={classes.paper}>
       {props.modal.isLoading ? (
@@ -206,9 +206,11 @@ const AddConfirmTicketModal = (props) => {
         </div>
         {props.cartItems.filter(item => item.ticketId === props.cart.ticketId).map((cartItem) => (
           <div key={cartItem.id} className={classes.cartItem}>
-            <img height="50px" width="50px" src={cartItem.variantImageUrl} alt="" />
+            <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+            <img height="50px" width="50px" src={cartItem.variantImage} alt="" />
             <div>{cartItem.variantName} x <strong>{cartItem.quantity}</strong></div>
-            <strong>{getEventPrice(cartItem.id)}</strong> 
+            </div>
+            <div> <strong>{getEventPrice(cartItem.id)}</strong> </div>
             {/* <div>{cartItem.quantity}</div> */}
           </div>
         ))}

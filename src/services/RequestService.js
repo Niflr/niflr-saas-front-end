@@ -35,7 +35,7 @@ export default class RequestService {
         console.log('inside cloud domain');
         console.log('user token--->', JSON.parse(window.localStorage.getItem('user')).token);
 
-        axios.defaults.baseURL = 'https://label-api.niflrpassdev.com/api';
+        axios.defaults.baseURL = 'https://label-api.brysk-ca.com/api';
         axios.defaults.headers = {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ export default class RequestService {
         break;
       case 'ADMIN':
         console.log('inside admin domain');
-        axios.defaults.baseURL = 'https://cs-niflrpassdev.com/api/';
+        axios.defaults.baseURL = 'https://cs-brysk-ca.com/api/';
         axios.defaults.headers = {
           accept: 'application/json',
           'content-type': 'application/json',

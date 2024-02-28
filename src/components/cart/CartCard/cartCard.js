@@ -38,9 +38,12 @@ const CartElement = (props) => {
 
   return (
     <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center', padding: '10px' }}>
+      <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+
       <img height="50px" width="50px" src={image} alt="" />
       <div style={{ fontSize: '13px' }}>
         {variantName}
+      </div>
       </div>
       <div style={{display: "flex"}}>
       {price && (

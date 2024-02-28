@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export default class AuthService {
   constructor(path) {
-    this.domain = `https://label-api.niflrpassdev.com/api/${path}`;
+    this.domain = `https://label-api.brysk-ca.com/api/${path}`;
     console.log('logi domain', this.domain);
   }
 
