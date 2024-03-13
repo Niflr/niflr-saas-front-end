@@ -27,7 +27,15 @@ export function fToNow(date) {
     : '';
 }
 
-export function fToTimeZone(date) {
-  const timeZone = 'America/Toronto';
-  return date ? utcToZonedTime(zonedTimeToUtc(new Date(date), timeZone), timeZone) : '';
+export function fToCanadaTime(time) {
+  const easternTimeZone = "America/Toronto";
+  const canadianTime = new Intl.DateTimeFormat("en-US", {
+    timeZone: easternTimeZone,
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric"
+  }).format(time);
+  console.log("converted canada time", canadianTime);
+  return canadianTime;
+
 }

@@ -111,6 +111,12 @@ import {
   FETCH__LOGS_LIST,
   FETCH__LOGS_LIST_SUCCESS,
   FETCH__LOGS_LIST_FAILURE,
+  FETCH__MACHINE_DETAILS,
+  FETCH__MACHINE_DETAILS_SUCCESS,
+  FETCH__MACHINE_DETAILS_FAILURE,
+  FETCH__MACHINES_LIST,
+  FETCH__MACHINES_LIST_SUCCESS,
+  FETCH__MACHINES_LIST_FAILURE,
 } from '../types/index';
 
 import RequestService from '../services/RequestService';
@@ -545,6 +551,23 @@ export const fetchStoreProductsList = (params) =>
     domain: 'CLOUD',
   });
 
+export const fetchMachineDetails = (params) => 
+  fetchList({
+    url: `machines/${params}`,
+    // data: params,
+    action: FETCH__MACHINE_DETAILS,
+    domain: 'ADMIN'
+  })
+
+export const fetchMachinesList = (params) => 
+  fetchList({
+    url: 'machines/',
+    data: params,
+    action: FETCH__MACHINES_LIST,
+    domain: 'ADMIN'
+  })
+
+ 
 export const fetchLogsList = (params) =>
   fetchList({
     url: 'logs/getLogs',

@@ -30,7 +30,7 @@ const DATA = {
 };
 
 export default (state = DATA, action) => {
-  // console.log("reducer testing",action)
+  console.log("event reducer testing",action)
   switch (action.type) {
     case FETCH__EVENT_DETAILS_SUCCESS:
       // console.log("fetch event success")

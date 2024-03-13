@@ -28,7 +28,7 @@ import DummyEventContainer from '../components/dummyEvents/EventContainer/eventC
 import { useStyles } from './styles';
 import VideoSlider from '../components/videoSlider/videoSlider';
 import ModalWrapper from '../components/modal/modalWrapper';
-import { fToTimeZone } from '../utils/formatTime';
+import { fToCanadaTime } from '../utils/formatTime';
 
 // actions
 import {
@@ -58,6 +58,8 @@ import {
   updateDummyEventStatus,
   createDummyEvents,
   fetchDummyEventList,
+  fetchMachineDetails,
+  fetchMachinesList,
 } from '../actions';
 
 const TicketPage = (props) => {
@@ -85,21 +87,8 @@ const TicketPage = (props) => {
   const utcStartTime = new Date(utcStartTimestamp);
   const utcEndTime = new Date(utcEndTimestamp);
 
-// Specify the time zone (Eastern Standard Time)
-const easternTimeZone = "America/Toronto";
-const canadianStartTime = new Intl.DateTimeFormat("en-US", {
-  timeZone: easternTimeZone,
-  hour: "numeric",
-  minute: "numeric",
-  second: "numeric"
-}).format(utcStartTime);
-
-const canadianEndTime = new Intl.DateTimeFormat("en-US", {
-  timeZone: easternTimeZone,
-  hour: "numeric",
-  minute: "numeric",
-  second: "numeric"
-}).format(utcEndTime);
+  const canadianStartTime = fToCanadaTime(utcStartTime);
+  const canadianEndTime = fToCanadaTime(utcEndTime);
 
 console.log("cst",canadianStartTime);
 console.log("cet",canadianEndTime);
@@ -116,6 +105,7 @@ console.log("cet",canadianEndTime);
   const [isExitButtonClicked, setIsExitButtonClicked] = useState(false);
 
   const [selectedCamera, setSelectedCamera] = useState(null);
+  const [machines, setMachines] = useState(null);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -152,10 +142,12 @@ console.log("cet",canadianEndTime);
     handleRackItemClick('ENTRY')
     setActiveRack(null);
   }, []);
+  
   useEffect(() => {
       props.fetchVideoList(props.ticket.ticket.video);
       props.fetchEventList(props.ticket.ticket.weight_change_events);
       props.fetchDummyEventList([props.ticket.ticket.id]);
+      props.fetchMachinesList();
       if(isOrderGenerated) {
         props.fetchCartList(props.ticket.ticket.id);
       }
@@ -192,6 +184,10 @@ console.log("cet",canadianEndTime);
     console.log('UPDATING props.video updated:', props.video);
     setVideos(props.video.videos);
   }, [props.video]);
+
+  useEffect(() => {
+    setMachines(props.machines);
+  }, [props.machines]);
 
   const getEventIdsByStatus = (status, events) => {
     const checkedEvents = events?.filter((event) => event.status === status);
@@ -331,6 +327,38 @@ console.log("cet",canadianEndTime);
       });
     setIsAddingVariant(false);
   };
+
+  const fetchMachineUuid = () => {
+    let currentMachineUUID = null;
+    try {
+      console.log("machines fetched", machines);
+      const currentMachine = machines.machines.filter((machine) => machine.machineId === props.ticket.ticket.machine_id);
+      console.log("current machine", currentMachine);
+      currentMachineUUID = currentMachine[0].id;
+      console.log("current machine uuid", currentMachineUUID);
+    } catch (error) {
+      console.log("error in fetching machines list", error);
+    }
+    return currentMachineUUID; 
+  }
+
+  const renderVariantMap = async () => {
+    console.log("opening variant map modal");
+    const machineUUID = fetchMachineUuid();
+    console.log("machine UUID", machineUUID);
+    await props.fetchMachineDetails( machineUUID );
+    if(props.machines.status === "OK") {
+      const machineScales = props.machines.machine.scales;
+      console.log("machine scales", machineScales);
+      props.setModalState({
+        visible: true,
+        modalName: 'viewVariantMap',
+        modalContent: machineScales
+      });
+    } else {
+      console.log("error in fetching target machine details");
+    }
+  }
   
   function a11yProps(index) {
     return {
@@ -373,6 +401,7 @@ console.log("cet",canadianEndTime);
               <Tab label="ReID View" {...a11yProps(1)} disabled />
               <Tab label="Grid View" {...a11yProps(2)} disabled />
             </Tabs>
+            {/* <Button onClick={()=> renderVariantMap()}>Variant Map</Button> */}
           </Box>
 
           <Paper className={classes.videoContainer}>
@@ -594,7 +623,7 @@ console.log("cet",canadianEndTime);
   );
 };
 
-const mapStateToProps = ({ event, isloading, cart, video, ticket, modal, dummyEvent, product }) => ({
+const mapStateToProps = ({ event, isloading, cart, video, ticket, modal, dummyEvent, product,machines }) => ({
   event,
   isloading,
   cart,
@@ -603,6 +632,7 @@ const mapStateToProps = ({ event, isloading, cart, video, ticket, modal, dummyEv
   modal,
   dummyEvent,
   product,
+  machines,
 });
 
 export default connect(mapStateToProps, {
@@ -632,4 +662,6 @@ export default connect(mapStateToProps, {
   updateDummyEventStatus,
   createDummyEvents,
   fetchDummyEventList,
+  fetchMachineDetails,
+  fetchMachinesList,
 })(TicketPage);

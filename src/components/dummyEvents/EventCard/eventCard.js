@@ -20,7 +20,7 @@ const EventElement = (props) => {
   const createdAt =  props.renderEvent.createdAt.split(", ")[1];
  
   console.log("created at:", createdAt)
-  const variantImage = props.renderEvent.imageUrl;
+  const variantImage = props.renderEvent.imageUrl || props.renderEvent.variantImageUrl;
   const [isChecked, setIsChecked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
