@@ -161,7 +161,7 @@ const postData =
       type: action,
       isLoading: true,
     });
-    console.log('testing post call params', url, domain, data);
+    console.log('testing post call params', url, domain, data, action);
     const res = await requestService.post({ url, data, domain });
     console.log('testing post call', res);
 

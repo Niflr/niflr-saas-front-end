@@ -189,7 +189,7 @@ const AddConfirmTicketModal = (props) => {
         // modalContent: props.product.products.updatedVariants,
         isLoading: false,
       });
-
+      setTimeout(() => navigate("/dashboard/tickets"), 3000);
     } catch (error) {
       console.log(error);
     }
