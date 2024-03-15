@@ -5,7 +5,6 @@ import { Accordion, AccordionSummary, AccordionDetails, Typography, Checkbox, Ch
 import { ExpandMoreOutlined } from '@mui/icons-material';
 import { connect } from 'react-redux';
 import { Label, Icon, LabelDetail } from 'semantic-ui-react';
-import { fToCanadaTime } from '../../../utils/formatTime';
 import { addToCart, removeFromCart, eventChecked } from '../../../actions/index';
 
 const EventElement = (props) => {
@@ -22,10 +21,7 @@ const EventElement = (props) => {
   const quantity = props.renderEvent.quantity;
   const variantName = props.renderEvent.variantName;
   const variantImage = props.renderEvent.variantImageUrl;
-  const itemRow = props.renderEvent.row;
-  const itemColumn = props.renderEvent.column;
-  const createdAt = fToCanadaTime(new Date(props.renderEvent.createdAt));
-  console.log("event created at:", createdAt);
+  const createdAt = new Date(props.renderEvent.createdAt).toLocaleTimeString();
   const [isChecked, setIsChecked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
@@ -89,14 +85,8 @@ const EventElement = (props) => {
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <Checkbox checked={isChecked} onChange={handleCheckboxChange} disabled={isSaved} />
         <img height="50px" width="50px" src={variantImage} alt="" />
-        <div style = {{display: 'flex', flexDirection: 'column', justifyContent: 'flex-start'}}>
-          <div style={{ fontSize: '13px', color: eventStatus === 'PICKED' ? 'green' : 'red' }}>
-            {variantName}
-          </div>
-          <div style={{display: 'flex'}}>
-          {itemRow ? <Chip size='small' label={`Row ${itemRow}`}/> : null}
-          {itemColumn ? <Chip size='small' label={`Column ${itemColumn}`}/>: null}
-          </div>
+        <div style={{ fontSize: '13px', color: eventStatus === 'PICKED' ? 'green' : 'red' }}>
+          {variantName}
         </div>
       </div>
       <div style={{display: 'flex'}}>

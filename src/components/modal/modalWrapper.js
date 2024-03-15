@@ -8,7 +8,6 @@ import { setModalState } from '../../actions/index';
 import AddToCartModal from './addToCartModal';
 import Loader from './confirmationModal';
 import DummyAddToCartModal from './dummyAddToCartModal';
-import VariantMapModal from './variantMapModal';
 
 const ModalWrapper = (props) => {
   const closeModal = () => {
@@ -55,11 +54,6 @@ const ModalWrapper = (props) => {
             // eventAddToCart={props.addToCartAction}
           />
         );
-      case 'viewVariantMap':
-        console.log("variant mapping")
-        return (
-          <VariantMapModal scales={props.modal.modalContent}/>
-        )
       case 'loading':
         return <Loader isLoading={props.modal.isLoading} />;
 

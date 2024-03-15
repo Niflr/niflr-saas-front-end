@@ -104,47 +104,43 @@ const AddConfirmTicketModal = (props) => {
 
     try {
       // console.log('checking dummyevents', props.dummyEvent);
-      if (props.event.events.events){
-        const events = getEventIdsByStatus('ADDED_TO_CART', props.event.events.events);
-        const sortedEvents = props.event.events.events
-          .filter((event) => {
-            if (Array.isArray(events)) {
-              return events.includes(event.id) && event.status === 'ADDED_TO_CART';
-            }
-            return false;
-          })
-          .map((event) => ({ ...event, status: 'CONFIRMED' }));
-        console.log('sorted  events', sortedEvents);
-        props.eventsSaved();
-        if (sortedEvents.length > 0) {
-          props.updateEventStatus({ status: 'CONFIRMED', event_ids: events });
-  
-          // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
-        }
-      }
-
-      if (props.dummyEvent.dummyEvents.dummyEvents){
-        const dummyEvents = getEventIdsByStatus('ADDED_TO_CART', props.dummyEvent.dummyEvents.dummyEvents);
-        console.log('user dummy events', dummyEvents);
-        const sortedDummyEvents = props.dummyEvent.dummyEvents.dummyEvents
-          .filter((event) => {
-            if (Array.isArray(dummyEvents)) {
-              return dummyEvents.includes(event.id) && event.status === 'ADDED_TO_CART';
-            }
-            return false;
-          })
-          .map((event) => ({ ...event, status: 'CONFIRMED' }));
-        console.log('sorted dummy events', sortedDummyEvents);
-        props.dummyEventsSaved();
-        if (sortedDummyEvents.length > 0) {
-          console.log('sorting dummy events');
-          props.updateDummyEventStatus({ status: 'CONFIRMED', event_id: dummyEvents });
-          // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
-        }
-
-      }
+      const events = getEventIdsByStatus('ADDED_TO_CART', props.event.events.events);
+      const dummyEvents = getEventIdsByStatus('ADDED_TO_CART', props.dummyEvent.dummyEvents.dummyEvents);
+      console.log('user dummy events', dummyEvents);
       const userCart = getEventIdsByStatus('ADDED_TO_CART', props.cart.cartItems);
       console.log('userCart', userCart);
+
+      const sortedEvents = props.event.events.events
+        .filter((event) => {
+          if (Array.isArray(events)) {
+            return events.includes(event.id) && event.status === 'ADDED_TO_CART';
+          }
+          return false;
+        })
+        .map((event) => ({ ...event, status: 'CONFIRMED' }));
+      console.log('sorted  events', sortedEvents);
+      props.eventsSaved();
+      if (sortedEvents.length > 0) {
+        props.updateEventStatus({ status: 'CONFIRMED', event_ids: events });
+
+        // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
+      }
+      const sortedDummyEvents = props.dummyEvent.dummyEvents.dummyEvents
+        .filter((event) => {
+          if (Array.isArray(dummyEvents)) {
+            return dummyEvents.includes(event.id) && event.status === 'ADDED_TO_CART';
+          }
+          return false;
+        })
+        .map((event) => ({ ...event, status: 'CONFIRMED' }));
+      console.log('sorted dummy events', sortedDummyEvents);
+      props.dummyEventsSaved();
+      if (sortedDummyEvents.length > 0) {
+        console.log('sorting dummy events');
+        props.updateDummyEventStatus({ status: 'CONFIRMED', event_id: dummyEvents });
+        // props.createCart(props.ticket.ticket.id, { TicketId: props.ticket.ticket.id, cartItems: sortedCart });
+      }
+
       const sortedCart = props.cart.cartItems
         .filter((event) => {
           if (Array.isArray(userCart)) {

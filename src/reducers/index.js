@@ -10,7 +10,6 @@ import dummyEventReducer from './dummyEventReducer';
 import variantReducers from './variantReducers';
 import orderReducer from './orderReducer';
 import logReducer from './logReducer';
-import machineReducer from './machineReducer';
 
 const rootReducer = combineReducers({
 	auth: authReducer,
@@ -23,7 +22,6 @@ const rootReducer = combineReducers({
 	dummyEvent: dummyEventReducer,
 	product:variantReducers,
 	order:orderReducer,
-	logs: logReducer,
-	machines: machineReducer
+	logs: logReducer
 });
 export default rootReducer;

@@ -45,11 +45,12 @@ export default class RequestService {
         break;
       case 'ADMIN':
         console.log('inside admin domain');
-        axios.defaults.baseURL = 'https://as-api.brysk-ca.com/api/';
+        axios.defaults.baseURL = 'https://cs-brysk-ca.com/api/';
         axios.defaults.headers = {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'x-access-token': JSON.parse(window.localStorage.getItem('user')).token,
+          accept: 'application/json',
+          'content-type': 'application/json',
+          'x-access-token':
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImZhNDhhN2IyLWIwYjAtNGM3Yi1iMzNiLTRkNGM0MWQzYTc1YSIsIm5hbWUiOiJrdXNoYWwgZ29zd2FtaSIsImlhdCI6MTY4Nzc2NjQ0MywiZXhwIjoxNjg3ODUyODQzfQ.cP_Tqz5z0xea6zQnvs0GwOJyru6LyZ2uWkU2XNsj_90',
         };
         break;
       case 'DEVELOPMENT':
@@ -62,7 +63,7 @@ export default class RequestService {
   };
 
   get = async ({ url, params, domain, data }) => {
-    console.log('checking domain', domain);
+    console.log('checking domain', data);
     this.getBaseUrlAndToken(domain);
     let queryString = null;
     if (data) {
