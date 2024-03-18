@@ -363,8 +363,8 @@ console.log("cet",canadianEndTime);
         <Grid item xs={12} sm={6} md={8} className={classes.leftContainer}>
           <div style={{ display: 'flex', justifyContent: 'space-evenly', gap: '5px', padding: '10px' }}>
             <Typography variant="h6">User: {props.ticket.ticket.user_id}</Typography>
-            <Typography variant="h6">Entry: {canadianStartTime}</Typography>
-            <Typography variant="h6">Exit: {canadianEndTime}</Typography>
+            <Typography variant="h6">Entry: {new Date(props.ticket.ticket.start_time).toLocaleString()}</Typography>
+            <Typography variant="h6">Exit: {new Date(props.ticket.ticket.end_time).toLocaleString()}</Typography>
           </div>
           <Box sx={{ display: 'flex', borderBottom: 1, borderColor: 'divider', justifyContent: 'space-between' }}>
             <Tabs value={value} onChange={handlePrimaryTabChange} aria-label="basic tabs example">
