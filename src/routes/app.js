@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
+import StorePlanographPage from '../pages/StorePlanographPage';
 import LoginPage from '../pages/LoginPage';
 import { ProtectedRoute } from '../components/protectedRouter';
 import DashboardLayout from '../layouts/dashboard/DashboardLayout';
@@ -37,6 +38,7 @@ export default function Router() {
           </ProtectedRoute>
         }
       />
+      <Route path="/dashboard/tickets/:id/planograph" element={<ProtectedRoute><StorePlanographPage /></ProtectedRoute>} />
       <Route path="/dashboard/tickets/:id" element={<ProtectedRoute><TicketListLayout /></ProtectedRoute>} />
     </Routes>
   );

@@ -350,11 +350,13 @@ console.log("cet",canadianEndTime);
     if(props.machines.status === "OK") {
       const machineScales = props.machines.machine.scales;
       console.log("machine scales", machineScales);
-      props.setModalState({
-        visible: true,
-        modalName: 'viewVariantMap',
-        modalContent: machineScales
-      });
+      // props.setModalState({
+      //   visible: true,
+      //   modalName: 'viewVariantMap',
+      //   modalContent: machineScales
+      // });
+      // navigate(`/dashboard/tickets/${props.ticket.ticket.id}/planograph`)
+      window.open(`/dashboard/tickets/${props.ticket.ticket.id}/planograph`,'_blank')
     } else {
       console.log("error in fetching target machine details");
     }
@@ -401,7 +403,7 @@ console.log("cet",canadianEndTime);
               <Tab label="ReID View" {...a11yProps(1)} disabled />
               <Tab label="Grid View" {...a11yProps(2)} disabled />
             </Tabs>
-            {/* <Button onClick={()=> renderVariantMap()}>Variant Map</Button> */}
+            <Button onClick={()=> renderVariantMap()}>Variant Map</Button>
           </Box>
 
           <Paper className={classes.videoContainer}>
