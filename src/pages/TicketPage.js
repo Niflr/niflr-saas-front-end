@@ -18,7 +18,7 @@ import {
   IconButton,
   CircularProgress
 } from '@mui/material';
-import { Add, AbcRounded, Clear } from '@mui/icons-material';
+import { Add, AbcRounded, Clear, ArrowBack } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import { connect } from 'react-redux';
 
@@ -67,6 +67,7 @@ const TicketPage = (props) => {
   console.log('current user', user);
   // console.log(ticketId, 'ticket_id');
   const classes = useStyles();
+  const navigate = useNavigate();
 
   const [events, setEvents] = useState([]);
   const [dummyEvents, setDummyEvents] = useState([]);
@@ -395,6 +396,9 @@ console.log("cet",canadianEndTime);
             <Typography variant="h6">User: {props.ticket.ticket.user_id}</Typography>
             <Typography variant="h6">Entry: {canadianStartTime}</Typography>
             <Typography variant="h6">Exit: {canadianEndTime}</Typography>
+          </div>
+          <div>
+            <Button variant='contained' size='small' color='primary' startIcon={<ArrowBack/>} onClick={() => navigate("/dashboard/tickets")}>Back to Ticket List</Button>
           </div>
           <Box sx={{ display: 'flex', borderBottom: 1, borderColor: 'divider', justifyContent: 'space-between' }}>
             <Tabs value={value} onChange={handlePrimaryTabChange} aria-label="basic tabs example">
