@@ -22,6 +22,7 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
+  Tooltip,
 } from '@mui/material';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { ArrowForward } from '@mui/icons-material';
@@ -42,8 +43,8 @@ import { useLocalStorage } from '../components/useLocalStorage';
 
 const TABLE_HEAD = [
   { id: 'ticket_id', label: 'Ticket ID', alignRight: false },
-  { id: 'user_id', label: 'User ID', alignRight: false },
-  { id: 'machine_id', label: 'Machine ID', alignRight: false },
+  { id: 'user_name', label: 'User Name', alignRight: false },
+  { id: 'machine_name', label: 'Machine Name', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
   { id: 'created_at', label: 'Created At', alignRight: false },
   { id: 'updated_at', label: 'Updated At', alignRight: false },
@@ -234,8 +235,9 @@ function TicketListPage(props) {
                     {filteredTickets
                       ? filteredTickets.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                           console.log('ticket rows', row);
-                          const userId = row.user_id;
+                          const userName = row.username;
                           const machineId = row.machine_id;
+                          const machineName = row.machineName;
                           const { id, status } = row;
                           // const selectedUser = selected.indexOf(name) !== -1;
 
@@ -248,11 +250,13 @@ function TicketListPage(props) {
                               </TableCell>
 
                               <TableCell padding="20" align="center">
-                                {userId}
+                                {userName}
                               </TableCell>
 
                               <TableCell padding="20" align="center">
-                                {machineId}
+                                <Tooltip title={`Machine ID: ${machineId}`} arrow placement='bottom'>
+                                  <span>{machineName}</span>
+                                </Tooltip>
                               </TableCell>
 
                               <TableCell padding="20" align="center">
